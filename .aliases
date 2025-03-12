@@ -1,0 +1,117 @@
+## Dotfiles Bare Git alias
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dfs='dotfiles status'
+
+## Pop OS
+alias nvid='sudo system76-power graphics nvidia'
+alias hybrid='sudo system76-power graphics hybrid'
+alias integrated='sudo system76-power graphics integrated'
+
+## Edit Files
+alias i3conf='nvim ~/.config/regolith2/i3/config'
+alias i3Xres='nvim ~/.config/regolith2/Xresources'
+alias aliasconf='nvim ~/.aliases'
+alias aconf='cd ~/.dotlinks && nvim'
+alias vconf='cd ~/.config/nvim/lua && nvim'
+
+## Refresh BG
+alias wpr='feh --no-fehbg --bg-fill "'~/Pictures/wallpapers/laser.jpg'"'
+
+## Development
+alias qde='quasar dev -m electron' alias qd='quasar dev'
+alias ylf='yarn lint --fix'
+alias yd='yarn dev'
+alias ys="yarn start"
+
+## Node Modules
+alias lnm='find . -name "node_modules" -type d -prune | xargs dust -cHp -d 1 -z 15m'
+alias dnm='find . -name "node_modules" -type d -prune -exec rm -rf "{}" +'
+
+## Zioxide
+alias cd='z'
+alias c='zi'
+
+## Dust
+alias du='dust'
+
+## Quick Dir
+alias ts='cd ~/Git/Typescript/ && l'
+
+## Movement
+alias q='cd ~/Git/Quasar'
+alias gi='cd ~/Git'
+alias dotex="cd ~/Git/External/dotfile_reference/ && nvim"
+## Util alias class='xprop | grep "CLASS"'
+
+## Lazy
+alias c='cd'
+alias lg='lazygit'
+alias lzd='lazydocker'
+alias top='bpytop'
+alias sz='source ~/.zshrc'
+alias n='nvim'
+alias lazyn='export XDG_CONFIG_HOME=~/.config/nvimA; export XDG_DATA_HOME=~/.local/share/nvimA; nvim'
+
+## Open Local
+alias n.='nautilus .'
+alias c.='code .'
+
+## Git
+alias aigc='git add . && oco --no-verify'
+
+## Zellij
+alias zj='zellij'
+alias shoplift='zellij --layout shoplift'
+alias firefly='zellij --layout firefly'
+alias zjv="zellij --layout vite"
+alias zjd="zellij --layout docs"
+alias zjb="zellij --layout blank"
+alias zjn="zellij --layout netlify"
+
+alias tree='exa -a -T --icons --group-directories-first'
+
+for a in :q :q!; do alias "$a"='exit'; done
+
+alias devenv='sudo virsh start Current_Config && sudo virt-viewer --class Current_Config Current_Config && sudo remote-viewer spice://127.0.0.1:5900 --class Current_Config_2'
+
+# Sail
+alias sail="./vendor/bin/sail"
+alias art="sail art"
+
+## D2
+alias d2i="gcd git@github.com:terrastruct/d2.git"
+alias d2c="./ci/release/build.sh --install"
+alias d2d="rm -r -f /home/dean/.local/bin/d2 && rm -r -f /home/dean/.local/lib/d2 && rm -r -f /home/dean/Git/External/d2/"
+alias d2u="curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall"
+
+alias obsidian='~/Software/Obsidian-1.1.9.AppImage'
+alias beekeeper='~/Software/Beekeeper-Studio-Ultimate-3.8.9.AppImage'
+
+alias nocam='sudo modprobe -r uvcvideo'
+alias nnode='nvm use 19.5.0'
+alias onode='nvm use 16.19.0'
+alias kserv="npx kill-port 42069"
+alias stable="~/Git/AI/stable-diffusion/automatic/webui.sh"
+
+alias wo="pomodoro 'work'"
+alias br="pomodoro 'break'"
+
+alias envup="netlify env:import .env"
+
+alias nssh="ssh-keygen -t ed25519"
+
+alias gr="go run ."
+alias gb="go build"
+alias gmt="go mod tidy"
+alias cr="cargo run"
+
+## PNPM
+alias prd="pnpm run dev"
+alias pl="pnpm lint"
+alias pt="pnpm typecheck"
+
+alias summarize-repo="~/Git/Go/RepoSummarize/repo_summarize"
+alias dmig="pnpm drizzle-kit generate"
+alias rspace="$HOME/.config/yabai/create_spaces.sh"
+
+

@@ -1,0 +1,524 @@
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+function gcaa () {(
+    git add . && git commit -m "$*" && git push
+    )}
+#*
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+dfca() {
+    dotfiles add -u && dotfiles commit -m "$*" && dotfiles push 
+}
+#* *
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+og() {(
+    set -e
+    git remote -v | grep push
+    remote=${1:-origin}
+    echo "Using remote $remote"
+    URL=$(git config remote.$remote.url | sed "s/git@\(.*\):\(.*\).git/https:\/\/\1\/\2/")
+    echo "Opening $URL..."
+    open $URL
+)}
+#*
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+nr() {
+  mkdir "$*"
+  cd "$*"
+}
+#*  
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+resizejpg() {
+    for i in *.jpg; 
+        do name=`echo $i | cut -d'.' -f1`;
+        echo $name;
+        convert $i -resize "$*"% $name.jpg;
+    done
+}
+#*
+#*
+## Name: 
+#
+## Desc: 
+## Inputs:
+## Usage:
+htj() {
+    heif-convert -q 75 $1.heic $2.jpg
+}
+#*
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+convmp4() {
+    for i in *.mp4; 
+        do name=`echo $i | cut -d'.' -f1`;
+        echo $name;
+        ffmpeg -c:v h264_cuvid -i $i -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a pcm_s16le $name.mov;
+    done
+}
+#*
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+qgcd() {
+    cd ~/Git/Quasar
+    git clone $1
+    local ldir=`ls -snew | head -1`
+    echo $ldir
+    cd $ldir
+    pwd
+    yarn
+    qd
+}
+#*
+#
+gcnn() {
+    cd ~/Git/Webdev/Nuxt
+    git clone git@github.com:Thevetat/SignalAIBaseLayer.git "$*"
+    cd "$*"
+    rm -r -f .git
+    git init
+    pnpm i
+}
+
+
+#*
+## Name: Git Clone Quasar Base
+## Desc: Clones base quasar repo, cd's in, opens code, runs yarn, opens dev server
+## Inputs: Name you want to call new folder
+## Usage: gcqb playground
+gcqb() {
+    cd ~/Git/Quasar
+    git clone --single-branch --branch electron git@gitlab.com:Paracelsus_Rose/vitebase.git "$*"
+    cd "$*"
+    rm -r -f .git
+    git init
+    yarn
+    qd
+}
+#*
+
+#*
+## Change Docs
+## Name: Git Clone Typescript Base
+## Desc: Clones base quasar repo, cd's in, opens code, runs yarn, opens dev server
+## Inputs: Name you want to call new folder
+## Usage: gcqb playground
+gctb() {
+    cd ~/Git/Typescript
+    git clone git@gitlab.com:sunshineunlimited/ts-base-reborn.git "$*"
+    cd "$*"
+    rm -r -f .git
+    git init
+    pnpm i
+}
+#*
+
+
+#*
+## Change Docs
+## Name: Git Clone Typescript Base
+## Desc: Clones base quasar repo, cd's in, opens code, runs yarn, opens dev server
+## Inputs: Name you want to call new folder
+## Usage: gcqb playground
+gcnbub() {
+    cd ~/Git/Go/tui/
+    git clone git@github.com:Thevetat/new_bubble.git "$*"
+    cd "$*"
+    rm -r -f .git
+    git init
+}
+#*
+
+#*
+## Change Docs
+## Name: Git Clone Typescript Base
+## Desc: Clones base quasar repo, cd's in, opens code, runs yarn, opens dev server
+## Inputs: Name you want to call new folder
+## Usage: gcqb playground
+gcvb() {
+    cd ~/Git/Vite
+    git clone git@gitlab.com:sunshineunlimited/sunshine-base.git "$*"
+    cd "$*"
+    rm -r -f .git
+    git init
+    pnpm i
+}
+#*
+
+gsubi() {
+    git submodule update --init --recursive
+}
+
+gsuba() {
+    git submodule add git@github.com:Thevetat/ComponentSubmodule.git base_components
+}
+
+gsubar() {
+    git submodule add git@github.com:Thevetat/BaseReactSubmod.git ./src/base_submod
+}
+
+gsubp() {
+z base_components
+git add .
+git commit -m "Updated Component Submodule"
+git push
+z ../
+}
+
+gsubu() {
+z base_components
+git pull
+z ../
+}
+
+#*
+## Change Docs
+## Name: Git Clone New Base
+## Desc: Clones base quasar repo, cd's in, opens code, runs yarn, opens dev server
+## Inputs: Name you want to call new folder
+## Usage: gcqb playground
+gcnb() {
+    cd ~/Git/Vite
+    git clone git@gitlab.com:sunshineunlimited/nbase.git "$*"
+    cd "$*"
+    rm -r -f .git
+    git init
+    pnpm i
+}
+#*
+
+
+#*
+## Change Docs
+## Name: Git Clone Typescript Base
+## Desc: Clones base quasar repo, cd's in, opens code, runs yarn, opens dev server
+## Inputs: Name you want to call new folder
+## Usage: gcqb playground
+gceb() {
+    cd ~/Git/Quasar
+    git clone --single-branch --branch electron git@gitlab.com:Paracelsus_Rose/vitebase.git "$*"
+    cd "$*"
+    rm -r -f .git
+    git init
+    yarn
+}
+#*
+
+
+#*
+## Name: Find
+## Desc: Find a file matching the input
+## Inputs: Pattern you want to search for
+## Usage: f .json
+f() {
+    find . | grep -i "$*"
+}
+#*
+
+#*
+## Name: CD and LS -a
+## Desc: CD into a directory and list all hidden files / directories.
+## Inputs: Directory you want to go explore.
+## Usage: cl ~/.config 
+cl() {
+    cd "$*"
+    ls -a
+}
+#*
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+gpar() {
+    find . -type d -name .git -exec git --git-dir={} --work-tree=$PWD/{}/.. pull origin master
+}
+#*
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+m() {
+    mkdir "$*"
+}
+#*
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+newssh() {
+yes "y" | ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/"$*" -N ""
+cat ~/.ssh/"$*".pub | xsel --clipboard
+}
+#*
+
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+cf() {
+    xsel -b < "$*"
+}
+#*
+
+
+
+#*
+## Name: 
+## Desc: 
+## Inputs:
+## Usage:
+freshnvim() {
+    mkdir ~/.config/.nvim_backup
+    mkdir ~/.config/.nvim_backup/.local/share/nvim
+    mkdir ~/.config/.nvim_backup/.cache/nvim
+    cp -r -f ~/.config/nvim ~/.config/.nvim_backup/
+    cp -r -f ~/.local/share/nvim ~/.config/.nvim_backup/.local/share/nvim
+    cp -r -f ~/.cache/nvim ~/.config/.nvim_backup/.cache/nvim
+    rm -rf ~/.config/nvim
+    rm -rf ~/.local/share/nvim 
+    rm -rf ~/.cache/nvim
+}
+#*
+
+
+ipynb() {
+    python -m jupyter_ascending.scripts.make_pair --base "$*"
+}
+
+yad() {
+    yarn add "$*" --dev
+}
+
+ya() {
+    yarn add "$*"
+}
+
+cw() {
+    cd "$(which "$*" | xargs -0 dirname)"
+}
+
+# #*
+# ## Name: 
+# ## Desc: 
+# ## Inputs:
+# ## Usage:
+# gcd() {
+#     cd ~/Git/External
+#     git clone "$*"
+#     cd "$*"
+#     ls -a
+#     nvim
+# }
+# #*
+# #
+
+gcd() {
+    cd ~/Git/External
+    if [ -z $1 ]
+    then
+        echo "Error: No repository URL provided"
+        return 1
+    fi
+
+    repo_name=$(echo $1 | sed -E 's#(https://(github|gitlab)\.com/)([^/]+/[^/]+)/?#\3#' | cut -d '/' -f 2)
+
+    git clone $1
+
+    if [ $? -eq 0 ]
+    then
+        cd "$repo_name"
+        echo "Successfully cloned and entered repository: $repo_name"
+    else
+        echo "Error: Repository not cloned"
+        return 1
+    fi
+    ls -a 
+}
+
+fd2() {
+    curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
+    rm -r -f $HOME/.local/bin/d2
+    rm -r -f $HOME/.local/lib/d2
+    rm -r -f $HOME/Git/External/d2/
+    curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala
+    rm -r -f $HOME/.local/bin/d2
+    rm -r -f $HOME/.local/lib/d2
+    gcd git@github.com:terrastruct/d2
+    ./ci/release/build.sh --install
+    d2 -v
+    d2 layout tala
+    
+}
+
+d2r() {
+    D2_LAYOUT=tala d2 --watch --sketch "$*".d2 "$*".svg
+}
+
+rcd2() {
+    rm -r -f ci/release/build/$1
+    d2c
+}
+
+cng() {
+    git init --initial-branch=main
+    git remote add origin $1
+    git add .
+    git commit -m "Initial commit"
+    git push -u origin main
+}
+
+shopliftdev() {
+    PORT=3000 HOST=https://7524-104-128-161-112.ngrok.io/ dotnet run watch
+}
+
+switchnvim() {
+    mv ~/.config/nvim ~/.config/nvim_old
+    mv ~/.config/nvimA ~/.config/nvim
+    mv ~/.config/nvim_old ~/.config/nvimA
+
+    mv ~/.local/share/nvim ~/.local/share/nvim_old
+    mv ~/.local/share/nvimA ~/.local/share/nvim
+    mv ~/.local/share/nvim_old ~/.local/share/nvimA
+}
+
+ndc() {
+    rm -r -f ./docs/$1
+    mkdir ./docs/$1
+    depcruise --include-only "^src" -x "^src/store" -v -T dot src | dot -T svg | depcruise-wrap-stream-in-html > ./docs/$1/dep-graph-reduced.html
+    depcruise -v -T dot | dot -T svg | depcruise-wrap-stream-in-html > ./docs/$1/dep-graph-full.html
+    depcruise src --output-type dot | dot -T svg > ./docs/$1/dep-graph-full.svg
+    dependency-cruise --validate --output-type err-html -f ./docs/$1/dep-report.html src 
+    depcruise src --include-only "^src" --config --output-type json > ./docs/$1/dep-graph-full.json
+    depcruise src --include-only "^src" --config --output-type archi | dot -T svg > ./docs/$1/dep-graph-archi.svg
+}
+
+genDepPics() {
+    dep_full="./dep_docs/full/pics"
+    dep_collapsed="./dep_docs/collapsed/pics"
+
+    rm -r -f $dep_full
+    rm -r -f $dep_collapsed
+
+}
+
+ubcomp() {
+  cd src/core/components/base
+  git pull
+  git add .
+  git commit -m "update bcomp"
+  git push
+  cd ../../../../
+}
+
+
+
+preupscale() {
+  input_file=$1
+  preup_file="${input_file%.*}.mp4"
+
+  # Copy the preupscaled file to the pre-upscale folder
+  destination_folder="pre-upscale"
+
+  if [[ ! -d $destination_folder ]]; then
+    mkdir $destination_folder
+  fi
+
+  cp "$preup_file" "$destination_folder"
+}
+
+preup() {
+  find . -type f -name '*.mp4' -print0 | while read -d '' -r file; do
+    preupscale "$file"
+  done
+}
+
+#*
+## Name: ConvertAndDelete
+## Desc: Find all PNG files, convert them to WEBP and then delete the original PNG files
+## Inputs: None
+## Usage: ConvertAndDelete
+pngtowebp() {
+    find . -type f -name "*.png" -print0 | while IFS= read -r -d '' file; do
+        local webp_file="${file%.png}.webp"
+        convert "$file" "$webp_file" && rm -f "$file"
+    done
+}
+#*
+#
+
+initgo() {
+    go mod init github.com/thevetat/"$*"
+}
+
+pnr() {
+    git init --initial-branch=main
+    git remote add origin "$*"
+    git add .
+    git commit -m "Initial commit"
+    git push --set-upstream origin main
+}
+
+dlsc() {
+   scdl -l "$*" --addtofile --onlymp3 --no-playlist-folder --extract-artist -c
+}
+
+newnuxt() {
+    pnpm dlx nuxi@latest init "$*"
+}
+
+
+nd() {
+    netlify unlink
+    netlify sites:delete "$*" --force
+}
+
+gsr() {
+    if [ $# -lt 2 ]; then
+        echo "Usage: gsr <commit-hash> <commit-message>"
+        return 1
+    fi
+    
+    local commit_hash="$1"
+    shift
+    local commit_message="$*"
+    
+    git reset --soft "$commit_hash" && \
+    git commit -m "$commit_message" && \
+    git push --force-with-lease
+}
+
