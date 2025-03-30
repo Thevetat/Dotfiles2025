@@ -522,3 +522,28 @@ gsr() {
     git push --force-with-lease
 }
 
+dfmod() {
+  if [ $# -lt 1 ]; then
+    echo "Usage: dfmod \"Your commit message\""
+    return 1
+  fi
+  
+  message="$1"
+  
+  # Get list of modified files from git status
+  modified_files=$(dotfiles status --porcelain | grep '^ M' | cut -c4-)
+  
+  if [ -z "$modified_files" ]; then
+    echo "No modified files found."
+    return 1
+  fi
+  
+  # Add all modified files
+  echo "$modified_files" | while read -r file; do
+    dotfiles add "$file"
+  done
+  
+  dotfiles commit -m "$message"
+  dotfiles push
+  echo "Modified files committed and pushed to remote."
+}

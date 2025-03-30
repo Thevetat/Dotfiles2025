@@ -114,4 +114,5 @@ alias summarize-repo="~/Git/Go/RepoSummarize/repo_summarize"
 alias dmig="pnpm drizzle-kit generate"
 alias rspace="$HOME/.config/yabai/create_spaces.sh"
 
-
+alias mybuilder='~/git/Webdev/Nuxt/Client_Builder/Builder/builder'
+alias netlify-up='~/git/Go/netlify/netlify_script'
