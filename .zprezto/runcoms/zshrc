@@ -1,35 +1,30 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-#
-# Executes commands at the start of an interactive session.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
-# Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
-source /opt/homebrew/opt/nvm/nvm.sh
-export PATH="/Users/thevetat/.local/share/bob/nvim-bin:$PATH"
-export PATH="$PATH:/Users/thevetat/go/bin"
-
-source "$HOME/.cargo/env"
 
 source ~/.aliases
 source ~/.zprofile
 source ~/.zsh_functions
+source "$HOME/.cargo/env"
+source /opt/homebrew/opt/nvm/nvm.sh
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
+export PATH="$PATH:/Users/thevetat/go/bin"
+export PATH="/Users/thevetat/.local/share/bob/nvim-bin:$PATH"
+
+export D2_DARK_THEME=200
+export AWS_PROFILE=theres-time-now-dev
+export OCO_DESCRIPTION="<postface a message with ~3 sentences description of the changes>"
+export DOCKER_HOST=unix:///Users/$USER/Library/Containers/com.docker.docker/Data/docker.raw.sock
+
+if [[ -f "$HOME/.env" ]]; then
+  source "$HOME/.env"
+fi
+
 __conda_setup="$('/Users/thevetat/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
@@ -41,21 +36,6 @@ else
     fi
 fi
 unset __conda_setup
-# <<< conda initialize <<<
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 eval "$(zoxide init zsh)"
-
-export DOCKER_HOST=unix:///Users/$USER/Library/Containers/com.docker.docker/Data/docker.raw.sock
-export D2_DARK_THEME=200
-
-# Load environment variables from .env file (secrets)
-if [[ -f "$HOME/.env" ]]; then
-  source "$HOME/.env"
-fi
-
-export OCO_DESCRIPTION="<postface a message with ~3 sentences description of the changes>"
-
-alias mybuilder='~/git/Webdev/Nuxt/Client_Builder/Builder/builder'
-alias netlify-up='~/git/Go/netlify/netlify_script'
