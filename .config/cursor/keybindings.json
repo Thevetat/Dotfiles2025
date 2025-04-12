@@ -1,0 +1,1 @@
+[{"key":"space","command":"","when":"listFocus && !inputFocus"},{"key":"cmd+i","command":"composerMode.agent"},{"key":"cmd+shift+t","command":"workbench.action.toggleLightDarkThemes"}]

@@ -1,0 +1,174 @@
+{
+  // Disable telemetry
+  "telemetry.telemetryLevel": "off",
+
+  // Editor
+  "editor.wordWrap": "on",
+  "editor.tabCompletion": "on",
+  "editor.linkedEditing": true,
+  "explorer.confirmDelete": false,
+  "editor.semanticHighlighting.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+
+  // Theme
+  "editor.lineNumbers": "relative",
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "workbench.activityBar.orientation": "vertical",
+
+  // Fonts
+  "editor.fontFamily": "JetBrainsMono Nerd Font Mono",
+  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font Mono",
+  "editor.fontLigatures": true,
+  "editor.codeLensFontSize": 13,
+  "editor.fontSize": 13,
+  "editor.lineHeight": 1.75,
+  "editor.suggestFontSize": 15,
+  "editor.suggestLineHeight": 28,
+  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.lineHeight": 1,
+  "debug.console.fontSize": 10,
+
+  // Zen Mode
+  "zenMode.fullScreen": false,
+  "zenMode.showTabs": "none",
+  "zenMode.centerLayout": false,
+
+  // Git
+  "git.autofetch": true,
+  "git.confirmSync": false,
+
+  // Search
+  "search.smartCase": true,
+  "search.useIgnoreFiles": false,
+  "search.exclude": {
+    "**/vendor/*": true,
+    "**/public/*": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/package-lock.json": true,
+    "**/yarn.lock": true,
+    ".sst": true
+  },
+
+  // Suggestions
+  "editor.inlineSuggest.enabled": true,
+  "editor.acceptSuggestionOnEnter": "smart",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.suggestSelection": "first",
+  "editor.suggest.showWords": false,
+  "emmet.showAbbreviationSuggestions": false,
+
+  // Typescript / Javascript
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.suggest.completeFunctionCalls": true,
+
+  // Files to display
+  "files.enableTrash": false,
+  "files.exclude": {
+    ".cache-loader/": true,
+    ".gitattributes": true,
+    ".gitkeep": true,
+    ".travis.yml": true,
+    ".vercel": true,
+    "coverage": true,
+    "acf-json": true,
+    "backend/vendor": true,
+    "CODE_OF_CONDUCT.md": true,
+    "config": false,
+    "LICENSE.md": true,
+    "phpcs.xml": true,
+    ".editorconfig": true,
+    "prettier.config.js": true,
+    "node_modules/": true,
+    ".output/node_modules/": false,
+    ".nuxt": true,
+    ".output": true,
+  },
+
+  "files.watcherExclude": {
+    "**/.output/**": true,
+    "**/.yarn/**": true,
+    "**/node_modules/**": true,
+    "backend/vendor/**": true
+  },
+
+  // Formatters
+  "[jsonc]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+
+
+  // Vim
+  "vim.leader": "<space>",
+  "vim.handleKeys": {
+    "<C-b>": false
+  },
+  "vim.useSystemClipboard": true,
+
+  "vim.visualModeKeyBindings": [
+    {
+      "before": [">"],
+      "commands": ["editor.action.indentLines"]
+    },
+    {
+      "before": ["<"],
+      "commands": ["editor.action.outdentLines"]
+    }
+  ],
+
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "/"],
+      "commands": ["editor.action.commentLine"]
+    }
+  ],
+
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "e"],
+      "commands": [
+        {
+          "command": "workbench.action.focusSideBar",
+          "when": "editorFocused"
+        }
+      ]
+    },
+    {
+      "before": ["<leader>", "a"],
+      "after": ["g", "g", "V", "G"]
+    },
+    {
+      "before": ["<C-u>"],
+      "after": ["<C-u>", "z", "z"]
+    },
+    {
+      "before": ["<C-d>"],
+      "after": ["<C-d>", "z", "z"]
+    }
+  ],
+  "color-highlight.markerType": "dot-after",
+  "editor.accessibilitySupport": "off",
+  "workbench.colorTheme": "Tokyo Night Light",
+  "git.enableSmartCommit": true,
+  "workbench.preferredDarkColorTheme": "Tokyo Night Storm",
+  "workbench.preferredLightColorTheme": "Tokyo Night Light"
+}
