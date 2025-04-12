@@ -17,7 +17,6 @@ export PATH="$PATH:/Users/thevetat/go/bin"
 export PATH="/Users/thevetat/.local/share/bob/nvim-bin:$PATH"
 
 export D2_DARK_THEME=200
-export AWS_PROFILE=theres-time-now-dev
 export OCO_DESCRIPTION="<postface a message with ~3 sentences description of the changes>"
 export DOCKER_HOST=unix:///Users/$USER/Library/Containers/com.docker.docker/Data/docker.raw.sock
 

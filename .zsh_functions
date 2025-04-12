@@ -547,3 +547,49 @@ dfmod() {
   dotfiles push
   echo "Modified files committed and pushed to remote."
 }
+
+clean_monorepo() {
+  echo "🧹 Cleaning monorepo..."
+  
+  # Remove all node_modules directories
+  echo "📦 Removing node_modules directories..."
+  find . -name "node_modules" -type d -prune -exec rm -rf "{}" + || echo "⚠️ Error removing node_modules"
+  
+  # Remove all pnpm-lock.yaml files
+  echo "🔒 Removing pnpm-lock.yaml files..."
+  find . -name "pnpm-lock.yaml" -type f -exec rm -f {} \; || echo "⚠️ Error removing pnpm-lock.yaml files"
+  
+  # Remove .pnpm-store directories (if using local store)
+  echo "🏪 Removing .pnpm-store directories..."
+  find . -name ".pnpm-store" -type d -prune -exec rm -rf "{}" + || echo "⚠️ Error removing .pnpm-store"
+  
+  # Remove package.json backup files
+  echo "🗄️ Removing package backup files..."
+  find . -name "package.json.orig" -o -name "package.json.bak" -type f -exec rm -f {} \; || echo "⚠️ Error removing backup files"
+  
+  # Clean dist/build directories
+  echo "🏗️ Removing dist/build directories..."
+  find . -name "dist" -o -name "build" -type d -prune -exec rm -rf "{}" + || echo "⚠️ Error removing dist/build"
+  
+  # Clear pnpm cache
+  echo "🧽 Clearing pnpm store cache..."
+  pnpm store prune || echo "⚠️ Error clearing pnpm cache"
+  
+  echo "✨ Cleanup complete!"
+}
+
+gsr() {
+    if [ $# -lt 2 ]; then
+        echo "Usage: gsr <commit-hash> <commit-message>"
+        return 1
+    fi
+    
+    local commit_hash="$1"
+    shift
+    local commit_message="$*"
+    
+    git reset --soft "$commit_hash" && \
+    git commit -m "$commit_message" && \
+    git push --force-with-lease
+}
+
