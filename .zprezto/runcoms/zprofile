@@ -73,3 +73,6 @@ if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Added by `rbenv init` on Thu Apr 10 16:52:29 CDT 2025
+eval "$(rbenv init - --no-rehash zsh)"

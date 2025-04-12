@@ -26,6 +26,7 @@ alias ys="yarn start"
 ## Node Modules
 alias lnm='find . -name "node_modules" -type d -prune | xargs dust -cHp -d 1 -z 15m'
 alias dnm='find . -name "node_modules" -type d -prune -exec rm -rf "{}" +'
+alias dpnpm='find . -name "pnpm-lock.yaml" -type f -exec rm -f {} \;'
 
 ## Zioxide
 alias cd='z'
@@ -116,3 +117,4 @@ alias rspace="$HOME/.config/yabai/create_spaces.sh"
 
 alias mybuilder='~/git/Webdev/Nuxt/Client_Builder/Builder/builder'
 alias netlify-up='~/git/Go/netlify/netlify_script'
+alias reset-crossover='bash -c "$(curl -fsSL https://raw.githubusercontent.com/Nygosaki/crossover-trial-renew/refs/heads/main/resetCrossoverTrial.sh)"'
