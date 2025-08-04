@@ -100,7 +100,7 @@
 
   // Formatters
   "[jsonc]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[javascriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
@@ -167,8 +167,10 @@
   ],
   "color-highlight.markerType": "dot-after",
   "editor.accessibilitySupport": "off",
-  "workbench.colorTheme": "Tokyo Night Light",
+  "workbench.colorTheme": "Tokyo Night Storm",
   "git.enableSmartCommit": true,
   "workbench.preferredDarkColorTheme": "Tokyo Night Storm",
-  "workbench.preferredLightColorTheme": "Tokyo Night Light"
+  "workbench.preferredLightColorTheme": "Tokyo Night Light",
+  "cursor.composer.shouldChimeAfterChatFinishes": true,
+  "git.ignoreRebaseWarning": true
 }

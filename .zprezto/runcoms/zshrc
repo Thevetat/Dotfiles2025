@@ -17,7 +17,6 @@ export PATH="$PATH:/Users/thevetat/go/bin"
 export PATH="/Users/thevetat/.local/share/bob/nvim-bin:$PATH"
 
 export D2_DARK_THEME=200
-export OCO_DESCRIPTION="<postface a message with ~3 sentences description of the changes>"
 export DOCKER_HOST=unix:///Users/$USER/Library/Containers/com.docker.docker/Data/docker.raw.sock
 
 if [[ -f "$HOME/.env" ]]; then
@@ -38,3 +37,9 @@ unset __conda_setup
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 eval "$(zoxide init zsh)"
+
+# Added by Windsurf
+export PATH="/Users/thevetat/.codeium/windsurf/bin:$PATH"
+
+# opencode
+export PATH=/Users/thevetat/.opencode/bin:$PATH
