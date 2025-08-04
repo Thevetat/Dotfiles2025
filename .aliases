@@ -28,10 +28,6 @@ alias lnm='find . -name "node_modules" -type d -prune | xargs dust -cHp -d 1 -z 
 alias dnm='find . -name "node_modules" -type d -prune -exec rm -rf "{}" +'
 alias dpnpm='find . -name "pnpm-lock.yaml" -type f -exec rm -f {} \;'
 
-## Zioxide
-alias cd='z'
-alias c='zi'
-
 ## Dust
 alias du='dust'
 
@@ -45,7 +41,6 @@ alias dotex="cd ~/Git/External/dotfile_reference/ && nvim"
 ## Util alias class='xprop | grep "CLASS"'
 
 ## Lazy
-alias c='cd'
 alias lg='lazygit'
 alias lzd='lazydocker'
 alias top='bpytop'
@@ -55,10 +50,10 @@ alias lazyn='export XDG_CONFIG_HOME=~/.config/nvimA; export XDG_DATA_HOME=~/.loc
 
 ## Open Local
 alias n.='nautilus .'
-alias c.='code .'
+alias c.='cursor .'
 
 ## Git
-alias aigc='git add . && oco --no-verify'
+alias aigc='git add . && oco --yes --no-verify'
 
 ## Zellij
 alias zj='zellij'
@@ -118,3 +113,8 @@ alias rspace="$HOME/.config/yabai/create_spaces.sh"
 alias mybuilder='~/git/Webdev/Nuxt/Client_Builder/Builder/builder'
 alias netlify-up='~/git/Go/netlify/netlify_script'
 alias reset-crossover='bash -c "$(curl -fsSL https://raw.githubusercontent.com/Nygosaki/crossover-trial-renew/refs/heads/main/resetCrossoverTrial.sh)"'
+
+alias sso='aws sso login --sso-session=theres-time-now'
+
+alias rnshad="/Users/thevetat/Git/Go/rename-shadcn-vue/rename-shadcn"
+alias ssh-freefall='ssh -i ~/.ssh/freefall-processor.pem ubuntu@54.146.106.12'
