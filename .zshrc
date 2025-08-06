@@ -65,3 +65,20 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 
 # Aliases
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+# Linux-specific SSH settings to prevent glitching
+if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
+  # Disable auto-correction
+  unsetopt CORRECT
+  unsetopt CORRECT_ALL
+  
+  # Disable flow control (fixes Ctrl+S/Ctrl+Q issues)
+  stty -ixon 2>/dev/null
+  
+  # Ensure UTF-8 locale
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  
+  # Use simpler terminal if needed
+  export TERM=xterm-256color
+fi
