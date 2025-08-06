@@ -1,1 +1,82 @@
-source ~/.zshrc
+# Powerlevel10k instant prompt (must be first)
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Source Prezto
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Source common files
+[ -f ~/.aliases ] && source ~/.aliases
+[ -f ~/.zprofile ] && source ~/.zprofile  
+[ -f ~/.zsh_functions ] && source ~/.zsh_functions
+
+# Cargo/Rust
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# Platform-specific configuration
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # Mac-specific
+  [ -f /opt/homebrew/opt/nvm/nvm.sh ] && source /opt/homebrew/opt/nvm/nvm.sh
+  
+  # Conda on Mac
+  if [ -f "$HOME/miniconda3/bin/conda" ]; then
+    __conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+      eval "$__conda_setup"
+    else
+      [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ] && . "$HOME/miniconda3/etc/profile.d/conda.sh"
+    fi
+    unset __conda_setup
+  fi
+  
+  # Mac-specific paths
+  export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+  export PATH="$HOME/.opencode/bin:$PATH"
+  export DOCKER_HOST="unix:///$HOME/Library/Containers/com.docker.docker/Data/docker.raw.sock"
+  
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # Linux-specific
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+fi
+
+# Universal paths
+export PATH="$PATH:$HOME/go/bin"
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# D2 settings
+export D2_DARK_THEME=200
+
+# Load environment variables (API keys, etc)
+[ -f "$HOME/.env" ] && source "$HOME/.env"
+
+# Powerlevel10k config
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Zoxide (must be after compinit)
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+
+# Linux-specific SSH settings to prevent glitching
+if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
+  # Disable auto-correction
+  unsetopt CORRECT
+  unsetopt CORRECT_ALL
+  
+  # Disable flow control (fixes Ctrl+S/Ctrl+Q issues)
+  stty -ixon 2>/dev/null
+  
+  # Ensure UTF-8 locale
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  
+  # Use simpler terminal if needed
+  export TERM=xterm-256color
+fi
+
+# Aliases
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
