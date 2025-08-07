@@ -1,9 +1,0 @@
-# Universal zprofile
-
-# Mac-specific Homebrew setup  
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  [ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
-# rbenv (if installed)
-command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
