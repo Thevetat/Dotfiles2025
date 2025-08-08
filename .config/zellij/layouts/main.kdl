@@ -12,9 +12,6 @@ layout {
 
     tab split_direction="Vertical" {
         pane split_direction="Vertical" {
-            pane size="80%" split_direction="Vertical" {
-                pane
-            }
             pane split_direction="Horizontal" {
                     pane {
                     }
@@ -26,6 +23,10 @@ layout {
 
     tab split_direction="Vertical" {
     }
+
+    tab split_direction="Vertical" {
+    }
+
 }
 
 
