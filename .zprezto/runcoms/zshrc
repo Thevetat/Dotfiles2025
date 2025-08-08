@@ -80,3 +80,5 @@ fi
 
 # Aliases
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+
