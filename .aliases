@@ -49,9 +49,9 @@ alias n='nvim'
 alias lazyn='export XDG_CONFIG_HOME=~/.config/nvimA; export XDG_DATA_HOME=~/.local/share/nvimA; nvim'
 
 ## Tmux
-alias ta='tmux attach || tmux new -s main'
+alias ta='TERM=screen-256color tmux -u attach || TERM=screen-256color tmux -u new -s main'
 alias tl='tmux ls'
-alias tn='tmux new -s'
+alias tn='TERM=screen-256color tmux -u new -s'
 alias tk='tmux kill-session -t'
 
 ## Open Local
