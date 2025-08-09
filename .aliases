@@ -48,6 +48,12 @@ alias sz='source ~/.zshrc'
 alias n='nvim'
 alias lazyn='export XDG_CONFIG_HOME=~/.config/nvimA; export XDG_DATA_HOME=~/.local/share/nvimA; nvim'
 
+## Tmux
+alias ta='tmux attach || tmux new -s main'
+alias tl='tmux ls'
+alias tn='tmux new -s'
+alias tk='tmux kill-session -t'
+
 ## Open Local
 alias n.='nautilus .'
 alias c.='cursor .'
