@@ -49,6 +49,11 @@ vim.keymap.set("v", "<A-Up>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 -- Save with Cmd+S on Mac
 vim.keymap.set({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
+-- Swap leader e and E keymaps
+vim.keymap.set("n", "<leader>e", function()
+  Snacks.picker.explorer({ cwd = vim.fn.getcwd() })
+end, { desc = "Explorer (cwd)" })
+
 -- Quick command execution in current file's directory
 vim.keymap.set("n", "<leader>R", function()
   local cmd = vim.fn.input("Command: ")
