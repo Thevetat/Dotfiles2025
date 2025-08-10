@@ -13,6 +13,13 @@ fi
 [ -f ~/.zprofile ] && source ~/.zprofile  
 [ -f ~/.zsh_functions ] && source ~/.zsh_functions
 
+# Source environment variables (systemd format)
+if [ -f ~/.env ]; then
+    set -o allexport
+    source ~/.env
+    set +o allexport
+fi
+
 # Cargo/Rust
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
