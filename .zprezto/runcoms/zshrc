@@ -55,12 +55,12 @@ fi
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 # D2 settings
 export D2_DARK_THEME=200
 
-# Load environment variables (API keys, etc)
-[ -f "$HOME/.env" ] && source "$HOME/.env"
 
 # Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -87,9 +87,14 @@ fi
 
 # Aliases
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dfs='dotfiles status'
-export PATH="$HOME/.rbenv/bin:$PATH"
+
+# Initialize rbenv
 eval "$(rbenv init - zsh)"
+
+# bun completions
+[ -s "/Users/thevetat/.bun/_bun" ] && source "/Users/thevetat/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
