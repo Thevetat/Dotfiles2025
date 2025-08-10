@@ -54,6 +54,11 @@ vim.keymap.set("n", "<leader>e", function()
   Snacks.picker.explorer({ cwd = vim.fn.getcwd() })
 end, { desc = "Explorer (cwd)" })
 
+-- Window splits (override LazyVim defaults to match tmux convention)
+-- s = side-by-side (vertical split), v = stacked (horizontal split)
+vim.keymap.set("n", "<leader>ws", "<C-w>v", { desc = "Split window right" })
+vim.keymap.set("n", "<leader>wv", "<C-w>s", { desc = "Split window below" })
+
 -- Quick command execution in current file's directory
 vim.keymap.set("n", "<leader>R", function()
   local cmd = vim.fn.input("Command: ")
