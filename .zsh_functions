@@ -242,16 +242,6 @@ f() {
 }
 #*
 
-#*
-## Name: CD and LS -a
-## Desc: CD into a directory and list all hidden files / directories.
-## Inputs: Directory you want to go explore.
-## Usage: cl ~/.config 
-cl() {
-    cd "$*"
-    ls -a
-}
-#*
 
 #*
 ## Name: 

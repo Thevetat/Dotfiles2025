@@ -129,3 +129,6 @@ alias aws-console='open https://d-9067c86647.awsapps.com/start'
 
 alias rnshad="/Users/thevetat/Git/Go/***REDACTED***-vue/***REDACTED***"
 alias ssh-***REDACTED***='ssh -i ~/.ssh/***REDACTED***-processor.pem ubuntu@***REDACTED***'
+
+## Claude Code
+alias cl='claude'
