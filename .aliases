@@ -129,3 +129,6 @@ alias aws-console='open https://d-9067c86647.awsapps.com/start'
 
 alias rnshad="/Users/thevetat/Git/Go/rename-shadcn-vue/rename-shadcn"
 alias ssh-freefall='ssh -i ~/.ssh/freefall-processor.pem ubuntu@54.146.106.12'
+
+## Claude Code
+alias cl='claude'
