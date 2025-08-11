@@ -88,6 +88,7 @@ fi
 # Aliases
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dfs='dotfiles status'
+alias killghosttys='pkill -f ghostty'
 
 # Initialize rbenv
 eval "$(rbenv init - zsh)"
