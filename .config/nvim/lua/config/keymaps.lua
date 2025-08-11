@@ -35,10 +35,10 @@ vim.keymap.set("v", "<A-Down>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 vim.keymap.set("v", "<A-Up>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 
 -- Window navigation (optional - uncomment if you want them)
--- vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
--- vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
--- vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
--- vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+vim.keymap.set("n", "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { desc = "Go to left window" })
+vim.keymap.set("n", "<C-j>", "<cmd> TmuxNavigateDown<CR>", { desc = "Go to lower window" })
+vim.keymap.set("n", "<C-k>", "<cmd> TmuxNavigateUp<CR>", { desc = "Go to upper window" })
+vim.keymap.set("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "Go to right window" })
 
 -- Window resizing (optional - uncomment if you want them)
 -- vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
@@ -66,3 +66,6 @@ vim.keymap.set("n", "<leader>R", function()
     vim.cmd("!" .. cmd)
   end
 end, { desc = "Run command" })
+
+-- Comment box
+vim.keymap.set({ "n", "v" }, "<leader>cb", "<Cmd>CBllbox1<CR>", { desc = "Comment Box" })
