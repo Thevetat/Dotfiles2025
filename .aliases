@@ -49,10 +49,14 @@ alias n='nvim'
 alias lazyn='export XDG_CONFIG_HOME=~/.config/nvimA; export XDG_DATA_HOME=~/.local/share/nvimA; nvim'
 
 ## Tmux
-alias ta='TERM=screen-256color tmux -u attach || TERM=screen-256color tmux -u new -s main'
+# ta function moved to .zsh_functions
 alias tl='tmux ls'
 alias tn='TERM=screen-256color tmux -u new -s'
 alias tk='tmux kill-session -t'
+
+# Project-specific tmux sessions
+alias ***REDACTED***='tmux attach -t ***REDACTED*** || tn ***REDACTED***'
+alias rolling='tmux attach -t ***REDACTED*** || tn ***REDACTED***'
 
 ## Open Local
 alias n.='nautilus .'
@@ -121,6 +125,7 @@ alias netlify-up='~/git/Go/netlify/netlify_script'
 alias reset-crossover='bash -c "$(curl -fsSL https://raw.githubusercontent.com/Nygosaki/crossover-trial-renew/refs/heads/main/resetCrossoverTrial.sh)"'
 
 alias sso='aws sso login --sso-session=***REDACTED***'
+alias aws-console='open https://d-9067c86647.awsapps.com/start'
 
 alias rnshad="/Users/thevetat/Git/Go/***REDACTED***-vue/***REDACTED***"
 alias ssh-***REDACTED***='ssh -i ~/.ssh/***REDACTED***-processor.pem ubuntu@***REDACTED***'

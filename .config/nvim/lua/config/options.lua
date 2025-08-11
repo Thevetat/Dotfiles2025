@@ -16,8 +16,14 @@ vim.opt.foldlevel = 99
 vim.opt.foldenable = true
 vim.opt.undodir = os.getenv("HOME") .. "/.local/share/undodir"
 
--- Enable format on save
-vim.g.autoformat = true
+-- Disable default format on save (we'll use EslintFixAll instead)
+vim.g.autoformat = false
+
+-- Enable ESLint auto format
+vim.g.lazyvim_eslint_auto_format = true
 
 g.transparency = true
 vim.cmd([[set pumblend=0]])
+
+-- Fix cursor shape in different modes
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"

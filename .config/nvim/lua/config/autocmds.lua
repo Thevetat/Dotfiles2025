@@ -9,15 +9,15 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
   desc = "Check if file changed when entering buffer",
 })
 
--- Ensure ESLint formatting works properly without conflicts
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client and client.name == "eslint" then
-      -- Disable ESLint LSP formatting to prevent conflicts with conform.nvim
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentRangeFormattingProvider = false
+-- Run EslintFixAll on save for JavaScript/TypeScript files
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.vue" },
+  callback = function()
+    -- Check if eslint LSP client is attached
+    local clients = vim.lsp.get_active_clients({ name = "eslint", bufnr = 0 })
+    if #clients > 0 then
+      vim.cmd("EslintFixAll")
     end
   end,
-  desc = "Disable ESLint LSP formatting to prevent conflicts",
+  desc = "Run EslintFixAll on save",
 })

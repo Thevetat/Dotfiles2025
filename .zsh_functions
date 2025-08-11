@@ -578,18 +578,10 @@ clean_monorepo() {
   echo "✨ Cleanup complete!"
 }
 
-gsr() {
-    if [ $# -lt 2 ]; then
-        echo "Usage: gsr <commit-hash> <commit-message>"
-        return 1
+tm(){
+    if [ -n "$1" ]; then
+        TERM=screen-256color tmux -u attach -t "$1" 2>/dev/null || TERM=screen-256color tmux -u new -s "$1"
+    else
+        TERM=screen-256color tmux -u attach || TERM=screen-256color tmux -u new -s main
     fi
-    
-    local commit_hash="$1"
-    shift
-    local commit_message="$*"
-    
-    git reset --soft "$commit_hash" && \
-    git commit -m "$commit_message" && \
-    git push --force-with-lease
 }
-
