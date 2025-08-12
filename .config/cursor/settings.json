@@ -172,5 +172,6 @@
   "workbench.preferredDarkColorTheme": "Tokyo Night Storm",
   "workbench.preferredLightColorTheme": "Tokyo Night Light",
   "cursor.composer.shouldChimeAfterChatFinishes": true,
-  "git.ignoreRebaseWarning": true
+  "git.ignoreRebaseWarning": true,
+  "explorer.confirmDragAndDrop": false
 }

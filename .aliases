@@ -132,3 +132,6 @@ alias ssh-freefall='ssh -i ~/.ssh/freefall-processor.pem ubuntu@54.146.106.12'
 
 ## Claude Code
 alias cl='claude'
+
+## System Stats
+alias stats='neofetch'
