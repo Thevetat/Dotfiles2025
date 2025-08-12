@@ -9,6 +9,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Source common files
+[ -f ~/.aliases ] && source ~/.aliases
 [ -f ~/.zprofile ] && source ~/.zprofile  
 [ -f ~/.zsh_functions ] && source ~/.zsh_functions
 
@@ -98,3 +99,4 @@ eval "$(rbenv init - zsh)"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"

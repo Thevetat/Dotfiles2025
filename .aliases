@@ -132,3 +132,6 @@ alias ssh-***REDACTED***='ssh -i ~/.ssh/***REDACTED***-processor.pem ubuntu@***R
 
 ## Claude Code
 alias cl='claude'
+
+## System Stats
+alias stats='neofetch'
