@@ -124,7 +124,7 @@ alias mybuilder='~/git/Webdev/Nuxt/Client_Builder/Builder/builder'
 alias netlify-up='~/git/Go/netlify/netlify_script'
 alias reset-crossover='bash -c "$(curl -fsSL https://raw.githubusercontent.com/Nygosaki/crossover-trial-renew/refs/heads/main/resetCrossoverTrial.sh)"'
 
-alias sso='aws sso login --sso-session=theres-time-now'
+# alias sso='aws sso login --sso-session=theres-time-now'  # Now using function in .zsh_functions
 alias aws-console='open https://d-9067c86647.awsapps.com/start'
 
 alias rnshad="/Users/thevetat/Git/Go/rename-shadcn-vue/rename-shadcn"
