@@ -27,25 +27,6 @@ fi
 
 # Load aliases for non-interactive sessions
 [ -f ~/.aliases ] && source ~/.aliases
-# BEGIN ANSIBLE MANAGED BLOCK - NVM
-# Load NVM for all zsh sessions
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-# END ANSIBLE MANAGED BLOCK - NVM
-# BEGIN ANSIBLE MANAGED BLOCK - DEV TOOLS
-# Load development tools
-# Cargo
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
-# Go
-export PATH="/usr/local/go/bin:$PATH"
-
-# rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-if command -v rbenv &> /dev/null; then
-  eval "$(rbenv init - zsh)"
-fi
 
 # Load environment variables
 [ -f ~/.env ] && source ~/.env
-# END ANSIBLE MANAGED BLOCK - DEV TOOLS
