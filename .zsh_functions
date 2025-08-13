@@ -650,34 +650,77 @@ sso() {
 ## Inputs: None
 ## Usage: start-rolling
 start-rolling() {
-    # Pull latest dotfiles first
-    echo "🔄 Pulling latest dotfiles..."
-    dotfiles pull
-    
     # Change to the Rails directory
     builtin cd ~/Git/RollingBones/rolling_bones_rails || {
         echo "❌ Cannot find Rolling Bones Rails directory"
         return 1
     }
     
-    # Check if 'rolling' session exists and attach/create
-    if tmux has-session -t rolling 2>/dev/null; then
-        echo "🔗 Attaching to existing 'rolling' tmux session..."
-        TERM=screen-256color tmux attach-session -t rolling
+    # Check if we're already in a tmux session
+    if [ -n "$TMUX" ]; then
+        # Get current session name
+        current_session=$(tmux display-message -p '#S')
+        
+        # Inside tmux - check if 'rolling-bones' session exists
+        if tmux has-session -t rolling-bones 2>/dev/null; then
+            if [ "$current_session" = "rolling-bones" ]; then
+                echo "✅ Already in 'rolling-bones' session!"
+                
+                # Check if both panes exist and have the right processes
+                pane_count=$(tmux list-panes -t rolling-bones | wc -l | tr -d ' ')
+                if [ "$pane_count" -lt 2 ]; then
+                    echo "🔧 Setting up Rails server and Vite in split panes..."
+                    
+                    # Start Rails server in current pane
+                    tmux send-keys -t rolling-bones:0.0 'bundle exec rails s' C-m
+                    
+                    # Split and start Vite
+                    tmux split-window -h -c ~/Git/RollingBones/rolling_bones_rails 'bin/vite dev'
+                    
+                    # Return focus to first pane
+                    tmux select-pane -t rolling-bones:0.0
+                else
+                    echo "📍 Both panes already exist. Use them to start Rails and Vite manually if needed."
+                fi
+            else
+                echo "🔄 Switching to existing 'rolling-bones' session..."
+                tmux switch-client -t rolling-bones
+            fi
+        else
+            echo "🚀 Creating new 'rolling-bones' session and switching to it..."
+            
+            # Create new session in background with Rails server
+            tmux new-session -d -s rolling-bones -c ~/Git/RollingBones/rolling_bones_rails 'bundle exec rails s'
+            
+            # Split vertically and start Vite
+            tmux split-window -h -t rolling-bones -c ~/Git/RollingBones/rolling_bones_rails 'bin/vite dev'
+            
+            # Return focus to first pane
+            tmux select-pane -t rolling-bones:0.0
+            
+            # Switch to the new session
+            tmux switch-client -t rolling-bones
+        fi
     else
-        echo "🚀 Creating new 'rolling' tmux session with Rails server and Vite..."
-        
-        # Create new tmux session with Rails server
-        TERM=screen-256color tmux new-session -d -s rolling -c ~/Git/RollingBones/rolling_bones_rails 'bundle exec rails s'
-        
-        # Split vertically and start Vite
-        tmux split-window -h -t rolling -c ~/Git/RollingBones/rolling_bones_rails 'bin/vite dev'
-        
-        # Return focus to first pane
-        tmux select-pane -t rolling:0.0
-        
-        # Attach to the session
-        TERM=screen-256color tmux attach-session -t rolling
+        # Not in tmux - attach or create normally
+        if tmux has-session -t rolling-bones 2>/dev/null; then
+            echo "🔗 Attaching to existing 'rolling-bones' tmux session..."
+            TERM=screen-256color tmux attach-session -t rolling-bones
+        else
+            echo "🚀 Creating new 'rolling-bones' tmux session with Rails server and Vite..."
+            
+            # Create new tmux session with Rails server
+            TERM=screen-256color tmux new-session -d -s rolling-bones -c ~/Git/RollingBones/rolling_bones_rails 'bundle exec rails s'
+            
+            # Split vertically and start Vite
+            tmux split-window -h -t rolling-bones -c ~/Git/RollingBones/rolling_bones_rails 'bin/vite dev'
+            
+            # Return focus to first pane
+            tmux select-pane -t rolling-bones:0.0
+            
+            # Attach to the session
+            TERM=screen-256color tmux attach-session -t rolling-bones
+        fi
     fi
 }
 #*
