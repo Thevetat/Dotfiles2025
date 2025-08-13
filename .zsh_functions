@@ -575,3 +575,18 @@ tm(){
         TERM=screen-256color tmux -u attach || TERM=screen-256color tmux -u new -s main
     fi
 }
+
+#*
+## Name: tswap
+## Desc: Create new tmux session and switch to it from within current session
+## Inputs: session_name
+## Usage: tswap newsession
+tswap() {
+    if [ -z "$1" ]; then
+        echo "Usage: tswap <session_name>"
+        return 1
+    fi
+    
+    tmux new-session -d -s "$1" \; switch-client -t "$1"
+}
+#*
