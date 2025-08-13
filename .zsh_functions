@@ -643,3 +643,41 @@ sso() {
     fi
 }
 #*
+
+#*
+## Name: start-rolling
+## Desc: Start Rolling Bones development environment with Rails server and Vite in tmux session
+## Inputs: None
+## Usage: start-rolling
+start-rolling() {
+    # Pull latest dotfiles first
+    echo "🔄 Pulling latest dotfiles..."
+    dotfiles pull
+    
+    # Change to the Rails directory
+    builtin cd ~/Git/RollingBones/rolling_bones_rails || {
+        echo "❌ Cannot find Rolling Bones Rails directory"
+        return 1
+    }
+    
+    # Check if 'rolling' session exists and attach/create
+    if tmux has-session -t rolling 2>/dev/null; then
+        echo "🔗 Attaching to existing 'rolling' tmux session..."
+        TERM=screen-256color tmux attach-session -t rolling
+    else
+        echo "🚀 Creating new 'rolling' tmux session with Rails server and Vite..."
+        
+        # Create new tmux session with Rails server
+        TERM=screen-256color tmux new-session -d -s rolling -c ~/Git/RollingBones/rolling_bones_rails 'bundle exec rails s'
+        
+        # Split vertically and start Vite
+        tmux split-window -h -t rolling -c ~/Git/RollingBones/rolling_bones_rails 'bin/vite dev'
+        
+        # Return focus to first pane
+        tmux select-pane -t rolling:0.0
+        
+        # Attach to the session
+        TERM=screen-256color tmux attach-session -t rolling
+    fi
+}
+#*
