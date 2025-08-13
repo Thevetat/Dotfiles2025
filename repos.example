@@ -1,0 +1,19 @@
+# Git Auto-Pull Repository List
+# Example configuration file for git-auto-pull
+# Copy this to ~/repos and customize for your needs
+# Add paths to repositories or directories containing repos
+# One path per line, comments start with #
+
+# Scan all repos in a directory (recursively up to 3 levels)
+~/Git
+
+# Specific subdirectories
+# ~/Git/ProjectName
+
+# Individual repositories
+# ~/ai-tools
+# ~/my-project
+
+# Special keyword for dotfiles bare repo (if using)
+# Requires dotfiles alias: alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# dotfiles
