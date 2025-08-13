@@ -21,6 +21,23 @@ This tool periodically checks and pulls updates for configured git repositories.
 
 The script is already in place at `~/scripts/git-auto-pull/git-auto-pull.sh`
 
+#### Quick Setup with Alias
+
+If you have the dotfiles repo, the `gsync` alias is already available. To add it manually:
+
+```bash
+# Add alias to your shell config
+echo "alias gsync='~/scripts/git-auto-pull/git-auto-pull.sh'" >> ~/.zshrc
+
+# Or if using bash
+echo "alias gsync='~/scripts/git-auto-pull/git-auto-pull.sh'" >> ~/.bashrc
+
+# Reload your shell
+source ~/.zshrc  # or source ~/.bashrc
+```
+
+Now you can run `gsync` anytime to manually sync your repos!
+
 ### 2. Configure Repositories
 
 Edit `~/repos` to list the repositories you want to keep synchronized:
@@ -78,6 +95,8 @@ WantedBy=timers.target
 
 ### 5. Enable and Start
 
+#### Linux (systemd)
+
 ```bash
 # Reload systemd configuration
 systemctl --user daemon-reload
@@ -89,9 +108,78 @@ systemctl --user enable git-auto-pull.timer
 systemctl --user start git-auto-pull.timer
 ```
 
+#### macOS (launchd)
+
+For automatic scheduling on macOS, create a LaunchAgent at `~/Library/LaunchAgents/com.user.git-auto-pull.plist`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.user.git-auto-pull</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>$HOME/scripts/git-auto-pull/git-auto-pull.sh</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>300</integer> <!-- 300 seconds = 5 minutes -->
+    <key>StandardOutPath</key>
+    <string>/tmp/git-auto-pull.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/git-auto-pull.error.log</string>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+```
+
+Then load it:
+
+```bash
+# Load the LaunchAgent
+launchctl load ~/Library/LaunchAgents/com.user.git-auto-pull.plist
+
+# Start it immediately
+launchctl start com.user.git-auto-pull
+
+# Check status
+launchctl list | grep git-auto-pull
+```
+
+#### Alternative: Use cron (Both Linux and macOS)
+
+Add to your crontab for a simple cross-platform solution:
+
+```bash
+# Edit crontab
+crontab -e
+
+# Add this line for every 5 minutes
+*/5 * * * * ~/scripts/git-auto-pull/git-auto-pull.sh >> ~/.local/share/git-auto-pull.log 2>&1
+```
+
 ## Usage
 
+### Manual Run
+
+```bash
+# Run using the alias (if configured)
+gsync
+
+# Or run the script directly
+~/scripts/git-auto-pull/git-auto-pull.sh
+
+# Or trigger via systemd (Linux only)
+systemctl --user start git-auto-pull.service
+```
+
 ### Check Status
+
+#### Linux (systemd)
 
 ```bash
 # Check timer status
@@ -104,27 +192,33 @@ systemctl --user status git-auto-pull.service
 systemctl --user list-timers git-auto-pull.timer
 ```
 
+#### macOS (launchd)
+
+```bash
+# Check if running
+launchctl list | grep git-auto-pull
+
+# View recent logs
+tail -f /tmp/git-auto-pull.log
+tail -f /tmp/git-auto-pull.error.log
+```
+
 ### View Logs
 
 ```bash
-# View systemd logs
+# View script log file (all platforms)
+tail -f ~/.local/share/git-auto-pull.log
+
+# Linux: View systemd logs
 journalctl --user -u git-auto-pull.service -f
 
-# View script log file
-tail -f ~/.local/share/git-auto-pull.log
-```
-
-### Manual Run
-
-```bash
-# Run the script manually
-~/scripts/git-auto-pull/git-auto-pull.sh
-
-# Or trigger via systemd
-systemctl --user start git-auto-pull.service
+# macOS: View launchd logs
+tail -f /tmp/git-auto-pull.log
 ```
 
 ### Managing the Service
+
+#### Linux (systemd)
 
 ```bash
 # Stop auto-pulling
@@ -135,6 +229,20 @@ systemctl --user disable git-auto-pull.timer
 
 # Restart after configuration changes
 systemctl --user restart git-auto-pull.timer
+```
+
+#### macOS (launchd)
+
+```bash
+# Stop the service
+launchctl stop com.user.git-auto-pull
+
+# Unload (disable) the service
+launchctl unload ~/Library/LaunchAgents/com.user.git-auto-pull.plist
+
+# Reload after changes
+launchctl unload ~/Library/LaunchAgents/com.user.git-auto-pull.plist
+launchctl load ~/Library/LaunchAgents/com.user.git-auto-pull.plist
 ```
 
 ## Configuration

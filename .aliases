@@ -135,3 +135,6 @@ alias cl='claude'
 
 ## System Stats
 alias stats='neofetch'
+
+## Git Auto-Pull
+alias gsync='~/scripts/git-auto-pull/git-auto-pull.sh'
