@@ -1,6 +1,5 @@
 ## Dotfiles Bare Git alias
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias dfs='dotfiles status'
 
 ## Pop OS
 alias nvid='sudo system76-power graphics nvidia'
