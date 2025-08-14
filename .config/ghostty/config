@@ -9,7 +9,7 @@ cursor-style = block
 adjust-cell-height = 10%
 
 window-save-state = always
-macos-titlebar-style = hidden
+macos-titlebar-style = transparent
 confirm-close-surface = false
 
 mouse-hide-while-typing = true
@@ -30,3 +30,7 @@ keybind = super+shift+ctrl+l=resize_split:right,10
 
 keybind = super+w=close_surface
 keybind = shift+enter=text:\\n
+
+keybind = super+shift+t=new_tab
+keybind = super+shift+n=next_tab
+keybind = super+shift+b=previous_tab
