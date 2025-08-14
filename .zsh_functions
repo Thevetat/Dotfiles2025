@@ -668,109 +668,36 @@ sso() {
 
 #*
 ## Name: dfs
-## Desc: Enhanced dotfiles status that shows all changes including untracked files
+## Desc: Show dotfiles status for tracked files only
 ## Inputs: None
 ## Usage: dfs
 dfs() {
-    echo "🔍 Dotfiles Status Check"
-    echo "========================"
+    echo "🔍 Dotfiles Status"
+    echo "==================="
     
-    # Regular git status for tracked files
-    echo -e "\n📋 Modified/Staged Files:"
-    dotfiles status --short
+    # Show status of tracked files only
+    local status_output=$(dotfiles status --short 2>/dev/null)
     
-    # Find untracked files in ALL tracked directories
-    echo -e "\n🔎 Checking for untracked files..."
-    
-    # Check entire .config directory for untracked files
-    if [[ -d ~/.config ]]; then
-        echo "  Checking .config/..."
-        rg --files ~/.config 2>/dev/null | while read -r file; do
-            local rel_path="${file#$HOME/}"
-            
-            # Check if file is tracked in dotfiles
-            if ! dotfiles ls-files --error-unmatch "$rel_path" >/dev/null 2>&1; then
-                # Check if it's not gitignored
-                if ! dotfiles check-ignore "$rel_path" >/dev/null 2>&1; then
-                    echo "  📄 Untracked: $rel_path"
-                fi
-            fi
-        done
+    if [[ -z "$status_output" ]]; then
+        echo "✅ All tracked dotfiles are up to date!"
+    else
+        echo -e "\n📋 Changed files:"
+        echo "$status_output"
+        
+        # Count changes
+        local modified_count=$(echo "$status_output" | grep -c '^ M' || true)
+        local staged_count=$(echo "$status_output" | grep -c '^M' || true)
+        local untracked_count=$(echo "$status_output" | grep -c '^??' || true)
+        
+        echo -e "\n📊 Summary:"
+        [[ $modified_count -gt 0 ]] && echo "  • Modified: $modified_count files"
+        [[ $staged_count -gt 0 ]] && echo "  • Staged: $staged_count files"
+        [[ $untracked_count -gt 0 ]] && echo "  • Untracked: $untracked_count files"
     fi
     
-    # Check scripts directory
-    if [[ -d ~/scripts ]]; then
-        echo "  Checking scripts/..."
-        rg --files ~/scripts 2>/dev/null | while read -r file; do
-            local rel_path="${file#$HOME/}"
-            
-            if ! dotfiles ls-files --error-unmatch "$rel_path" >/dev/null 2>&1; then
-                if ! dotfiles check-ignore "$rel_path" >/dev/null 2>&1; then
-                    echo "  📄 Untracked: $rel_path"
-                fi
-            fi
-        done
-    fi
-    
-    # Check other tracked top-level dotfiles and directories
-    local tracked_items=(
-        ~/.aliases
-        ~/.tmux.conf
-        ~/.zsh_functions
-        ~/.zprezto
-        ~/.p10k.zsh
-        ~/.zprofile
-        ~/.zshrc
-    )
-    
-    for item in "${tracked_items[@]}"; do
-        if [[ -e "$item" ]]; then
-            if [[ -d "$item" ]]; then
-                echo "  Checking ${item#$HOME/}/..."
-                rg --files "$item" 2>/dev/null | while read -r file; do
-                    local rel_path="${file#$HOME/}"
-                    
-                    if ! dotfiles ls-files --error-unmatch "$rel_path" >/dev/null 2>&1; then
-                        if ! dotfiles check-ignore "$rel_path" >/dev/null 2>&1; then
-                            echo "  📄 Untracked: $rel_path"
-                        fi
-                    fi
-                done
-            fi
-        fi
-    done
-    
-    # Also check for any recently modified dotfiles that might be untracked
-    echo -e "\n📅 Recently modified dotfiles (last 7 days):"
-    find ~ -maxdepth 3 -type f -mtime -7 \
-        -not -path "*/\.git/*" \
-        -not -path "*/node_modules/*" \
-        -not -path "*/\.cache/*" \
-        -not -path "*/\.local/*" \
-        -not -path "*/Git/*" \
-        -not -path "*/Downloads/*" \
-        -not -path "*/Documents/*" \
-        -not -path "*/Pictures/*" \
-        -not -path "*/\.mozilla/*" \
-        -not -path "*/\.npm/*" \
-        -not -path "*/\.pnpm-store/*" \
-        -not -path "*/\.cargo/*" \
-        -not -path "*/\.rustup/*" \
-        2>/dev/null | while read -r file; do
-        
-        local rel_path="${file#$HOME/}"
-        
-        # Only show if it's a dotfile or config file and not tracked
-        if [[ "$rel_path" =~ ^\. ]] || [[ "$rel_path" =~ ^scripts/ ]]; then
-            if ! dotfiles ls-files --error-unmatch "$rel_path" >/dev/null 2>&1; then
-                if ! dotfiles check-ignore "$rel_path" >/dev/null 2>&1; then
-                    echo "  📝 Recently modified: $rel_path"
-                fi
-            fi
-        fi
-    done
-    
-    echo -e "\n✅ Status check complete!"
+    # Show last commit info
+    echo -e "\n📝 Last commit:"
+    dotfiles log -1 --oneline
 }
 #*
 
