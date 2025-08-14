@@ -153,8 +153,8 @@ main() {
     
     local total_processed=0
     
-    # Read repos file line by line
-    while IFS= read -r line; do
+    # Read repos file line by line (handles files without trailing newline)
+    while IFS= read -r line || [ -n "$line" ]; do
         # Skip empty lines and comments
         [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
         
