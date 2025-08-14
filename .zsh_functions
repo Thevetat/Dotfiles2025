@@ -592,6 +592,28 @@ tswap() {
 #*
 
 #*
+## Name: tmrn
+## Desc: Rename current tmux session
+## Inputs: new_name - The new name for the current tmux session
+## Usage: tmrn mynewname
+tmrn() {
+    if [ -z "$1" ]; then
+        echo "Usage: tmrn <new_name>"
+        return 1
+    fi
+    
+    # Check if we're in a tmux session
+    if [ -z "$TMUX" ]; then
+        echo "Error: Not in a tmux session"
+        return 1
+    fi
+    
+    tmux rename-session "$1"
+    echo "Session renamed to: $1"
+}
+#*
+
+#*
 ## Name: sso
 ## Desc: AWS SSO login with optional remote cache sync
 ## Inputs: [optional] hostname to sync SSO cache to
