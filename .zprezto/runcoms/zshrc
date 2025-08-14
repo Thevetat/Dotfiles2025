@@ -120,4 +120,4 @@ export PATH="$HOME/.local/bin:$PATH"
 # opencode
 export PATH=/home/thevetat/.opencode/bin:$PATH
 
-alias claude="/Users/thevetat/.claude/local/claude"
+alias claude="$HOME/.claude/local/claude"
