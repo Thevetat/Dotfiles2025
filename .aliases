@@ -53,9 +53,6 @@ alias tl='tmux ls'
 alias tn='TERM=screen-256color tmux -u new -s'
 alias tk='tmux kill-session -t'
 
-# Project-specific tmux sessions
-alias ***REDACTED***='tmux attach -t ***REDACTED*** || tn ***REDACTED***'
-alias rolling='tmux attach -t ***REDACTED*** || tn ***REDACTED***'
 
 ## Open Local
 alias n.='nautilus .'

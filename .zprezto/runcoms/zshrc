@@ -92,6 +92,13 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   
   # Run fastfetch when SSHing in
   fastfetch
+  
+  # Auto-attach to tmux main session on SSH
+  if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ]; then
+      if command -v tmux >/dev/null 2>&1; then
+          tmux -u new -A -s main
+      fi
+  fi
 fi
 
 # Aliases
@@ -112,3 +119,5 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # opencode
 export PATH=/home/thevetat/.opencode/bin:$PATH
+
+alias claude="/Users/thevetat/.claude/local/claude"
