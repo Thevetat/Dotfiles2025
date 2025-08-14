@@ -52,6 +52,7 @@ alias lazyn='export XDG_CONFIG_HOME=~/.config/nvimA; export XDG_DATA_HOME=~/.loc
 alias tl='tmux ls'
 alias tn='TERM=screen-256color tmux -u new -s'
 alias tk='tmux kill-session -t'
+alias td='tmux detach-client -E "exit"'  # Detach and exit shell in one command
 
 
 ## Open Local
