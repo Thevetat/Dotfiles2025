@@ -702,6 +702,67 @@ dfs() {
 #*
 
 #*
+## Name: ssh-kill
+## Desc: Kill SSH master connection and remove control socket
+## Inputs: hostname - The SSH host to kill the connection for
+## Usage: ssh-kill freefall
+ssh-kill() {
+    if [ -z "$1" ]; then
+        echo "Usage: ssh-kill <hostname>"
+        return 1
+    fi
+    
+    # Try to exit the master connection gracefully
+    ssh -O exit "$1" 2>/dev/null && echo "✅ Killed SSH master for $1" || echo "⚠️  No active master for $1"
+    
+    # Remove any stale control sockets for this host
+    local socket_pattern=$(echo "$1" | sed 's/[^a-zA-Z0-9]/_/g')
+    rm -f ~/.ssh/cm/*"$socket_pattern"* 2>/dev/null
+    rm -f ~/.ssh/cm/*$(ssh -G "$1" 2>/dev/null | grep "^controlpath" | cut -d' ' -f2 | xargs basename 2>/dev/null)* 2>/dev/null
+}
+#*
+
+#*
+## Name: ssh-reconnect
+## Desc: Kill SSH master connection and immediately reconnect
+## Inputs: hostname - The SSH host to reconnect to
+## Usage: ssh-reconnect freefall
+ssh-reconnect() {
+    if [ -z "$1" ]; then
+        echo "Usage: ssh-reconnect <hostname>"
+        return 1
+    fi
+    
+    ssh-kill "$1"
+    echo "🔄 Reconnecting to $1..."
+    ssh "$1"
+}
+#*
+
+#*
+## Name: ssh-forward
+## Desc: Ensure SSH port forwarding is active for a host
+## Inputs: hostname - The SSH host to establish forwarding for
+## Usage: ssh-forward freefall
+ssh-forward() {
+    if [ -z "$1" ]; then
+        echo "Usage: ssh-forward <hostname>"
+        return 1
+    fi
+    
+    # Check if master exists
+    if ssh -O check "$1" 2>/dev/null; then
+        echo "⚠️  Master exists for $1, killing and reconnecting with forwarding..."
+        ssh-kill "$1"
+    fi
+    
+    # Start fresh connection with forwarding in background
+    ssh -N -f "$1"
+    echo "✅ Port forwarding established for $1"
+}
+#*
+
+#*
 ## Name: start-rolling
 ## Desc: Start Rolling Bones development environment with Rails server and Vite in tmux session
 ## Inputs: None
