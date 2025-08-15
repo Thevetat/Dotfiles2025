@@ -85,13 +85,13 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   # Use simpler terminal if needed
   export TERM=xterm-256color
   
-  # Show system stats
-  echo ""
-  /usr/bin/landscape-sysinfo
-  echo ""
-  
-  # Run fastfetch when SSHing in
-  fastfetch
+  # # Show system stats
+  # echo ""
+  # /usr/bin/landscape-sysinfo
+  # echo ""
+  #
+  # # Run fastfetch when SSHing in
+  # fastfetch
   
   # Auto-attach to tmux main session on SSH
   if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ]; then
