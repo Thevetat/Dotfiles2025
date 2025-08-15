@@ -1,6 +1,9 @@
 theme = tokyonight-storm
-background = #303446
+#background = #303446
 background-opacity = 0.95
+
+# Force xterm-256color instead of xterm-ghostty
+#term = xterm-256color
 font-size = 15
 
 window-padding-balance = true
