@@ -96,7 +96,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   # Auto-attach to tmux main session on SSH
   if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ]; then
       if command -v tmux >/dev/null 2>&1; then
-          tmux -u new -A -s main
+          TERM=screen-256color tmux -u new -A -s main
       fi
   fi
 fi
