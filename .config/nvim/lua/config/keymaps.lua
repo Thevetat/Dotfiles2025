@@ -48,6 +48,8 @@ vim.keymap.set("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "Go to righ
 
 -- Save with Cmd+S on Mac
 vim.keymap.set({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+vim.keymap.set({ "n", "i", "v" }, "<M-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
 -- Swap leader e and E keymaps
 vim.keymap.set("n", "<leader>e", function()
