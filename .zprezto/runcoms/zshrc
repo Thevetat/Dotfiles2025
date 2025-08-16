@@ -7,7 +7,6 @@ fi
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
-
 # Source common files
 [ -f ~/.aliases ] && source ~/.aliases
 [ -f ~/.zprofile ] && source ~/.zprofile  
@@ -82,21 +81,10 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   export LANG=en_US.UTF-8
   export LC_ALL=en_US.UTF-8
   
-  # Use simpler terminal if needed
-  export TERM=tmux-256color
-  
-  # # Show system stats
-  # echo ""
-  # /usr/bin/landscape-sysinfo
-  # echo ""
-  #
-  # # Run fastfetch when SSHing in
-  # fastfetch
-  
   # Auto-attach to tmux main session on SSH
   if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ]; then
       if command -v tmux >/dev/null 2>&1; then
-          TERM=tmux-256color tmux -u new -A -s main
+         TERM=tmux-256color tmux -u new -A -s main
       fi
   fi
 fi
