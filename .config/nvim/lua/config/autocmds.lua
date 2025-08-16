@@ -21,3 +21,42 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
   desc = "Run EslintFixAll on save",
 })
+
+-- Enable autoformat for specific file types (excluding ESLint-handled files)
+local format_on_save_filetypes = {
+  lua = true,
+  python = true,
+  rust = true,
+  go = true,
+  sh = true,
+  bash = true,
+  zsh = true,
+  yaml = true,
+  toml = true,
+  markdown = true,
+  -- JSON can be formatted by prettier/eslint but we'll enable it here too
+  json = true,
+  jsonc = true,
+  -- CSS/SCSS/etc
+  css = true,
+  scss = true,
+  sass = true,
+  less = true,
+  -- HTML
+  html = true,
+  -- Config files
+  vim = true,
+  -- Explicitly NOT including JS/TS files as they're handled by ESLint
+}
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function(args)
+    local filetype = vim.bo[args.buf].filetype
+    -- Enable autoformat for specific file types
+    if format_on_save_filetypes[filetype] then
+      vim.b[args.buf].autoformat = true
+    end
+  end,
+  desc = "Enable autoformat for non-ESLint file types",
+})
