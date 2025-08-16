@@ -74,8 +74,10 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   unsetopt CORRECT
   unsetopt CORRECT_ALL
   
-  # Disable flow control (fixes Ctrl+S/Ctrl+Q issues)
-  stty -ixon 2>/dev/null
+  # Disable flow control (fixes Ctrl+S/Ctrl+Q issues) - only if we have a TTY
+  if [ -t 0 ]; then
+    stty -ixon 2>/dev/null
+  fi
   
   # Ensure UTF-8 locale
   export LANG=en_US.UTF-8
