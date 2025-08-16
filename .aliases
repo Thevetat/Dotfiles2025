@@ -135,3 +135,17 @@ alias stats='neofetch'
 
 ## Git Auto-Pull
 alias gsync='~/scripts/git-auto-pull/git-auto-pull.sh'
+
+## Cross-platform clipboard aliases
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    alias clipboard-copy='pbcopy'
+    alias clipboard-paste='pbpaste'
+else
+    # Linux - use xclip
+    alias clipboard-copy='xclip -selection clipboard'
+    alias clipboard-paste='xclip -selection clipboard -o'
+    # pbcopy/pbpaste compatibility for Linux
+    alias pbcopy='xclip -selection clipboard'
+    alias pbpaste='xclip -selection clipboard -o'
+fi
