@@ -570,9 +570,9 @@ clean_monorepo() {
 
 tm(){
     if [ -n "$1" ]; then
-        TERM=screen-256color tmux -u attach -t "$1" 2>/dev/null || TERM=screen-256color tmux -u new -s "$1"
+        TERM=tmux-256color tmux -u attach -t "$1" 2>/dev/null || TERM=tmux-256color tmux -u new -s "$1"
     else
-        TERM=screen-256color tmux -u attach || TERM=screen-256color tmux -u new -s main
+        TERM=tmux-256color tmux -u attach || TERM=tmux-256color tmux -u new -s main
     fi
 }
 
@@ -861,7 +861,7 @@ start-rolling() {
         # Not in tmux - attach or create normally
         if tmux has-session -t main 2>/dev/null; then
             echo "🔗 Attaching to existing 'main' tmux session..."
-            TERM=screen-256color tmux attach-session -t main
+            tmux attach-session -t main
         else
             echo "🚀 Creating new 'main' tmux session with Rails server and Vite..."
             
@@ -869,7 +869,7 @@ start-rolling() {
             lsof -ti:3000 | xargs kill -9 2>/dev/null || true
             
             # Create new tmux session with Rails server
-            TERM=screen-256color tmux new-session -d -s main -c ~/Git/RollingBones/rolling_bones_rails 'bundle exec rails s'
+            tmux new-session -d -s main -c ~/Git/RollingBones/rolling_bones_rails 'bundle exec rails s'
             
             # Split vertically and start Vite
             tmux split-window -h -t main -c ~/Git/RollingBones/rolling_bones_rails 'bin/vite dev'
@@ -878,7 +878,7 @@ start-rolling() {
             tmux select-pane -t main:1.0
             
             # Attach to the session
-            TERM=screen-256color tmux attach-session -t main
+            tmux attach-session -t main
         fi
     fi
 }
