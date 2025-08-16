@@ -2,7 +2,26 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+-- Delete default <leader>c mappings from LazyVim core
+vim.keymap.del({ "n", "v" }, "<leader>cf") -- Format
+vim.keymap.del("n", "<leader>cd") -- Line Diagnostics
+
+-- Remap them to <leader>C
+vim.keymap.set({ "n", "v" }, "<leader>Cf", function()
+  LazyVim.format({ force = true })
+end, { desc = "Format" })
+vim.keymap.set("n", "<leader>Cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+
+-- Add Format Injected Langs
+vim.keymap.set({ "n", "v" }, "<leader>CF", function()
+  LazyVim.format.format({ force = true })
+end, { desc = "Format Injected Langs" })
+
+-- Add Mason
+vim.keymap.set("n", "<leader>Cm", "<cmd>Mason<cr>", { desc = "Mason" })
+
 -- Essential custom keymaps
+-- Select all moved to <leader>a since <leader>c is now for Claude Code
 vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>", { desc = "Select all" })
 vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { desc = "Rename symbol" })
 
@@ -32,6 +51,7 @@ vim.keymap.set("n", "<A-Up>", "<cmd>m .-2<cr>==", { desc = "Move up" })
 vim.keymap.set("i", "<A-Down>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
 vim.keymap.set("i", "<A-Up>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 vim.keymap.set("v", "<A-Down>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
+
 vim.keymap.set("v", "<A-Up>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 
 -- Window navigation (optional - uncomment if you want them)
@@ -64,6 +84,3 @@ vim.keymap.set("n", "<leader>R", function()
     vim.cmd("!" .. cmd)
   end
 end, { desc = "Run command" })
-
--- Comment box
-vim.keymap.set({ "n", "v" }, "<leader>cb", "<Cmd>CBllbox1<CR>", { desc = "Comment Box" })

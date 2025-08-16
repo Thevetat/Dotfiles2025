@@ -16,7 +16,7 @@ vim.opt.foldlevel = 99
 vim.opt.foldenable = true
 vim.opt.undodir = os.getenv("HOME") .. "/.local/share/undodir"
 
--- Disable default format on save (we'll use EslintFixAll instead)
+-- Disable default format on save (we'll use selective formatting)
 vim.g.autoformat = false
 
 -- Enable ESLint auto format
