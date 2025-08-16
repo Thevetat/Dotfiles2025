@@ -1,0 +1,1 @@
+/home/thevetat/.zprezto/runcoms/zshrc
