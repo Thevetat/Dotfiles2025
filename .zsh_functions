@@ -1018,3 +1018,77 @@ start-rolling() {
     fi
 }
 #*
+
+#*
+## Name: gstats
+## Desc: Display comprehensive git statistics for the current repository
+## Inputs: None
+## Usage: gstats
+gstats() {
+    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        echo "❌ Not in a git repository"
+        return 1
+    fi
+    
+    local user_name=$(git config user.name)
+    local repo_name=$(basename -s .git $(git config --get remote.origin.url))
+    
+    echo "📊 Git Statistics for: $repo_name"
+    echo "================================="
+    echo ""
+    
+    echo "👤 YOUR PERSONAL STATS:"
+    echo "-----------------------"
+    
+    # Your total lines
+    local your_stats=$(git log --author="$user_name" --pretty=tformat: --numstat | awk '{add += $1; subs += $2; loc += $1 - $2} END {printf "Added: %s, Removed: %s, Net: %s", add, subs, loc}')
+    echo "  📝 All Time Lines: $your_stats"
+    
+    # Your commit count
+    local your_commits=$(git log --author="$user_name" --oneline | wc -l | tr -d ' ')
+    echo "  🔢 Total Commits: $your_commits"
+    
+    # Your recent activity (last month)
+    local recent_stats=$(git log --author="$user_name" --pretty=tformat: --numstat --since="1 month ago" | awk '{add += $1; subs += $2; loc += $1 - $2} END {printf "Added: %s, Removed: %s, Net: %s", add, subs, loc}')
+    echo "  📅 Last Month: $recent_stats"
+    
+    # Your recent commits (last month)
+    local recent_commits=$(git log --author="$user_name" --oneline --since="1 month ago" | wc -l | tr -d ' ')
+    echo "  📅 Last Month Commits: $recent_commits"
+    
+    echo ""
+    echo "📊 FULL REPOSITORY STATS:"
+    echo "------------------------"
+    
+    # Total repository stats
+    local total_commits=$(git rev-list --all --count)
+    echo "  🔢 Total Repository Commits: $total_commits"
+    
+    # Repository age
+    local first_commit=$(git log --reverse --pretty=format:"%ad" --date=short | head -1)
+    local last_commit=$(git log -1 --pretty=format:"%ad" --date=short)
+    echo "  📅 Repository Age: $first_commit to $last_commit"
+    
+    # Active contributors (with commits)
+    local contributor_count=$(git log --all --pretty=format:"%an" | sort | uniq | wc -l | tr -d ' ')
+    echo "  👥 Active Contributors: $contributor_count"
+    
+    echo ""
+    echo "🏆 Top Contributors (by commits):"
+    echo "---------------------------------"
+    
+    # All contributors by commit count
+    git log --all --pretty=format:"%an" | sort | uniq -c | sort -nr | head -10 | while read count author; do
+        if [ "$author" = "$user_name" ]; then
+            echo "  🌟 $count $author (YOU)"
+        else
+            echo "     $count $author"
+        fi
+    done
+    
+    echo ""
+    echo "📈 Recent Activity (last 10 commits):"
+    echo "------------------------------------"
+    git log --oneline --date=short --pretty=format:"%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(green)%an%C(reset) %s" -10
+}
+#*
