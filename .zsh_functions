@@ -706,28 +706,40 @@ dfs() {
 ## Desc: Add MCP server from JSON configuration commonly found on GitHub
 ## Inputs: name - MCP server name
 ##         command - The command to run (e.g., "npx")
-##         args - The arguments for the command (e.g., "@playwright/mcp@latest --extension")
-## Usage: mcp-add playwright-extension "npx" "@playwright/mcp@latest --extension"
-##        mcp-add my-server "node" "/path/to/server.js"
+##         args - The arguments array (can be pasted directly from JSON)
+## Usage: mcp-add playwright-extension npx '["@playwright/mcp@latest", "--extension"]'
+##        mcp-add playwright-extension npx "@playwright/mcp@latest --extension"
 mcp-add() {
     if [ $# -lt 3 ]; then
-        echo "Usage: mcp-add <name> <command> <args...>"
+        echo "Usage: mcp-add <name> <command> <args>"
         echo ""
         echo "Examples:"
-        echo "  mcp-add playwright-extension npx \"@playwright/mcp@latest --extension\""
-        echo "  mcp-add my-server node \"/path/to/server.js\""
+        echo '  mcp-add playwright-extension npx ["@playwright/mcp@latest", "--extension"]'
+        echo '  mcp-add my-server node ["/path/to/server.js", "--flag"]'
+        echo '  mcp-add simple-server npx "@simple/mcp@latest --verbose"'
         echo ""
-        echo "For GitHub JSON configs like:"
-        echo '  {"mcpServers": {"name": {"command": "npx", "args": ["package", "--flag"]}}}'
-        echo ""
-        echo "Extract: name, command, and join args with spaces"
+        echo "You can paste the args array directly from GitHub JSON!"
         return 1
     fi
     
     local name="$1"
     local command="$2"
     shift 2
-    local args="$*"
+    local args_input="$*"
+    
+    # Check if args_input looks like a JSON array
+    if [[ "$args_input" =~ ^\[.*\]$ ]]; then
+        # Parse JSON array: remove brackets, quotes, commas, and extra whitespace
+        local args=$(echo "$args_input" | \
+            sed 's/^\[//; s/\]$//; s/,/ /g' | \
+            sed 's/"//g' | \
+            sed "s/'//g" | \
+            sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | \
+            sed 's/[[:space:]]\+/ /g')
+    else
+        # Use as-is if not JSON array format
+        local args="$args_input"
+    fi
     
     echo "🔧 Adding MCP server: $name"
     echo "   Command: $command"
