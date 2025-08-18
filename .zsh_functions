@@ -702,6 +702,61 @@ dfs() {
 #*
 
 #*
+## Name: start-play-mcp
+## Desc: Start Playwright MCP server with HTTP transport on port 8931
+## Usage: start-play-mcp
+start-play-mcp() {
+    local port=8931
+    local mcp_command="bunx @playwright/mcp@latest --extension --port $port"
+    
+    # Check if something is already listening on the port
+    if lsof -i :$port > /dev/null 2>&1; then
+        # Check if it's our MCP server
+        if ps aux | grep -q "[p]laywright/mcp.*--port $port"; then
+            echo "✅ Playwright MCP server is already running on port $port"
+            echo "   URL: http://localhost:$port/mcp"
+            return 0
+        else
+            echo "⚠️  Port $port is in use by another process. Killing it..."
+            # Kill whatever is using the port
+            lsof -ti :$port | xargs kill -9 2>/dev/null
+            sleep 1
+        fi
+    fi
+    
+    echo "🚀 Starting Playwright MCP server on port $port..."
+    echo "   Command: $mcp_command"
+    
+    # Start the server in background
+    eval "$mcp_command" > /tmp/playwright-mcp.log 2>&1 &
+    local pid=$!
+    
+    # Wait a moment for server to start
+    sleep 3
+    
+    # Verify it started successfully
+    if lsof -i :$port > /dev/null 2>&1; then
+        echo "✅ Playwright MCP server started successfully!"
+        echo "   PID: $pid"
+        echo "   URL: http://localhost:$port/mcp"
+        echo ""
+        echo "📝 Add this to your Claude config:"
+        echo '   {
+     "mcpServers": {
+       "playwright": {
+         "url": "http://localhost:'$port'/mcp"
+       }
+     }
+   }'
+    else
+        echo "❌ Failed to start Playwright MCP server"
+        echo "   Check /tmp/playwright-mcp.log for details"
+        return 1
+    fi
+}
+#*
+
+#*
 ## Name: mcp-add
 ## Desc: Add MCP server from JSON configuration commonly found on GitHub
 ## Inputs: name - MCP server name
