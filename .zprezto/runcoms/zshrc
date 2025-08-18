@@ -10,7 +10,12 @@ fi
 # Source common files
 [ -f ~/.aliases ] && source ~/.aliases
 [ -f ~/.zprofile ] && source ~/.zprofile  
-[ -f ~/.zsh_functions ] && source ~/.zsh_functions
+# Source modular function files
+if [ -d ~/.config/zsh/functions ]; then
+  for func_file in ~/.config/zsh/functions/*.zsh; do
+    [ -f "$func_file" ] && source "$func_file"
+  done
+fi
 
 # Source environment variables (systemd format)
 if [ -f ~/.env ]; then
