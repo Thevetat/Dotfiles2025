@@ -702,6 +702,90 @@ dfs() {
 #*
 
 #*
+## Name: mcp-add
+## Desc: Add MCP server from JSON configuration commonly found on GitHub
+## Inputs: name - MCP server name
+##         command - The command to run (e.g., "npx")
+##         args - The arguments for the command (e.g., "@playwright/mcp@latest --extension")
+## Usage: mcp-add playwright-extension "npx" "@playwright/mcp@latest --extension"
+##        mcp-add my-server "node" "/path/to/server.js"
+mcp-add() {
+    if [ $# -lt 3 ]; then
+        echo "Usage: mcp-add <name> <command> <args...>"
+        echo ""
+        echo "Examples:"
+        echo "  mcp-add playwright-extension npx \"@playwright/mcp@latest --extension\""
+        echo "  mcp-add my-server node \"/path/to/server.js\""
+        echo ""
+        echo "For GitHub JSON configs like:"
+        echo '  {"mcpServers": {"name": {"command": "npx", "args": ["package", "--flag"]}}}'
+        echo ""
+        echo "Extract: name, command, and join args with spaces"
+        return 1
+    fi
+    
+    local name="$1"
+    local command="$2"
+    shift 2
+    local args="$*"
+    
+    echo "🔧 Adding MCP server: $name"
+    echo "   Command: $command"
+    echo "   Args: $args"
+    echo ""
+    
+    # Build the claude mcp add command
+    # All GitHub JSON configs use stdio transport by default
+    local full_command="claude mcp add $name -- $command $args"
+    
+    echo "📝 Running: $full_command"
+    eval "$full_command"
+    
+    if [ $? -eq 0 ]; then
+        echo "✅ Successfully added MCP server: $name"
+        echo ""
+        echo "📌 Note: Most MCP servers from GitHub use stdio transport (default)"
+        echo "   If you need SSE transport, use: claude mcp add-sse"
+    else
+        echo "❌ Failed to add MCP server"
+        return 1
+    fi
+}
+#*
+
+#*
+## Name: mcp-quick
+## Desc: Quick add MCP server for common npx packages
+## Inputs: name - MCP server name  
+##         package - NPM package name (will be prefixed with @)
+##         flags - Optional flags
+## Usage: mcp-quick playwright-extension "playwright/mcp@latest" "--extension"
+mcp-quick() {
+    if [ $# -lt 2 ]; then
+        echo "Usage: mcp-quick <name> <package> [flags]"
+        echo ""
+        echo "Example: mcp-quick playwright-extension \"playwright/mcp@latest\" \"--extension\""
+        return 1
+    fi
+    
+    local name="$1"
+    local package="$2"
+    local flags="${3:-}"
+    
+    # Add @ prefix if not present
+    if [[ ! "$package" =~ ^@ ]]; then
+        package="@$package"
+    fi
+    
+    if [ -n "$flags" ]; then
+        mcp-add "$name" "npx" "$package $flags"
+    else
+        mcp-add "$name" "npx" "$package"
+    fi
+}
+#*
+
+#*
 ## Name: ssh-kill
 ## Desc: Kill SSH master connection and optionally kill processes on a port
 ## Inputs: hostname - The SSH host to kill the connection for
