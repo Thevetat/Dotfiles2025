@@ -88,6 +88,9 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   export LANG=en_US.UTF-8
   export LC_ALL=en_US.UTF-8
   
+  # Export terminal info for SSH OSC 52 support
+  export TERM_PROGRAM="${TERM_PROGRAM:-tmux}"
+  
   # Auto-attach to tmux main session on SSH
   if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ]; then
       if command -v tmux >/dev/null 2>&1; then
@@ -95,6 +98,9 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
       fi
   fi
 fi
+
+# Ensure tmux uses the right terminal type
+alias tmux="TERM=tmux-256color tmux"
 
 # Aliases
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
