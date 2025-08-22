@@ -32,6 +32,7 @@ vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 vim.opt.termguicolors = true
 
 vim.g.snacks_scroll = false
+vim.opt.mousescroll = "ver:1,hor:6"
 
 -- Smart clipboard configuration for local and SSH sessions
 -- Use OSC 52 for SSH, system clipboard for local (requires Neovim >= 0.10.0)
