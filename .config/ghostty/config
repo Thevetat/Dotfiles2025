@@ -36,3 +36,8 @@ keybind = shift+enter=text:\\n
 keybind = super+shift+t=new_tab
 keybind = super+shift+n=next_tab
 keybind = super+shift+b=previous_tab
+
+# Clipboard settings for better integration
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = true
