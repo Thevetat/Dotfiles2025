@@ -30,3 +30,5 @@ vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 -- Enable true colors for proper color rendering
 vim.opt.termguicolors = true
+
+vim.g.snacks_scroll = false
