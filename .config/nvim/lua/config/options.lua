@@ -34,25 +34,13 @@ vim.opt.termguicolors = true
 vim.g.snacks_scroll = false
 vim.opt.mousescroll = "ver:1,hor:6"
 
--- Smart clipboard configuration for local and SSH sessions
--- Use OSC 52 for SSH, system clipboard for local (requires Neovim >= 0.10.0)
-vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
+-- Smart clipboard configuration
+-- Always use system clipboard integration
+vim.opt.clipboard = "unnamedplus"
 
--- Enable OSC 52 support for SSH sessions
-if vim.env.SSH_TTY then
-  local function paste()
-    return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
-  end
-
-  vim.g.clipboard = {
-    name = "OSC 52",
-    copy = {
-      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-    },
-    paste = {
-      ["+"] = paste,
-      ["*"] = paste,
-    },
-  }
+-- For SSH sessions, ensure OSC 52 works if available
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+  -- Let Neovim handle OSC 52 automatically with clipboard=unnamedplus
+  -- This works better with tmux's set-clipboard feature
+  vim.g.clipboard = nil  -- Use Neovim's built-in clipboard handling
 end
