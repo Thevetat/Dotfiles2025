@@ -16,6 +16,18 @@ vim.opt.foldlevel = 99
 vim.opt.foldenable = true
 vim.opt.undodir = os.getenv("HOME") .. "/.local/share/undodir"
 
+-- Word wrap settings for better readability
+vim.opt.wrap = true         -- Enable line wrapping at window edge
+vim.opt.linebreak = true    -- Wrap at word boundaries, not mid-word
+vim.opt.breakindent = true  -- Preserve indentation in wrapped lines
+vim.opt.showbreak = "↪ "    -- Visual indicator for wrapped lines
+
+-- Auto-reload files and disable swap/backup files
+vim.opt.autoread = true     -- Automatically reload files changed outside Neovim
+vim.opt.swapfile = false    -- Disable swap files completely (no more .swp conflicts)
+vim.opt.backup = false      -- Disable backup files
+vim.opt.writebackup = false -- Disable write backup
+
 -- Disable default format on save (we'll use selective formatting)
 vim.g.autoformat = false
 

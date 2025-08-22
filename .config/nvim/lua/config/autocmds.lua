@@ -2,11 +2,20 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 
--- Auto-reload files when changed externally
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+-- Auto-reload files when changed externally (enhanced detection)
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
   pattern = "*",
   command = "checktime",
-  desc = "Check if file changed when entering buffer",
+  desc = "Check if file changed when entering buffer or cursor is idle",
+})
+
+-- Notify when file is reloaded from disk
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  pattern = "*",
+  callback = function()
+    vim.notify("File reloaded from disk", vim.log.levels.INFO)
+  end,
+  desc = "Notify when file is reloaded",
 })
 
 -- Run EslintFixAll on save for JavaScript/TypeScript files
