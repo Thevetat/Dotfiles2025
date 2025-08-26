@@ -28,6 +28,13 @@ return {
       
       -- Configure servers
       opts.servers = {
+        bashls = {
+          settings = {
+            bashIde = {
+              shellcheckArguments = { "--exclude=SC2034" },
+            },
+          },
+        },
         tsserver = {
           init_options = {
             preferences = {
