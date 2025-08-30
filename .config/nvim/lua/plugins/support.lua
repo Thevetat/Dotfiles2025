@@ -55,4 +55,19 @@ return {
       },
     },
   },
+  {
+    "jfryy/keytrail.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require("keytrail").setup({
+        delimiter = ".",
+        hover_delay = 100,
+        key_mapping = "jq", -- <leader>jq triggers picker by default
+        filetypes = { json = true, yaml = true },
+      })
+    end,
+  },
 }
