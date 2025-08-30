@@ -1,5 +1,8 @@
 vim.g.lazyvim_eslint_auto_format = true
 
+-- Set Node.js memory limit for LSP servers (8GB)
+vim.env.NODE_OPTIONS = "--max-old-space-size=8192"
+
 return {
   -- Configure LSP servers
   {
@@ -28,6 +31,37 @@ return {
       
       -- Configure servers
       opts.servers = {
+        jsonls = {
+          settings = {
+            json = {
+              -- Use schemastore if available, otherwise use empty schemas
+              schemas = (function()
+                local ok, schemastore = pcall(require, "schemastore")
+                if ok then
+                  return schemastore.json.schemas()
+                else
+                  return {}
+                end
+              end)(),
+              validate = { enable = true },
+              -- Increase max file size for JSON language server (100MB)
+              maxFileSize = 104857600,
+            },
+          },
+          -- Increase memory limit for JSON language server
+          init_options = {
+            provideFormatter = true,
+            maxItemsComputed = 50000,
+          },
+          -- Increase capabilities for large files
+          capabilities = {
+            workspace = {
+              didChangeWatchedFiles = {
+                dynamicRegistration = false,
+              },
+            },
+          },
+        },
         bashls = {
           settings = {
             bashIde = {
@@ -38,13 +72,32 @@ return {
         tsserver = {
           init_options = {
             preferences = {
-              -- Limit completions for better performance
+              -- Enable all completions
               includeCompletionsWithSnippetText = true,
               includeCompletionsForImportStatements = true,
               includeCompletionsWithClassMemberSnippets = true,
             },
-            -- Increase memory limit for large projects
-            maxTsServerMemory = 8192,
+            -- Increase memory limit for large projects (16GB)
+            maxTsServerMemory = 16384,
+          },
+        },
+        yamlls = {
+          settings = {
+            yaml = {
+              -- Increase limits for YAML files
+              maxItemsComputed = 50000,
+            },
+          },
+        },
+        lua_ls = {
+          settings = {
+            Lua = {
+              -- Increase workspace max preload and file size
+              workspace = {
+                maxPreload = 10000,
+                preloadFileSize = 5000,
+              },
+            },
           },
         },
         eslint = {

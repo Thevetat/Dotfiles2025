@@ -1,4 +1,13 @@
 return {
+  -- Disable bigfile detection in snacks.nvim
+  {
+    "folke/snacks.nvim",
+    opts = {
+      bigfile = {
+        enabled = false, -- Disable bigfile detection completely
+      },
+    },
+  },
   -- Configure tokyonight theme
   {
     "folke/tokyonight.nvim",

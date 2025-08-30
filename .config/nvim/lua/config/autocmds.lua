@@ -69,3 +69,21 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
   desc = "Enable autoformat for non-ESLint file types",
 })
+
+-- Fix indentation for JSON files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "json", "jsonc" },
+  callback = function()
+    -- Completely reset all indentation methods
+    vim.opt_local.smartindent = false
+    vim.opt_local.cindent = false
+    vim.opt_local.autoindent = false  -- Even disable autoindent
+    vim.opt_local.indentexpr = ""
+    vim.opt_local.lisp = false
+    -- Then re-enable only basic autoindent
+    vim.opt_local.autoindent = true
+  end,
+  desc = "Minimal indentation for JSON files",
+})
+
+

@@ -5,9 +5,11 @@
 local g = vim.g
 
 -- Override LazyVim defaults
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.smartindent = true
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
 vim.opt.colorcolumn = "120"
 vim.opt.hlsearch = false
 vim.opt.foldmethod = "expr"
@@ -56,3 +58,12 @@ if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
   -- This works better with tmux's set-clipboard feature
   vim.g.clipboard = nil  -- Use Neovim's built-in clipboard handling
 end
+
+-- Performance settings for large files (no throttling, just higher limits)
+vim.opt.synmaxcol = 0           -- No limit on syntax highlighting columns (0 = unlimited)
+vim.opt.updatetime = 200        -- Faster completion
+vim.opt.redrawtime = 50000      -- Much more time for syntax highlighting (50 seconds)
+vim.opt.maxmempattern = 2000000 -- Massive increase for pattern matching (2MB)
+
+-- LSP settings for better handling of large files
+vim.lsp.set_log_level("ERROR")  -- Reduce LSP logging overhead
