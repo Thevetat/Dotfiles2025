@@ -106,8 +106,10 @@ alias tmux="TERM=tmux-256color tmux"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias killghosttys='pkill -f ghostty'
 
-# Initialize rbenv
-eval "$(rbenv init - zsh)"
+# Initialize rbenv (if installed)
+if command -v rbenv >/dev/null 2>&1; then
+  eval "$(rbenv init - zsh)"
+fi
 
 # bun completions
 [ -s "/Users/thevetat/.bun/_bun" ] && source "/Users/thevetat/.bun/_bun"
