@@ -61,7 +61,6 @@ export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$HOME/.claude/local:$PATH"
 
 # D2 settings
 export D2_DARK_THEME=200
@@ -123,4 +122,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # opencode
 export PATH=/home/thevetat/.opencode/bin:$PATH
 
-alias claude="$HOME/.claude/local/claude"
+alias claude="$HOME/.local/bin/claude"
+
+# opencode
+export PATH=/home/freefall/.opencode/bin:$PATH
