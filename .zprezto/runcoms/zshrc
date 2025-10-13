@@ -30,18 +30,10 @@ fi
 # Platform-specific configuration
 if [[ "$OSTYPE" == "darwin"* ]]; then
   # Mac-specific
-  [ -f /opt/homebrew/opt/nvm/nvm.sh ] && source /opt/homebrew/opt/nvm/nvm.sh
+  # NVM is now lazy-loaded - see lazy-loading section below
+  # [ -f /opt/homebrew/opt/nvm/nvm.sh ] && source /opt/homebrew/opt/nvm/nvm.sh
   
-  # Conda on Mac
-  if [ -f "$HOME/miniconda3/bin/conda" ]; then
-    __conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-      eval "$__conda_setup"
-    else
-      [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ] && . "$HOME/miniconda3/etc/profile.d/conda.sh"
-    fi
-    unset __conda_setup
-  fi
+  # Conda is now lazy-loaded - see lazy-loading scripts below
   
   # Mac-specific paths
   export PATH="$HOME/.codeium/windsurf/bin:$PATH"
@@ -71,6 +63,11 @@ export D2_DARK_THEME=200
 
 # Zoxide (must be after compinit)
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+
+# Source lazy-loading scripts
+[ -f ~/.config/zsh/scripts/nvm-lazy-load.zsh ] && source ~/.config/zsh/scripts/nvm-lazy-load.zsh
+[ -f ~/.config/zsh/scripts/rbenv-lazy-load.zsh ] && source ~/.config/zsh/scripts/rbenv-lazy-load.zsh
+[ -f ~/.config/zsh/scripts/conda-lazy-load.zsh ] && source ~/.config/zsh/scripts/conda-lazy-load.zsh
 
 # Linux-specific SSH settings to prevent glitching
 if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
@@ -105,10 +102,7 @@ alias tmux="TERM=tmux-256color tmux"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias killghosttys='pkill -f ghostty'
 
-# Initialize rbenv (if installed)
-if command -v rbenv >/dev/null 2>&1; then
-  eval "$(rbenv init - zsh)"
-fi
+# rbenv is now lazy-loaded - see lazy-loading scripts
 
 # bun completions
 [ -s "/Users/thevetat/.bun/_bun" ] && source "/Users/thevetat/.bun/_bun"
@@ -122,7 +116,6 @@ export PATH="$HOME/.local/bin:$PATH"
 # opencode
 export PATH=/home/thevetat/.opencode/bin:$PATH
 
-alias claude="$HOME/.local/bin/claude"
 
 # opencode
 export PATH=/home/freefall/.opencode/bin:$PATH

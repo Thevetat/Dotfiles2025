@@ -1,4 +1,4 @@
-theme = tokyonight-storm
+theme = TokyoNight Storm
 
 background-opacity = 0.95
 background-blur = 20
@@ -31,7 +31,7 @@ keybind = super+shift+ctrl+k=resize_split:up,10
 keybind = super+shift+ctrl+l=resize_split:right,10
 
 keybind = super+w=close_surface
-keybind = shift+enter=text:\\n
+keybind = shift+enter=text:\r
 
 keybind = super+shift+t=new_tab
 keybind = super+shift+n=next_tab
