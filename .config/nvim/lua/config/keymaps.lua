@@ -69,6 +69,9 @@ vim.keymap.set("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "Go to righ
 -- Save with Cmd+S on Mac
 vim.keymap.set({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
+-- Make Shift+Enter insert a newline in insert mode
+vim.keymap.set("i", "<S-CR>", "<CR>", { desc = "Insert newline" })
+
 -- Neo-tree explorer keymaps (will be handled by LazyVim neo-tree extra)
 -- <leader>e and <leader>E are automatically configured by neo-tree extra
 

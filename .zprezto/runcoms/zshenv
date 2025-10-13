@@ -9,21 +9,17 @@
 if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
-. "$HOME/.cargo/env"
-# Load NVM for all zsh sessions
+# NVM is now lazy-loaded in .zshrc - see ~/.config/zsh/scripts/nvm-lazy-load.zsh
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-# Load Cargo
+
+# Load Cargo environment
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
 # Load Go
 export PATH="/usr/local/go/bin:$PATH"
 
-# Load rbenv
+# rbenv is now lazy-loaded in .zshrc - see ~/.config/zsh/scripts/rbenv-lazy-load.zsh
 export PATH="$HOME/.rbenv/bin:$PATH"
-if command -v rbenv &> /dev/null; then
-  eval "$(rbenv init - zsh)"
-fi
 
 # Load aliases for non-interactive sessions
 [ -f ~/.aliases ] && source ~/.aliases
