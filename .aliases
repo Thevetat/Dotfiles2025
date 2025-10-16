@@ -63,6 +63,9 @@ alias f.='open .'
 ## Git
 alias aigc='git add . && oco --yes --no-verify'
 
+## Pass
+alias psup='pass git pull && pass git push'
+
 ## Zellij
 alias zj='zellij'
 alias shoplift='zellij --layout shoplift'

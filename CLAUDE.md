@@ -67,7 +67,7 @@ This system uses a bare git repository for dotfiles management. Key commands:
 - `dotfiles commit -m "message"` - Commit dotfiles changes
 - `dotfiles push` - Push to remote repository
 - `dfs` - Alias for `dotfiles status`
-- `dfca` - Function for adding, committing, and pushing dotfiles in one command
+- `dfca <commit message>` - **Preferred method**: Adds all tracked changes (`-u`), commits, and pushes in one command. Example: `dfca Update zsh aliases`
 
 The dotfiles repository tracks configuration files like:
 
