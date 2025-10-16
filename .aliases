@@ -58,6 +58,7 @@ alias td='tmux detach-client -E "exit"'  # Detach and exit shell in one command
 ## Open Local
 alias n.='nautilus .'
 alias c.='cursor .'
+alias f.='open .'
 
 ## Git
 alias aigc='git add . && oco --yes --no-verify'
