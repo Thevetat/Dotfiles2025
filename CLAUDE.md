@@ -8,8 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Instead, always ask the user to run these commands themselves. You can:
 
-- Run `tsc --noEmit` or `npx tsc --noEmit` for TypeScript type checking
-- Run linting commands like `npm run lint` or `bun lint`
+- Run `bun tc` for TypeScript type checking
+- Run linting commands `bun lint`
 - But for builds and dev servers, inform the user what command they should run
 
 ## Preferred Commands

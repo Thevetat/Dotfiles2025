@@ -9,7 +9,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   # Function to load NVM when needed
   lazy_load_nvm() {
     # Remove the wrapper functions
-    unset -f node npm npx pnpm nvm
+    unset -f node npm npx pnpm nvm netlify
 
     # Load NVM
     if [ -f /opt/homebrew/opt/nvm/nvm.sh ]; then
@@ -47,5 +47,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   nvm() {
     lazy_load_nvm
     nvm "$@"
+  }
+
+  netlify() {
+    lazy_load_nvm
+    netlify "$@"
   }
 fi
