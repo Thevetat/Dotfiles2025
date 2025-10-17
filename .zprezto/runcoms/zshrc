@@ -127,3 +127,8 @@ export PATH=/home/freefall/.opencode/bin:$PATH
 
 # direnv - auto-load environment variables per directory
 eval "$(direnv hook zsh)"
+
+# Clean expired pass cache on shell startup (8 hour TTL)
+if [[ -d "${HOME}/.cache/pass-secrets" ]]; then
+  find "${HOME}/.cache/pass-secrets" -type f -mmin +480 -delete 2>/dev/null
+fi
