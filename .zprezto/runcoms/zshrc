@@ -124,3 +124,6 @@ export PATH=/home/thevetat/.opencode/bin:$PATH
 
 # opencode
 export PATH=/home/freefall/.opencode/bin:$PATH
+
+# direnv - auto-load environment variables per directory
+eval "$(direnv hook zsh)"
