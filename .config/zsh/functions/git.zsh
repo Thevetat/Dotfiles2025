@@ -99,16 +99,16 @@ pnr() {
     git push --set-upstream origin main
 }
 
-gsr() {
+gres() {
     if [ $# -lt 2 ]; then
-        echo "Usage: gsr <commit-hash> <commit-message>"
+        echo "Usage: gres <commit-hash> <commit-message>"
         return 1
     fi
-    
+
     local commit_hash="$1"
     shift
     local commit_message="$*"
-    
+
     git reset --soft "$commit_hash" && \
     git commit -m "$commit_message" && \
     git push --force-with-lease
