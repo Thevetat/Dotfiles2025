@@ -13,7 +13,10 @@ Complete setup of `pass` (password manager) with YubiKey GPG keys for secure cre
 ```bash
 brew install ykman          # YubiKey Manager
 brew install pinentry-mac   # PIN entry interface for macOS
-# gpg was already installed
+brew install direnv         # Auto-load credentials per directory
+brew tap amar1729/formulae
+brew install browserpass pass-import  # Browser integration & password import
+# gpg and pass were already installed
 ```
 
 ---
@@ -170,6 +173,13 @@ rm -f ~/.zcompdump; compinit; exec zsh
 │       ├── test-sk
 │       └── prod-sk
 │
+├── web/
+│   ├── github.com
+│   ├── twitter.com
+│   ├── stripe.com
+│   ├── amazon.com
+│   └── example.com
+│
 └── personal/
     ├── important-notes
     └── backup-codes
@@ -278,6 +288,58 @@ pass  # Verify it works
 
 ---
 
+## Browser Integration
+
+### Installing Browserpass
+
+```bash
+brew tap amar1729/formulae
+brew install browserpass pass-import
+```
+
+### Configure for Arc/Chrome
+
+```bash
+PREFIX='/opt/homebrew/opt/browserpass' make hosts-chrome-user -f '/opt/homebrew/opt/browserpass/lib/browserpass/Makefile'
+```
+
+For other browsers, replace `chrome` with: `chromium`, `brave`, `vivaldi`, or `firefox`
+
+### Install Browser Extension
+
+1. Open Chrome Web Store
+2. Search for "Browserpass"
+3. Install the extension
+4. Extension will automatically connect to pass
+
+### Using Browserpass
+
+Store passwords by domain name for auto-fill:
+
+```bash
+pass insert web/github.com
+pass insert web/stripe.com
+pass insert web/amazon.com
+```
+
+When you visit github.com, browserpass auto-detects and offers to fill your credentials. Press `Ctrl+Shift+L` (or click extension icon) to auto-fill.
+
+### Importing from Arc/Chrome
+
+Export passwords from Arc/Chrome:
+- Go to `chrome://settings/passwords`
+- Click ⋮ → Export passwords → Save as CSV
+
+Import to pass:
+
+```bash
+pass import csv arc-passwords.csv --out web/
+```
+
+**Recommendation:** Import manually to organize better, skip unused accounts, and update weak passwords.
+
+---
+
 ## Direnv + Pass Workflow
 
 ### Setup
@@ -287,26 +349,51 @@ brew install direnv
 # Add to .zshrc: eval "$(direnv hook zsh)"
 ```
 
-### Per-Project .envrc
+### Secret Caching (8-Hour TTL)
 
-Create `.envrc` in project root with pass references:
+To avoid 5-10 second YubiKey delays on every `cd`, use the `secret()` function instead of `pass`:
 
 ```bash
-# Simple project
-export GITHUB_CLIENT_ID=$(pass projects/my-app/github-client-id)
-export RESEND_API_KEY=$(pass services/resend/api-key)
+# Use secret() instead of pass
+export DATABASE_URL=$(secret projects/my-app/dev/database-url)
+export API_KEY=$(secret services/resend/api-key)
+```
+
+**How it works:**
+- First access: Decrypts via YubiKey (~2-5 seconds) and caches result
+- Subsequent access: Instant retrieval from cache
+- Cache location: `~/.cache/pass-secrets/` (hashed filenames)
+- Cache lifetime: 8 hours (auto-cleaned on shell startup)
+- Shared cache: If multiple projects use the same secret, they share the cache
+
+**Cache management commands:**
+```bash
+pass-cache-list    # Show cached secrets and their age
+pass-cache-clean   # Clean expired cache files (8 hours default)
+pass-cache-clean 4 # Clean files older than 4 hours
+pass-cache-clear   # Delete all cached secrets immediately
+```
+
+### Per-Project .envrc
+
+Create `.envrc` in project root with `secret` references (recommended) or `pass` for no caching:
+
+```bash
+# Simple project (with caching)
+export GITHUB_CLIENT_ID=$(secret projects/my-app/github-client-id)
+export RESEND_API_KEY=$(secret services/resend/api-key)
 export NODE_ENV=development
 ```
 
 Or with dev/prod structure:
 
 ```bash
-# Dev environment
-export SENTRY_DSN=$(pass projects/myapp/dev/backend-sentry-dsn)
-export GITHUB_CLIENT_ID=$(pass projects/myapp/dev/github-client-id)
-export GITHUB_CLIENT_SECRET=$(pass projects/myapp/dev/github-client-secret)
-export DATABASE_URL=$(pass projects/myapp/dev/database-url)
-export RESEND_API_KEY=$(pass services/resend/api-key)
+# Dev environment (with caching)
+export SENTRY_DSN=$(secret projects/myapp/dev/backend-sentry-dsn)
+export GITHUB_CLIENT_ID=$(secret projects/myapp/dev/github-client-id)
+export GITHUB_CLIENT_SECRET=$(secret projects/myapp/dev/github-client-secret)
+export DATABASE_URL=$(secret projects/myapp/dev/database-url)
+export RESEND_API_KEY=$(secret services/resend/api-key)
 ```
 
 Safe to commit `.envrc` (contains no secrets, just pass paths).
@@ -316,13 +403,14 @@ Safe to commit `.envrc` (contains no secrets, just pass paths).
 ```bash
 direnv allow .     # Allow new/modified .envrc
 cd ~/projects/myapp
-# Auto-loads credentials from pass
+# First time: ~2-5 seconds (decrypts + caches)
+# Subsequent times: instant! (reads from cache)
 echo $GITHUB_CLIENT_ID  # Available
 cd ~
 # Auto-unloads
 ```
 
-Benefits: Secrets never in files, automatic per-directory loading, can commit .envrc safely.
+Benefits: Secrets never in files, automatic per-directory loading, can commit .envrc safely, cached for fast loading.
 
 ---
 
@@ -443,7 +531,7 @@ pass insert services/new-service/api-key
 **Adding to project .envrc:**
 
 ```bash
-echo 'export NEW_API_KEY=$(pass services/new-service/api-key)' >> .envrc
+echo 'export NEW_API_KEY=$(secret services/new-service/api-key)' >> .envrc
 direnv allow .
 ```
 
@@ -457,12 +545,13 @@ direnv allow .
 
 ## Summary
 
-- **Dependencies:** gpg, pass, ykman, pinentry-mac, direnv
+- **Dependencies:** gpg, pass, ykman, pinentry-mac, direnv, browserpass, pass-import
 - **YubiKeys:** 2x configured identically (Serial: [YUBIKEY-1-SERIAL], [YUBIKEY-2-SERIAL])
 - **PIN Cache:** 18 hours (applies to pass, SSH, and git signing)
 - **Key ID:** [YOUR-GPG-KEY-ID]
-- **Structure:** projects/ + services/ + personal/
-- **Workflow:** direnv + .envrc auto-loads from pass
+- **Structure:** projects/ + services/ + web/ + personal/
+- **Workflow:** direnv + .envrc auto-loads from pass, browserpass auto-fills web logins
+- **Browser:** Browserpass extension for Arc/Chrome auto-fill (Ctrl+Shift+L)
 - **SSH:** YubiKey authentication for GitHub/GitLab/Gitea/servers
 - **Git Signing:** All commits/tags automatically signed with YubiKey
 - **Cross-platform:** Works on macOS, Linux, Windows
