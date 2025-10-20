@@ -1,4 +1,5 @@
-theme = TokyoNight Storm
+theme = dark:TokyoNight Storm, light: TokyoNight Day
+
 
 background-opacity = 0.95
 background-blur = 20
