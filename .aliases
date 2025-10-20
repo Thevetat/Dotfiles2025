@@ -61,7 +61,8 @@ alias c.='cursor .'
 alias f.='open .'
 
 ## Git
-alias aigc='git add . && oco --yes --no-verify'
+# aigc is now a function in nvm-lazy-load.zsh for lazy NVM loading
+# alias aigc='git add . && oco --yes --no-verify'
 
 ## Pass
 alias psup='pass git pull && pass git push'
