@@ -54,15 +54,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     netlify "$@"
   }
 
-  # Unalias if these exist as aliases to avoid conflicts
-  unalias aigc 2>/dev/null
-  unalias codex 2>/dev/null
-
+  # Git auto-commit with oco (replaces alias from .aliases)
   aigc() {
     lazy_load_nvm
-    aigc "$@"
+    git add . && oco --yes --no-verify
   }
 
+  # Codex wrapper
   codex() {
     lazy_load_nvm
     codex "$@"
