@@ -54,6 +54,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     netlify "$@"
   }
 
+  # Unalias if these exist as aliases to avoid conflicts
+  unalias aigc 2>/dev/null
+  unalias codex 2>/dev/null
+
   aigc() {
     lazy_load_nvm
     aigc "$@"
