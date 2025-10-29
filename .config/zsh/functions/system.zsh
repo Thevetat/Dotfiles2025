@@ -71,3 +71,13 @@ freshnvim() {
 cw() {
     cd "$(which "$*" | xargs -0 dirname)"
 }
+
+#*
+## Name: Open CSV
+## Desc: Open a CSV file in Numbers
+## Inputs: CSV filename
+## Usage: ocsv database_account_statement.csv
+ocsv() {
+    open -a Numbers "$*"
+}
+#*
