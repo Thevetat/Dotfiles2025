@@ -135,11 +135,16 @@ alias ssh-freefall='ssh -i ~/.ssh/freefall-processor.pem ubuntu@54.146.106.12'
 ## Claude Code
 alias cl='claude'
 
+## Doppler (Market Mafia)
+alias mafia='doppler run --project market-mafia --config dev --'
+
 ## System Stats
 alias stats='neofetch'
 
 ## Git Auto-Pull
 alias gsync='~/scripts/git-auto-pull/git-auto-pull.sh'
+
+alias resume='claude -c'
 
 ## Cross-platform clipboard aliases
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -154,3 +159,5 @@ else
     alias pbcopy='xclip -selection clipboard'
     alias pbpaste='xclip -selection clipboard -o'
 fi
+
+
