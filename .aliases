@@ -135,11 +135,16 @@ alias ssh-***REDACTED***='ssh -i ~/.ssh/***REDACTED***-processor.pem ubuntu@***R
 ## Claude Code
 alias cl='claude'
 
+## Doppler (***REDACTED***)
+alias mafia='doppler run --project ***REDACTED*** --config dev --'
+
 ## System Stats
 alias stats='neofetch'
 
 ## Git Auto-Pull
 alias gsync='~/scripts/git-auto-pull/git-auto-pull.sh'
+
+alias resume='claude -c'
 
 ## Cross-platform clipboard aliases
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -154,3 +159,5 @@ else
     alias pbcopy='xclip -selection clipboard'
     alias pbpaste='xclip -selection clipboard -o'
 fi
+
+
