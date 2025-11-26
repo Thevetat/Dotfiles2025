@@ -132,8 +132,6 @@ alias aws-console='open https://d-9067c86647.awsapps.com/start'
 alias rnshad="/Users/thevetat/Git/Go/rename-shadcn-vue/rename-shadcn"
 alias ssh-freefall='ssh -i ~/.ssh/freefall-processor.pem ubuntu@54.146.106.12'
 
-## Claude Code
-alias cl='claude'
 
 ## Doppler (Market Mafia)
 alias mafia='doppler run --project market-mafia --config dev --'
@@ -143,8 +141,6 @@ alias stats='neofetch'
 
 ## Git Auto-Pull
 alias gsync='~/scripts/git-auto-pull/git-auto-pull.sh'
-
-alias resume='claude -c'
 
 ## Cross-platform clipboard aliases
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -160,4 +156,11 @@ else
     alias pbpaste='xclip -selection clipboard -o'
 fi
 
+alias tmux="TERM=tmux-256color tmux"
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias killghosttys='pkill -f ghostty'
+
+## Claude Code
+alias cl='claude --model claude-opus-4-5-20251101'
+alias resume='claude -c --model claude-opus-4-5-20251101'
 

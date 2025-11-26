@@ -112,3 +112,19 @@ function pass-cache-clear() {
     echo "No cache directory found"
   fi
 }
+
+
+function npass() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: npass <pass-entry-path> [bytes]" >&2
+    return 1
+  fi
+
+  local entry="$1"
+  local bytes="${2:-32}"   # default 32 bytes -> 43-char base64 string
+  local secret="$(openssl rand -base64 "$bytes")"
+
+  pass insert -fm "$entry" <<<"$secret" || return $?
+  printf '%s' "$secret" | pbcopy
+  echo "Stored secret at '$entry' (copied to clipboard)."
+}

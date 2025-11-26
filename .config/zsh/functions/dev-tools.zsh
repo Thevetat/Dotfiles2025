@@ -58,3 +58,39 @@ initgo() {
 newnuxt() {
     pnpm dlx nuxi@latest init "$*"
 }
+
+clz() {
+  local zai="$ZAI_API_KEY"
+  local url="https://api.z.ai/api/anthropic"
+  local timeout=3000000
+
+  local prev_key="$ANTHROPIC_API_KEY"
+  local prev_url="$ANTHROPIC_BASE_URL"
+  local prev_timeout="$API_TIMEOUT_MS"
+
+  export ANTHROPIC_API_KEY="$zai"
+  export ANTHROPIC_BASE_URL="$url"
+  export API_TIMEOUT_MS="$timeout"
+
+  command claude "$@"
+
+  if [[ -z "$prev_key" ]]; then
+    unset ANTHROPIC_API_KEY
+  else
+    export ANTHROPIC_API_KEY="$prev_key"
+  fi
+
+  if [[ -z "$prev_url" ]]; then
+    unset ANTHROPIC_BASE_URL
+  else
+    export ANTHROPIC_BASE_URL="$prev_url"
+  fi
+
+  if [[ -z "$prev_timeout" ]]; then
+    unset API_TIMEOUT_MS
+  else
+    export API_TIMEOUT_MS="$prev_timeout"
+  fi
+}
+
+

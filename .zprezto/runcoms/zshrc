@@ -14,7 +14,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 # Source common files
 [ -f ~/.aliases ] && source ~/.aliases
-[ -f ~/.zprofile ] && source ~/.zprofile  
+[ -f ~/.zprofile ] && source ~/.zprofile
 # Source modular function files
 if [ -d ~/.config/zsh/functions ]; then
   for func_file in ~/.config/zsh/functions/*.zsh; do
@@ -37,14 +37,14 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   # Mac-specific
   # NVM is now lazy-loaded - see lazy-loading section below
   # [ -f /opt/homebrew/opt/nvm/nvm.sh ] && source /opt/homebrew/opt/nvm/nvm.sh
-  
+
   # Conda is now lazy-loaded - see lazy-loading scripts below
-  
+
   # Mac-specific paths
   export PATH="$HOME/.codeium/windsurf/bin:$PATH"
   export PATH="$HOME/.opencode/bin:$PATH"
   export DOCKER_HOST="unix:///$HOME/Library/Containers/com.docker.docker/Data/docker.raw.sock"
-  
+
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # Linux-specific
   export NVM_DIR="$HOME/.nvm"
@@ -52,15 +52,20 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
   [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 fi
 
-# Universal paths
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 
-# D2 settings
 export D2_DARK_THEME=200
+
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+export PATH=/home/thevetat/.opencode/bin:$PATH
+export EDITOR=nvim
 
 
 # Powerlevel10k config
@@ -79,19 +84,19 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   # Disable auto-correction
   unsetopt CORRECT
   unsetopt CORRECT_ALL
-  
+
   # Disable flow control (fixes Ctrl+S/Ctrl+Q issues) - only if we have a TTY
   if [ -t 0 ]; then
     stty -ixon 2>/dev/null
   fi
-  
+
   # Ensure UTF-8 locale
   export LANG=en_US.UTF-8
   export LC_ALL=en_US.UTF-8
-  
+
   # Export terminal info for SSH OSC 52 support
   export TERM_PROGRAM="${TERM_PROGRAM:-tmux}"
-  
+
   # Auto-attach to tmux main session on SSH
   if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ]; then
       if command -v tmux >/dev/null 2>&1; then
@@ -100,30 +105,10 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   fi
 fi
 
-# Ensure tmux uses the right terminal type
-alias tmux="TERM=tmux-256color tmux"
-
-# Aliases
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias killghosttys='pkill -f ghostty'
-
-# rbenv is now lazy-loaded - see lazy-loading scripts
 
 # bun completions
 [ -s "/Users/thevetat/.bun/_bun" ] && source "/Users/thevetat/.bun/_bun"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-
-
-# opencode
-export PATH=/home/thevetat/.opencode/bin:$PATH
-
-
-# opencode
-export PATH=/home/freefall/.opencode/bin:$PATH
 
 # direnv - auto-load environment variables per directory
 eval "$(direnv hook zsh)"

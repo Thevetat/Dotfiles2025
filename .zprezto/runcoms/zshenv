@@ -21,8 +21,10 @@ export PATH="/usr/local/go/bin:$PATH"
 # rbenv is now lazy-loaded in .zshrc - see ~/.config/zsh/scripts/rbenv-lazy-load.zsh
 export PATH="$HOME/.rbenv/bin:$PATH"
 
+
 # Load aliases for non-interactive sessions
 [ -f ~/.aliases ] && source ~/.aliases
 
 # Load environment variables
 [ -f ~/.env ] && source ~/.env
+
