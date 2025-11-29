@@ -126,5 +126,6 @@ function npass() {
 
   pass insert -fm "$entry" <<<"$secret" || return $?
   printf '%s' "$secret" | pbcopy
-  echo "Stored secret at '$entry' (copied to clipboard)."
+  echo "Stored secret at '$entry' (copied to clipboard):"
+  echo "$secret"
 }
