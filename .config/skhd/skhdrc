@@ -9,6 +9,7 @@
 .define yabai_border : yabai -m config window_border {{1}}
 .define insert_dir : yabai -m window --insert {{1}}
 .define insert_new : yabai -m window --insert {{1}}; skhd -k "cmd - n"
+.define toggle_split_ratio : sh -c 'windows=$(yabai -m query --windows --space); count=$(printf "%s\n" "$windows" | jq length); [ "$count" -eq 2 ] || exit 0; split_type=$(printf "%s\n" "$windows" | jq -r ".[] | select(.\"has-focus\"==true).\"split-type\""); [ "$split_type" = "vertical" ] || [ "$split_type" = "horizontal" ] || exit 0; focused_child=$(printf "%s\n" "$windows" | jq -r ".[] | select(.\"has-focus\"==true).\"split-child\""); [ -n "$focused_child" ] || exit 0; if [ "$split_type" = "vertical" ]; then axis="w"; else axis="h"; fi; first_size=$(printf "%s\n" "$windows" | jq -r ".[] | select(.\"split-child\"==\"first_child\").frame.$axis"); second_size=$(printf "%s\n" "$windows" | jq -r ".[] | select(.\"split-child\"==\"second_child\").frame.$axis"); [ -n "$first_size" ] || exit 0; [ -n "$second_size" ] || exit 0; left_ratio=$(awk "BEGIN {print $first_size / ($first_size + $second_size)}"); if [ "$focused_child" = "first_child" ]; then focused_ratio=$left_ratio; else focused_ratio=$(awk "BEGIN {print 1 - $left_ratio}"); fi; focused_big=$(awk "BEGIN {print ($focused_ratio >= 0.5) ? 1 : 0}"); if [ "$focused_big" -eq 1 ]; then target_focus_ratio=0.2; else target_focus_ratio=0.8; fi; if [ "$focused_child" = "first_child" ]; then target_left_ratio=$target_focus_ratio; else target_left_ratio=$(awk "BEGIN {print 1 - $target_focus_ratio}"); fi; yabai -m window --ratio abs:$target_left_ratio'
 
 ## Navigation (lalt - ...)
 # Space Navigation (four spaces per display): lalt - {1, 2, 3, 4}
@@ -66,6 +67,7 @@ ctrl + lalt - l : @yabai_resize("right:100:0", "left:100:0")
 
 # Equalize size of windows: ctrl + lalt - e
 ctrl + lalt - e : yabai -m space --balance
+ctrl + shift - s : @toggle_split_ratio
 
 # Make window zoom to fullscreen
 cmd + shift - f : @yabai_toggle("zoom-fullscreen")
