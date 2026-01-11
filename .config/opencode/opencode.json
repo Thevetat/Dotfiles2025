@@ -125,5 +125,27 @@
         }
       }
     }
+  },
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true,
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      }
+    }
+  },
+  "formatter": {
+    "eslint": {
+      "command": [
+        "/Users/thevetat/.config/eslint/node_modules/.bin/eslint",
+        "--fix",
+        "--config",
+        "/Users/thevetat/.config/eslint/eslint.config.js",
+        "$FILE"
+      ],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"]
+    }
   }
 }

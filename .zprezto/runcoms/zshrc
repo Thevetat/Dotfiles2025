@@ -117,3 +117,6 @@ eval "$(direnv hook zsh)"
 if [[ -d "${HOME}/.cache/pass-secrets" ]]; then
   find "${HOME}/.cache/pass-secrets" -type f -mmin +480 -delete 2>/dev/null
 fi
+
+# Temp Fix to Pin Claude
+export DISABLE_AUTOUPDATER=1
