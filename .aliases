@@ -164,3 +164,9 @@ alias killghosttys='pkill -f ghostty'
 alias cl='claude --model claude-opus-4-5-20251101'
 alias resume='claude -c --model claude-opus-4-5-20251101'
 
+## OpenCode
+alias oc='opencode'
+
+alias rrails='rbenv exec bundle exec rails'
+
+alias rrake='rbenv exec bundle exec rake'

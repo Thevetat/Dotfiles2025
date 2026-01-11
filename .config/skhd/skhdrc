@@ -1,54 +1,57 @@
+.define focus_space : yabai -m space --focus $(yabai -m query --displays --display | jq '.spaces[{{1}}]')
+.define yabai_focus : yabai -m window --focus {{1}} || yabai -m display --focus {{1}}
+.define yabai_toggle : yabai -m window --toggle {{1}}; sketchybar --trigger window_focus
+.define yabai_warp_edge : yabai -m window --warp {{1}} || $(yabai -m window --display {{1}} && yabai -m display --focus {{1}} && yabai -m window --warp {{2}}) || yabai -m window --move rel:{{3}}:{{4}}
+.define yabai_warp_cardinal : yabai -m window --warp {{1}} || $(yabai -m window --display {{1}} && yabai -m display --focus {{1}}) || yabai -m window --move rel:{{2}}:{{3}}
+.define move_space : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[{{1}}] ]] && yabai -m window --space $SPACES[{{1}}]
+.define move_space_rel : yabai -m window --space {{1}} && yabai -m space --focus {{1}}
+.define yabai_resize : yabai -m window --resize {{1}} || yabai -m window --resize {{2}}
+.define yabai_border : yabai -m config window_border {{1}}
+.define insert_dir : yabai -m window --insert {{1}}
+.define insert_new : yabai -m window --insert {{1}}; skhd -k "cmd - n"
+
 ## Navigation (lalt - ...)
 # Space Navigation (four spaces per display): lalt - {1, 2, 3, 4}
-lalt - 1 : yabai -m space --focus $(yabai -m query --displays --display | jq '.spaces[0]')
-lalt - 2 : yabai -m space --focus $(yabai -m query --displays --display | jq '.spaces[1]')
-lalt - 3 : yabai -m space --focus $(yabai -m query --displays --display | jq '.spaces[2]')
-lalt - 4 : yabai -m space --focus $(yabai -m query --displays --display | jq '.spaces[3]')
-lalt - 5 : yabai -m space --focus $(yabai -m query --displays --display | jq '.spaces[4]')
+lalt - 1 : @focus_space("0")
+lalt - 2 : @focus_space("1")
+lalt - 3 : @focus_space("2")
+lalt - 4 : @focus_space("3")
+lalt - 5 : @focus_space("4")
 
 # Window Navigation (through display borders): lalt - {j, k, l, ö}
-lalt - h    : yabai -m window --focus west  || yabai -m display --focus west
-lalt - j    : yabai -m window --focus south || yabai -m display --focus south
-lalt - k    : yabai -m window --focus north || yabai -m display --focus north
-lalt - l : yabai -m window --focus east  || yabai -m display --focus east
+lalt - h    : @yabai_focus("west")
+lalt - j    : @yabai_focus("south")
+lalt - k    : @yabai_focus("north")
+lalt - l : @yabai_focus("east")
 
-# Float / Unfloat window: lalt - space
-lalt + shift - space : yabai -m window --toggle float; sketchybar --trigger window_focus
+# Float / Unfloat window: ctrl + shift - f
+ctrl + shift - f : @yabai_toggle("float")
 
 # Make window zoom to fullscreen: shift + lalt - f
-shift + lalt - f : yabai -m window --toggle zoom-fullscreen; sketchybar --trigger window_focus
+shift + lalt - f : @yabai_toggle("zoom-fullscreen")
 
-# Make window zoom to parent node: lalt - f 
-lalt - f : yabai -m window --toggle zoom-parent; sketchybar --trigger window_focus
+# Make window zoom to parent node: lalt - f
+lalt - f : @yabai_toggle("zoom-parent")
 
 ## Window Movement (shift + lalt - ...)
 # Moving windows in spaces: shift + lalt - {j, k, l, ö}
-shift + lalt - h : yabai -m window --warp west || $(yabai -m window --display west && yabai -m display --focus west && yabai -m window --warp last) || yabai -m window --move rel:-10:0
-shift + lalt - j : yabai -m window --warp south || $(yabai -m window --display south && yabai -m display --focus south) || yabai -m window --move rel:0:10
-shift + lalt - k : yabai -m window --warp north || $(yabai -m window --display north && yabai -m display --focus north) || yabai -m window --move rel:0:-10
-shift + lalt - l: yabai -m window --warp east || $(yabai -m window --display east && yabai -m display --focus east && yabai -m window --warp first) || yabai -m window --move rel:10:0
+shift + lalt - h : @yabai_warp_edge("west", "last", "-10", "0")
+shift + lalt - j : @yabai_warp_cardinal("south", "0", "10")
+shift + lalt - k : @yabai_warp_cardinal("north", "0", "-10")
+shift + lalt - l: @yabai_warp_edge("east", "first", "10", "0")
 
 # Toggle split orientation of the selected windows node: shift + lalt - s
 shift + lalt - s : yabai -m window --toggle split
 
 # Moving windows between spaces: shift + lalt - {1, 2, 3, 4, p, n } (Assumes 4 Spaces Max per Display)
-shift + lalt - 1 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[1] ]] \
-                  && yabai -m window --space $SPACES[1]
+shift + lalt - 1 : @move_space("1")
+shift + lalt - 2 : @move_space("2")
+shift + lalt - 3 : @move_space("3")
+shift + lalt - 4 : @move_space("4")
+shift + lalt - 5 : @move_space("5")
 
-shift + lalt - 2 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[2] ]] \
-                  && yabai -m window --space $SPACES[2]
-
-shift + lalt - 3 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[3] ]] \
-                  && yabai -m window --space $SPACES[3]
-
-shift + lalt - 4 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[4] ]] \
-                  && yabai -m window --space $SPACES[4]
-
-shift + lalt - 5 : SPACES=($(yabai -m query --displays --display | jq '.spaces[]')) && [[ -n $SPACES[5] ]] \
-                  && yabai -m window --space $SPACES[5]
-
-shift + lalt - p : yabai -m window --space prev && yabai -m space --focus prev
-shift + lalt - n : yabai -m window --space next && yabai -m space --focus next
+shift + lalt - p : @move_space_rel("prev")
+shift + lalt - n : @move_space_rel("next")
 
 # Mirror Space on X and Y Axis: shift + lalt - {x, y}
 shift + lalt - x : yabai -m space --mirror x-axis
@@ -56,35 +59,35 @@ shift + lalt - y : yabai -m space --mirror y-axis
 
 ## Resize (ctrl + lalt - ...)
 # Resize windows: ctrl + lalt - {j, k, l, ö}
-ctrl + lalt - h    : yabai -m window --resize right:-100:0 || yabai -m window --resize left:-100:0
-ctrl + lalt - j    : yabai -m window --resize bottom:0:100 || yabai -m window --resize top:0:100
-ctrl + lalt - k    : yabai -m window --resize bottom:0:-100 || yabai -m window --resize top:0:-100
-ctrl + lalt - l : yabai -m window --resize right:100:0 || yabai -m window --resize left:100:0
+ctrl + lalt - h    : @yabai_resize("right:-100:0", "left:-100:0")
+ctrl + lalt - j    : @yabai_resize("bottom:0:100", "top:0:100")
+ctrl + lalt - k    : @yabai_resize("bottom:0:-100", "top:0:-100")
+ctrl + lalt - l : @yabai_resize("right:100:0", "left:100:0")
 
 # Equalize size of windows: ctrl + lalt - e
 ctrl + lalt - e : yabai -m space --balance
 
 # Make window zoom to fullscreen
-cmd + shift - f : yabai -m window --toggle zoom-fullscreen; sketchybar --trigger window_focus
+cmd + shift - f : @yabai_toggle("zoom-fullscreen")
 
 # Enable / Disable gaps in current workspace: ctrl + lalt - g
 ctrl + lalt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
 
 # Enable / Disable gaps in current workspace: ctrl + lalt - g
-ctrl + lalt - b : yabai -m config window_border off 
-shift + ctrl + lalt - b : yabai -m config window_border on
+ctrl + lalt - b : @yabai_border("off")
+shift + ctrl + lalt - b : @yabai_border("on")
 
 ## Insertion (shift + ctrl + lalt - ...)
 # Set insertion point for focused container: shift + ctrl + lalt - {j, k, l, ö, s}
-shift + ctrl + lalt - h : yabai -m window --insert west
-shift + ctrl + lalt - j : yabai -m window --insert south
-shift + ctrl + lalt - k : yabai -m window --insert north
-shift + ctrl + lalt - l : yabai -m window --insert east
-shift + ctrl + lalt - s : yabai -m window --insert stack
+shift + ctrl + lalt - h : @insert_dir("west")
+shift + ctrl + lalt - j : @insert_dir("south")
+shift + ctrl + lalt - k : @insert_dir("north")
+shift + ctrl + lalt - l : @insert_dir("east")
+shift + ctrl + lalt - s : @insert_dir("stack")
 
 # New window in hor./ vert. splits for all applications with yabai
-lalt - s : yabai -m window --insert east;  skhd -k "cmd - n"
-lalt - v : yabai -m window --insert south; skhd -k "cmd - n"
+lalt - s : @insert_new("east")
+lalt - v : @insert_new("south")
 
 # Toggle sketchybar
 shift + lalt - space : sketchybar --bar hidden=toggle
