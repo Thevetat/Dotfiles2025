@@ -170,3 +170,6 @@ alias oc='opencode'
 alias rrails='rbenv exec bundle exec rails'
 
 alias rrake='rbenv exec bundle exec rake'
+
+## Keychain
+alias unlock='security unlock-keychain ~/Library/Keychains/login.keychain-db'
