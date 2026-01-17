@@ -48,7 +48,7 @@ tmrn() {
 ## Desc: Kill tmux session and remove it from resurrect saved state
 ## Inputs: session_name - The name of the tmux session to kill permanently
 ## Usage: tk main
-tk() {
+tmuxkill() {
     if [ -z "$1" ]; then
         echo "Usage: tk <session_name>"
         return 1
