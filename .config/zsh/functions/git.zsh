@@ -187,3 +187,29 @@ gstats() {
     git log --oneline --date=short --pretty=format:"%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(green)%an%C(reset) %s" -10
 }
 #*
+
+#*
+## Name: gfuck
+## Desc: Fix git issues using OpenCode AI by analyzing recent terminal history
+## Inputs: None (uses fc -ln to get recent commands)
+## Usage: gfuck (run after a git command fails)
+gfuck() {
+    local recent_history=$(fc -ln -50 | tail -50)
+
+    local prompt="I just ran some git commands and encountered an error. Here's my recent terminal history:
+
+\`\`\`
+$recent_history
+\`\`\`
+
+Please analyze what went wrong and fix it. Focus on the most recent git-related error. Common issues include:
+- Push rejected (need to pull first)
+- Merge conflicts
+- Authentication issues
+- Branch issues
+
+Fix the issue by running the appropriate git commands."
+
+    opencode run -m anthropic/claude-sonnet-4-5-20250929 "$prompt"
+}
+#*
