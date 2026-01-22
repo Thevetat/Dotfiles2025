@@ -170,5 +170,8 @@ alias rrails='rbenv exec bundle exec rails'
 
 alias rrake='rbenv exec bundle exec rake'
 
+## Wave orchestration
+alias wv='~/Git/waves/wv'
+
 ## Keychain
 alias unlock='security unlock-keychain ~/Library/Keychains/login.keychain-db'
