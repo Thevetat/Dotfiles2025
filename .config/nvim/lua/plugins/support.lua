@@ -48,10 +48,10 @@ return {
         lsp = {
           win = { position = "right" },
         },
-        diagnostics = {
-          auto_open = true,
-          auto_close = true,
-        },
+        -- diagnostics = {
+        --   auto_open = true,
+        --   auto_close = true,
+        -- },
       },
     },
   },
