@@ -119,4 +119,4 @@ if [[ -d "${HOME}/.cache/pass-secrets" ]]; then
 fi
 
 # Temp Fix to Pin Claude
-export DISABLE_AUTOUPDATER=1
+# export DISABLE_AUTOUPDATER=1
