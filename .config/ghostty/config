@@ -43,3 +43,5 @@ keybind = super+shift+b=previous_tab
 clipboard-read = allow
 clipboard-write = allow
 copy-on-select = true
+
+auto-update-channel = tip
