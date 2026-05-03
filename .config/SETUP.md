@@ -167,8 +167,8 @@ brew services start tailscale
 sudo systemctl enable --now postgresql redis-server mongod tailscaled
 ```
 
-> Note: postgres@14 powers `***REDACTED*** / ***REDACTED***-rails`. postgres@17
-> powers `***REDACTED***`. Both must run.
+> Note: postgres@14 and postgres@17 are pinned to specific projects;
+> both must run.
 
 ---
 
@@ -243,7 +243,7 @@ before relying on this phase.
 | `~/.config/doppler/`                      | Doppler CLI           | `doppler login`                                  |
 | `~/.heroku/`                              | Heroku                | `heroku login`                                   |
 | `~/.codeium`, `~/.codex`, `~/.claude*`, `~/.gemini` | AI CLI auths | re-authenticate each                       |
-| `~/.***REDACTED***-credentials`                 | project-specific      | `scp` from old machine                           |
+| project-specific creds in `$HOME`         | per-project           | `scp` from old machine                           |
 | YubiKey                                   | hardware              | physically plug in, run `ykman info`             |
 | `~/.gitconfig`                            | already in dotfiles   | verify `user.email` / `user.signingkey`          |
 
