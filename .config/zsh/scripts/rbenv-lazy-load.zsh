@@ -5,8 +5,8 @@
 
 # Only set up lazy loading if rbenv is installed
 if [ -d "$HOME/.rbenv" ] || command -v rbenv >/dev/null 2>&1; then
-  # Add rbenv to PATH (lightweight, no execution)
-  export PATH="$HOME/.rbenv/bin:$PATH"
+  # Add rbenv shims and binary path (lightweight, no execution)
+  export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 
   # Function to initialize rbenv when needed
   lazy_load_rbenv() {

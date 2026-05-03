@@ -3,8 +3,8 @@
 ## Desc: Kill SSH master connection and optionally kill processes on a port
 ## Inputs: hostname - The SSH host to kill the connection for
 ##         port (optional) - Kill all processes using this port
-## Usage: ssh-kill ***REDACTED***
-##        ssh-kill ***REDACTED*** 1337
+## Usage: ssh-kill myhost
+##        ssh-kill myhost 1337
 ssh-kill() {
     if [ -z "$1" ]; then
         echo "Usage: ssh-kill <hostname> [port]"
@@ -41,7 +41,7 @@ ssh-kill() {
 ## Name: ssh-reconnect
 ## Desc: Kill SSH master connection and immediately reconnect
 ## Inputs: hostname - The SSH host to reconnect to
-## Usage: ssh-reconnect ***REDACTED***
+## Usage: ssh-reconnect myhost
 ssh-reconnect() {
     if [ -z "$1" ]; then
         echo "Usage: ssh-reconnect <hostname>"
@@ -58,7 +58,7 @@ ssh-reconnect() {
 ## Name: ssh-forward
 ## Desc: Ensure SSH port forwarding is active for a host
 ## Inputs: hostname - The SSH host to establish forwarding for
-## Usage: ssh-forward ***REDACTED***
+## Usage: ssh-forward myhost
 ssh-forward() {
     if [ -z "$1" ]; then
         echo "Usage: ssh-forward <hostname>"

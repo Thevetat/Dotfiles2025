@@ -22,6 +22,13 @@ if [ -d ~/.config/zsh/functions ]; then
   done
 fi
 
+# Source local-only overrides (project-specific, NOT tracked in dotfiles)
+if [ -d ~/.config/zsh/local ]; then
+  for func_file in ~/.config/zsh/local/*.zsh; do
+    [ -f "$func_file" ] && source "$func_file"
+  done
+fi
+
 # Source environment variables (systemd format)
 if [ -f ~/.env ]; then
     set -o allexport
@@ -66,6 +73,12 @@ export PATH="$HOME/.local/bin:$PATH"
 
 export PATH=/home/thevetat/.opencode/bin:$PATH
 export EDITOR=nvim
+
+# Wave orchestration defaults
+export WV_MODE=exec
+export WV_LOG=1
+export WV_LOG_LEVEL=debug
+export WV_LOG_CONTENT=1
 
 
 # Powerlevel10k config
@@ -117,6 +130,9 @@ eval "$(direnv hook zsh)"
 if [[ -d "${HOME}/.cache/pass-secrets" ]]; then
   find "${HOME}/.cache/pass-secrets" -type f -mmin +480 -delete 2>/dev/null
 fi
+
+# Keep rbenv shims ahead of system Ruby after all shell startup scripts mutate PATH.
+export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 
 # Temp Fix to Pin Claude
 # export DISABLE_AUTOUPDATER=1

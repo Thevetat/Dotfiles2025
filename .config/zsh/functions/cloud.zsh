@@ -6,11 +6,11 @@
 sso() {
     if [ -z "$1" ]; then
         # No argument: just do normal SSO login
-        command aws sso login --sso-session=***REDACTED***
+        command aws sso login --sso-session="${AWS_SSO_SESSION:?AWS_SSO_SESSION not set in ~/.env}"
     else
         # Argument provided: SSO login then sync cache to remote server
         echo "🔐 Logging into AWS SSO..."
-        command aws sso login --sso-session=***REDACTED***
+        command aws sso login --sso-session="${AWS_SSO_SESSION:?AWS_SSO_SESSION not set in ~/.env}"
         
         if [ $? -eq 0 ]; then
             echo "📦 Syncing SSO cache to $1..."

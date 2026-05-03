@@ -81,3 +81,19 @@ ocsv() {
     open -a Numbers "$*"
 }
 #*
+
+#*
+## Name: Yazi (cd-on-quit)
+## Desc: Launch yazi; on quit, cd shell into the last directory browsed. Use Q inside yazi to exit without cd-ing.
+## Inputs: Optional starting path / yazi args
+## Usage: y               # browse from $PWD
+##        y ~/Git         # start in ~/Git
+y() {
+    local tmp cwd
+    tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
+}
+#*

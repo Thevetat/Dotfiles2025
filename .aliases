@@ -125,15 +125,7 @@ alias mybuilder='~/git/Webdev/Nuxt/Client_Builder/Builder/builder'
 alias netlify-up='~/git/Go/netlify/netlify_script'
 alias reset-crossover='bash -c "$(curl -fsSL https://raw.githubusercontent.com/Nygosaki/crossover-trial-renew/refs/heads/main/resetCrossoverTrial.sh)"'
 
-# alias sso='aws sso login --sso-session=***REDACTED***'  # Now using function in .zsh_functions
 alias aws-console='open https://d-9067c86647.awsapps.com/start'
-
-alias rnshad="/Users/thevetat/Git/Go/***REDACTED***-vue/***REDACTED***"
-alias ssh-***REDACTED***='ssh -i ~/.ssh/***REDACTED***-processor.pem ubuntu@***REDACTED***'
-
-
-## Doppler (***REDACTED***)
-alias mafia='doppler run --project ***REDACTED*** --config dev --'
 
 ## System Stats
 alias stats='neofetch'
@@ -160,8 +152,8 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias killghosttys='pkill -f ghostty'
 
 ## Claude Code
-alias cl='claude --model claude-opus-4-5-20251101'
-alias resume='claude -c --model claude-opus-4-5-20251101'
+alias cl='claude'
+alias resume='claude -c'
 
 ## OpenCode
 alias oc='opencode'
@@ -171,7 +163,7 @@ alias rrails='rbenv exec bundle exec rails'
 alias rrake='rbenv exec bundle exec rake'
 
 ## Wave orchestration
-alias wv='~/Git/waves/wv'
+alias wv="$HOME/.local/bin/wv"
 
 ## Keychain
 alias unlock='security unlock-keychain ~/Library/Keychains/login.keychain-db'

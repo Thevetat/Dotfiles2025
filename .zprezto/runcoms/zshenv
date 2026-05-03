@@ -31,8 +31,9 @@ fi
 # Load Go
 export PATH="/usr/local/go/bin:$PATH"
 
-# rbenv is now lazy-loaded in .zshrc - see ~/.config/zsh/scripts/rbenv-lazy-load.zsh
-export PATH="$HOME/.rbenv/bin:$PATH"
+# rbenv shims must be on PATH ahead of system Ruby so non-interactive shells
+# and subprocesses resolve the project Ruby before /usr/bin/ruby.
+export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 
 
 # Load aliases for non-interactive sessions
@@ -40,4 +41,3 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 
 # Load environment variables
 [ -f ~/.env ] && source ~/.env
-

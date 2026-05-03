@@ -1,0 +1,5 @@
+[mgr]
+prepend_keymap = [
+  { on = "<Enter>",   run = "enter", desc = "Enter folder" },
+  { on = "<S-Enter>", run = "open",  desc = "Open in default app" },
+]

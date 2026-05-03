@@ -6,3 +6,4 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 # rbenv is now lazy-loaded - see ~/.config/zsh/scripts/rbenv-lazy-load.zsh
+export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
