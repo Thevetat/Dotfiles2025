@@ -33,6 +33,8 @@ keybind = super+shift+ctrl+k=resize_split:up,10
 keybind = super+shift+ctrl+l=resize_split:right,10
 
 keybind = super+w=close_surface
+keybind = super+shift+w=unbind
+keybind = ctrl+shift+w=close_window
 keybind = shift+enter=text:\r
 
 keybind = super+shift+t=new_tab
@@ -45,3 +47,10 @@ clipboard-write = allow
 copy-on-select = true
 
 auto-update-channel = tip
+
+quick-terminal-autohide = false
+quick-terminal-size = 100%,100%
+quick-terminal-keyboard-interactivity = exclusive
+keybind = shift+enter=text:\x1b\r
+
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
