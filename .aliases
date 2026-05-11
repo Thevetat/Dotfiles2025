@@ -158,6 +158,38 @@ alias resume='claude -c'
 ## OpenCode
 alias oc='opencode'
 
+## Codex
+_codex_profile() {
+    local host
+    host="$(hostname -s 2>/dev/null || hostname 2>/dev/null)"
+
+    case "$host" in
+        hermetica)
+            printf '%s\n' hermetica
+            ;;
+        *)
+            if [[ "$OSTYPE" == darwin* ]]; then
+                printf '%s\n' thevetat
+            else
+                printf '%s\n' default
+            fi
+            ;;
+    esac
+}
+
+codex() {
+    local profile
+    profile="$(_codex_profile)"
+
+    if [[ -n "$profile" && "$profile" != default ]]; then
+        command codex --profile "$profile" "$@"
+    else
+        command codex "$@"
+    fi
+}
+
+alias co='codex'
+
 alias rrails='rbenv exec bundle exec rails'
 
 alias rrake='rbenv exec bundle exec rake'

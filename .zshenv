@@ -1,1 +1,1 @@
-/Users/thevetat/.zprezto/runcoms/zshenv
+/home/hermetica/.zprezto/runcoms/zshenv
