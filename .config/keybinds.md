@@ -36,7 +36,9 @@
 
 - `Cmd+Shift+S` - New split right
 - `Cmd+Shift+V` - New split down
-- `Cmd+W` - Close current surface/pane
+- `Cmd+Shift+W` - Close current surface/split
+- `Cmd+W` - Disabled to avoid accidental closes
+- `Ctrl+Shift+W` - Close whole Ghostty window
 
 **Split Navigation (Arrow Keys):**
 
@@ -203,13 +205,14 @@ You're currently using `Alt+T` to create new Ghostty windows instead of leveragi
 
 #### 1. Enhanced Ghostty Split Workflow
 
-**Current Ghostty keybinds are good, but consider these additions:**
+**Current Ghostty keybinds:**
 
 ```
-# Add to ~/.config/ghostty/config
-keybind = super+d=new_split:right
-keybind = super+shift+d=new_split:down
-keybind = super+w=close_surface
+keybind = super+shift+s=new_split:right
+keybind = super+shift+v=new_split:down
+keybind = super+w=unbind
+keybind = super+shift+w=close_surface
+keybind = ctrl+shift+w=close_window
 ```
 
 #### 2. Unified Navigation Pattern
@@ -230,8 +233,8 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 
 **Instead of `Alt+T` for new windows, use:**
 
-- `Cmd+D` - New vertical split in Ghostty (like tmux)
-- `Cmd+Shift+D` - New horizontal split in Ghostty
+- `Cmd+Shift+S` - New split right in Ghostty
+- `Cmd+Shift+V` - New split down in Ghostty
 - `Alt+S` - New horizontal split via yabai (system-wide)
 - `Alt+V` - New vertical split via yabai (system-wide)
 
@@ -239,26 +242,26 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 
 | Action               | Neovim       | Ghostty       | skhd/yabai |
 | -------------------- | ------------ | ------------- | ---------- |
-| **Navigate Left**    | `Ctrl+H`     | `Cmd+Shift+H` | `Alt+H`    |
-| **Navigate Down**    | `Ctrl+J`     | `Cmd+Shift+J` | `Alt+J`    |
-| **Navigate Up**      | `Ctrl+K`     | `Cmd+Shift+K` | `Alt+K`    |
-| **Navigate Right**   | `Ctrl+L`     | `Cmd+Shift+L` | `Alt+L`    |
-| **Split Vertical**   | `<leader>sv` | `Cmd+D`       | `Alt+S`    |
-| **Split Horizontal** | `<leader>sh` | `Cmd+Shift+D` | `Alt+V`    |
+| **Navigate Left**    | `Ctrl+H`     | `Cmd+Shift+Left` | `Alt+H`    |
+| **Navigate Down**    | `Ctrl+J`     | `Cmd+Shift+Down` | `Alt+J`    |
+| **Navigate Up**      | `Ctrl+K`     | `Cmd+Shift+Up` | `Alt+K`    |
+| **Navigate Right**   | `Ctrl+L`     | `Cmd+Shift+Right` | `Alt+L`    |
+| **Split Right**      | `<leader>ws` | `Cmd+Shift+S` | `Alt+S`    |
+| **Split Down**       | `<leader>wv` | `Cmd+Shift+V` | `Alt+V`    |
 
 ### Implementation Priority
 
-1. **High Priority**: Enable Neovim window navigation keybinds
-2. **High Priority**: Add `Cmd+D` and `Cmd+Shift+D` to Ghostty for easier splitting
-3. **Medium Priority**: Add `Cmd+W` to Ghostty for closing splits
+1. **High Priority**: Keep Neovim/tmux navigation on `Ctrl+H/J/K/L`
+2. **High Priority**: Use `Cmd+Shift+S/V` for Ghostty splits when outside tmux
+3. **Medium Priority**: Use `Cmd+Shift+W` for closing Ghostty splits/surfaces
 4. **Low Priority**: Consider reducing reliance on `Alt+T` for new windows
 
 ### Workflow Recommendations
 
 **For Development:**
 
-1. Use `Cmd+D` to create vertical splits in Ghostty for side-by-side terminals
-2. Use `Cmd+Shift+H/J/K/L` to navigate between Ghostty splits
+1. Use `Cmd+Shift+S/V` to create Ghostty splits when you are outside tmux
+2. Use `Cmd+Shift+Arrow` to navigate between Ghostty splits
 3. Use `Ctrl+H/J/K/L` to navigate between Neovim windows/splits
 4. Use `Alt+H/J/K/L` for system-wide window navigation when needed
 
