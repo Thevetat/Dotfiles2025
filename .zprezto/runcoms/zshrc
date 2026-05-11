@@ -3,9 +3,17 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+for brew_prefix in /opt/homebrew /home/linuxbrew/.linuxbrew /usr/local; do
+  if [[ -x "$brew_prefix/bin/brew" ]]; then
+    eval "$("$brew_prefix/bin/brew" shellenv)"
+    break
+  fi
+done
+unset brew_prefix
+
 # Add Homebrew completions to fpath (must be before Prezto)
-if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
-  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
 fi
 
 # Source Prezto
