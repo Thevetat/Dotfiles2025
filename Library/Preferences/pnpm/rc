@@ -1,0 +1,4 @@
+minimum-release-age=4320
+minimum-release-age-exclude[]=@aethernet/*
+minimum-release-age-exclude[]=@freefall/*
+minimum-release-age-exclude[]=@hermes/*
