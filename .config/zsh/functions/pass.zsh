@@ -5,6 +5,46 @@
 PASS_CACHE_DIR="${HOME}/.cache/pass-secrets"
 PASS_CACHE_TTL=$((8 * 60))  # 8 hours in minutes
 
+if (( ! $+functions[_copy_clipboard] )); then
+  function _copy_clipboard() {
+    if command -v pbcopy >/dev/null 2>&1; then
+      pbcopy
+    elif command -v xclip >/dev/null 2>&1; then
+      xclip -selection clipboard
+    elif command -v xsel >/dev/null 2>&1; then
+      xsel --clipboard --input
+    elif command -v wl-copy >/dev/null 2>&1; then
+      wl-copy
+    elif command -v clip.exe >/dev/null 2>&1; then
+      clip.exe
+    else
+      echo "Error: no clipboard command found (pbcopy/xclip/xsel/wl-copy/clip.exe)" >&2
+      return 1
+    fi
+  }
+fi
+
+function _pass_cache_key() {
+  if command -v md5sum >/dev/null 2>&1; then
+    printf '%s' "$1" | md5sum | awk '{print $1}'
+  elif command -v md5 >/dev/null 2>&1; then
+    printf '%s' "$1" | md5 -q 2>/dev/null || printf '%s' "$1" | md5 | awk '{print $NF}'
+  elif command -v openssl >/dev/null 2>&1; then
+    printf '%s' "$1" | openssl dgst -md5 -r | awk '{print $1}'
+  else
+    echo "Error: no MD5 command found (md5sum/md5/openssl)" >&2
+    return 1
+  fi
+}
+
+function _pass_file_mtime() {
+  local file="$1"
+  local mtime
+
+  mtime=$(stat -c %Y "$file" 2>/dev/null) || mtime=$(stat -f %m "$file" 2>/dev/null) || mtime=0
+  printf '%s' "$mtime"
+}
+
 # Retrieve secret with caching
 # Usage: secret <pass-path>
 # Example: secret projects/trash-mafia/dev/database-url
@@ -21,11 +61,13 @@ function secret() {
   chmod 700 "$PASS_CACHE_DIR" 2>/dev/null
 
   # Generate cache filename from hash of the key
-  local cache_file="${PASS_CACHE_DIR}/$(echo -n "$key" | md5)"
+  local cache_key
+  cache_key="$(_pass_cache_key "$key")" || return 1
+  local cache_file="${PASS_CACHE_DIR}/${cache_key}"
 
   # Check if cache exists and is fresh (< 8 hours old)
   if [[ -f "$cache_file" ]]; then
-    local cache_age=$(($(date +%s) - $(stat -f %m "$cache_file" 2>/dev/null || echo 0)))
+    local cache_age=$(($(date +%s) - $(_pass_file_mtime "$cache_file")))
     local cache_ttl_seconds=$((PASS_CACHE_TTL * 60))
 
     if [[ $cache_age -lt $cache_ttl_seconds ]]; then
@@ -80,7 +122,7 @@ function pass-cache-list() {
   for cache_file in "$PASS_CACHE_DIR"/*; do
     if [[ -f "$cache_file" ]]; then
       local filename=$(basename "$cache_file")
-      local age_seconds=$(($(date +%s) - $(stat -f %m "$cache_file" 2>/dev/null || echo 0)))
+      local age_seconds=$(($(date +%s) - $(_pass_file_mtime "$cache_file")))
       local age_minutes=$((age_seconds / 60))
       local age_hours=$((age_minutes / 60))
 
@@ -125,7 +167,10 @@ function npass() {
   local secret="$(openssl rand -base64 "$bytes")"
 
   pass insert -fm "$entry" <<<"$secret" || return $?
-  printf '%s' "$secret" | pbcopy
-  echo "Stored secret at '$entry' (copied to clipboard):"
+  if printf '%s' "$secret" | _copy_clipboard; then
+    echo "Stored secret at '$entry' (copied to clipboard):"
+  else
+    echo "Stored secret at '$entry' (clipboard unavailable):"
+  fi
   echo "$secret"
 }

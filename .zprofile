@@ -1,1 +1,1 @@
-/home/hermetica/.zprezto/runcoms/zprofile
+.zprezto/runcoms/zprofile

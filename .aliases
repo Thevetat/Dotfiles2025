@@ -164,8 +164,8 @@ _codex_profile() {
     host="$(hostname -s 2>/dev/null || hostname 2>/dev/null)"
 
     case "$host" in
-        hermetica)
-            printf '%s\n' hermetica
+        aether)
+            printf '%s\n' aether
             ;;
         *)
             if [[ "$OSTYPE" == darwin* ]]; then
@@ -199,3 +199,4 @@ alias wv="$HOME/.local/bin/wv"
 
 ## Keychain
 alias unlock='security unlock-keychain ~/Library/Keychains/login.keychain-db'
+alias bones='/usr/bin/git --git-dir=$HOME/Git/bones-ai --work-tree=$HOME/Git/RollingBones'

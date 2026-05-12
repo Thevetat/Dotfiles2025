@@ -1,3 +1,22 @@
+if (( ! $+functions[_copy_clipboard] )); then
+  _copy_clipboard() {
+    if command -v pbcopy >/dev/null 2>&1; then
+      pbcopy
+    elif command -v xclip >/dev/null 2>&1; then
+      xclip -selection clipboard
+    elif command -v xsel >/dev/null 2>&1; then
+      xsel --clipboard --input
+    elif command -v wl-copy >/dev/null 2>&1; then
+      wl-copy
+    elif command -v clip.exe >/dev/null 2>&1; then
+      clip.exe
+    else
+      echo "Error: no clipboard command found (pbcopy/xclip/xsel/wl-copy/clip.exe)" >&2
+      return 1
+    fi
+  }
+fi
+
 #*
 ## Name: 
 ## Desc: 
@@ -35,8 +54,14 @@ m() {
 ## Inputs:
 ## Usage:
 newssh() {
-yes "y" | ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/"$*" -N ""
-cat ~/.ssh/"$*".pub | xsel --clipboard
+    if [[ -z "$1" ]]; then
+        echo "Usage: newssh <key-name>"
+        return 1
+    fi
+
+    local key_path="$HOME/.ssh/$*"
+    yes "y" | ssh-keygen -o -a 100 -t ed25519 -f "$key_path" -N ""
+    _copy_clipboard < "${key_path}.pub"
 }
 #*
 
@@ -46,7 +71,12 @@ cat ~/.ssh/"$*".pub | xsel --clipboard
 ## Inputs:
 ## Usage:
 cf() {
-    xsel -b < "$*"
+    if [[ -z "$1" ]]; then
+        echo "Usage: cf <file>"
+        return 1
+    fi
+
+    _copy_clipboard < "$1"
 }
 #*
 
@@ -78,7 +108,12 @@ cw() {
 ## Inputs: CSV filename
 ## Usage: ocsv database_account_statement.csv
 ocsv() {
-    open -a Numbers "$*"
+    if [[ "$OSTYPE" != darwin* ]]; then
+        echo "ocsv requires macOS Numbers"
+        return 1
+    fi
+
+    open -a Numbers "$@"
 }
 #*
 

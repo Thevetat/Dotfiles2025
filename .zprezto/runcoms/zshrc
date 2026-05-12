@@ -3,17 +3,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-for brew_prefix in /opt/homebrew /home/linuxbrew/.linuxbrew /usr/local; do
-  if [[ -x "$brew_prefix/bin/brew" ]]; then
-    eval "$("$brew_prefix/bin/brew" shellenv)"
-    break
-  fi
-done
-unset brew_prefix
-
 # Add Homebrew completions to fpath (must be before Prezto)
-if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
-  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+if [[ "$OSTYPE" == "darwin"* && -d /opt/homebrew/share/zsh/site-functions ]]; then
+  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
 fi
 
 # Source Prezto
@@ -70,7 +62,6 @@ fi
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 
 export D2_DARK_THEME=200
@@ -79,7 +70,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
-export PATH=/home/thevetat/.opencode/bin:$PATH
+export PATH="$HOME/.opencode/bin:$PATH"
 export EDITOR=nvim
 
 # Wave orchestration defaults
@@ -118,21 +109,23 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
   # Export terminal info for SSH OSC 52 support
   export TERM_PROGRAM="${TERM_PROGRAM:-tmux}"
 
-  # Auto-attach to tmux main session on SSH
-  if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ]; then
+  # Auto-attach to tmux main session on real interactive SSH terminals only.
+  # Guarding -t 0/-t 1 prevents "open terminal failed: not a terminal"
+  # during non-interactive ssh/scp/ansible commands.
+  if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ] && [ -t 0 ] && [ -t 1 ]; then
       if command -v tmux >/dev/null 2>&1; then
-         tmux -u new -A -s main && export TERM=xterm-256color
+         exec tmux -u new -A -s main
       fi
   fi
 fi
 
 
 # bun completions
-[ -s "/Users/thevetat/.bun/_bun" ] && source "/Users/thevetat/.bun/_bun"
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
 
 # direnv - auto-load environment variables per directory
-eval "$(direnv hook zsh)"
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
 # Clean expired pass cache on shell startup (8 hour TTL)
 if [[ -d "${HOME}/.cache/pass-secrets" ]]; then
