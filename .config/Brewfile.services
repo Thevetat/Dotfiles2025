@@ -1,0 +1,11 @@
+# ~/.config/Brewfile.services
+# Host service bundle. Apply only on machines that should run these services.
+
+tap "homebrew/services"
+tap "mongodb/brew"
+
+brew "mongodb/brew/mongodb-community"
+brew "postgresql@14", restart_service: :changed
+brew "postgresql@17"
+brew "redis", restart_service: :changed
+brew "tailscale", restart_service: :changed

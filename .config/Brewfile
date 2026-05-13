@@ -1,26 +1,16 @@
 # ~/.config/Brewfile
-# Source of truth for Homebrew packages on macOS.
-# Apply on a fresh machine: `brew bundle install --file=~/.config/Brewfile`
-# Update from current machine: `brew bundle dump --file=~/.config/Brewfile --force --formula --cask --tap`
+# Base Homebrew bundle for shared macOS CLI/dev tooling.
 
-# === Taps ===
 tap "amar1729/formulae"
 tap "dopplerhq/cli"
-tap "felixkratz/formulae"
-tap "gcenx/wine"
 tap "getsentry/tools"
 tap "homebrew/services"
-tap "jackielii/tap"
 tap "jesseduffield/lazydocker"
-tap "kegworks-app/kegworks"
-tap "koekeishiya/formulae"
 tap "mongodb/brew"
-tap "steipete/tap"
 tap "terrastruct/tap"
 tap "tinygo-org/tools"
 tap "wedow/tools"
 
-# === CLI core ===
 brew "ast-grep"
 brew "btop"
 brew "coreutils"
@@ -50,13 +40,11 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
-# === Build / system ===
 brew "cmake"
 brew "gcc"
 brew "luajit"
 brew "qt@5"
 
-# === Media (ffmpeg + helpers) ===
 brew "aom"
 brew "ffmpeg"
 brew "imagemagick"
@@ -66,38 +54,26 @@ brew "sevenzip"
 brew "tesseract"
 brew "ttyd"
 
-# === Dev langs / tools ===
 brew "awscli"
-brew "cocoapods"           # iOS
+brew "cocoapods"
 brew "go"
 brew "golang-migrate"
 brew "golangci-lint"
 brew "heroku"
-brew "mise"                # replaces nvm/rbenv/pyenv (manages node, ruby, python, etc.)
-brew "pnpm"                # used outside mise for global npm tools
-brew "swift-format"        # iOS
+brew "mise"
+brew "pnpm"
+brew "swift-format"
 brew "tinygo-org/tools/tinygo"
 
-# === Containers / VMs ===
-brew "docker"              # CLI only — colima provides the daemon
-brew "lima"                # transitive dep of colima but pin explicitly
-brew "qemu"                # transitive dep of lima but pin explicitly
-# colima itself is missing from current install — add if/when needed:
-# brew "colima"
+brew "docker"
+brew "lima"
+brew "qemu"
 
-# === Databases ===
-brew "mongodb/brew/mongodb-community"
-brew "postgresql@14", restart_service: :changed
-brew "postgresql@17"
-brew "redis", restart_service: :changed
-
-# === Diagrams / utility ===
 brew "d2"
 brew "gnuplot"
 brew "terrastruct/tap/tala"
-brew "vhs"                 # remove if not recording terminal demos
+brew "vhs"
 
-# === Secrets / auth ===
 brew "amar1729/formulae/browserpass"
 brew "dopplerhq/cli/doppler"
 brew "mkcert"
@@ -107,53 +83,6 @@ brew "pinentry-mac"
 brew "ykman"
 brew "wedow/tools/ticket"
 
-# === Networking ===
-brew "tailscale", restart_service: :changed
 brew "wireguard-go"
-
-# === macOS window stack ===
-brew "blueutil"
-brew "ddcctl"
-brew "felixkratz/formulae/sketchybar"
-brew "jackielii/tap/skhd-zig"
-brew "koekeishiya/formulae/yabai"
-brew "m1ddc"
-brew "mas"
-brew "switchaudio-osx"
-
-# === Lazy* ecosystem ===
 brew "jesseduffield/lazydocker/lazydocker"
-
-# === Other ===
 brew "getsentry/tools/sentry"
-
-# === Casks ===
-cask "brave-browser"
-cask "dbeaver-community"
-cask "discord"
-cask "excalidrawz"
-cask "figma"
-cask "firefox"
-cask "font-jetbrains-mono-nerd-font"
-cask "google-chrome"
-cask "http-toolkit"
-cask "inkscape"
-cask "insomnia"
-cask "kando"
-cask "karabiner-elements"
-cask "gcenx/wine/kegworks"
-cask "lulu"
-cask "maccy"
-cask "middleclick"
-cask "monitorcontrol"
-cask "ngrok"
-cask "pgadmin4"
-cask "polypane"
-cask "sf-symbols"
-cask "sloth"
-cask "spotify"
-cask "steipete/tap/codexbar"
-cask "swiftformat-for-xcode"
-cask "the-unarchiver"
-cask "visual-studio-code"
-cask "vlc"

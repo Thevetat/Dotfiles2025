@@ -35,7 +35,7 @@
 
 ## macOS And GUI Layer
 
-- [ ] Split `.config/Brewfile` into shared CLI, macOS GUI, and host services.
+- [x] Split `.config/Brewfile` into shared CLI, macOS GUI, and host services.
 - [ ] Move Deskflow LaunchAgents to local/private host setup.
 - [ ] Move Karabiner device-specific config to host-specific or local/private setup.
 - [x] Keep SketchyBar source scripts only where useful; untrack compiled helper binary.
