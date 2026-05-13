@@ -21,7 +21,7 @@
 
 - [x] Keep portable aliases/functions in shared tracked files.
 - [x] Split `.aliases` into shared, OS-specific, host-specific, and local/private pieces.
-- [ ] Split NVM/rbenv/conda startup by OS and interaction mode.
+- [x] Split NVM/rbenv/conda startup by OS and interaction mode.
 - [x] Remove duplicate Codex wrapper definitions and keep one source of truth.
 - [x] Decide whether `pass.zsh` and `project-env.zsh` stay public as generic tooling or move private/local.
 

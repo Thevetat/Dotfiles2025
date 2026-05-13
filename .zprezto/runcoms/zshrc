@@ -74,6 +74,7 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 [ -f ~/.config/zsh/scripts/nvm-lazy-load.zsh ] && source ~/.config/zsh/scripts/nvm-lazy-load.zsh
 [ -f ~/.config/zsh/scripts/rbenv-lazy-load.zsh ] && source ~/.config/zsh/scripts/rbenv-lazy-load.zsh
 [ -f ~/.config/zsh/scripts/conda-lazy-load.zsh ] && source ~/.config/zsh/scripts/conda-lazy-load.zsh
+[ -f ~/.config/zsh/scripts/codex-profile.zsh ] && source ~/.config/zsh/scripts/codex-profile.zsh
 
 # bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
