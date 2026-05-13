@@ -3,10 +3,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Add Homebrew completions to fpath (must be before Prezto)
-if [[ "$OSTYPE" == "darwin"* && -d /opt/homebrew/share/zsh/site-functions ]]; then
-  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
-fi
+case "$OSTYPE" in
+  darwin*) [ -f ~/.config/zsh/os/darwin.zsh ] && source ~/.config/zsh/os/darwin.zsh ;;
+  linux-gnu*) [ -f ~/.config/zsh/os/linux.zsh ] && source ~/.config/zsh/os/linux.zsh ;;
+esac
+
+host_name="$(hostname -s 2>/dev/null || hostname 2>/dev/null)"
+host_name="${host_name:l}"
+[ -n "$host_name" ] && [ -f "$HOME/.config/zsh/hosts/${host_name}.zsh" ] && source "$HOME/.config/zsh/hosts/${host_name}.zsh"
+unset host_name
 
 # Source Prezto
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -14,7 +19,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 # Source common files
 [ -f ~/.aliases ] && source ~/.aliases
-[ -f ~/.zprofile ] && source ~/.zprofile
 # Source modular function files
 if [ -d ~/.config/zsh/functions ]; then
   for func_file in ~/.config/zsh/functions/*.zsh; do
@@ -38,26 +42,6 @@ fi
 
 # Cargo/Rust
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
-# Platform-specific configuration
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  # Mac-specific
-  # NVM is now lazy-loaded - see lazy-loading section below
-  # [ -f /opt/homebrew/opt/nvm/nvm.sh ] && source /opt/homebrew/opt/nvm/nvm.sh
-
-  # Conda is now lazy-loaded - see lazy-loading scripts below
-
-  # Mac-specific paths
-  export PATH="$HOME/.codeium/windsurf/bin:$PATH"
-  export PATH="$HOME/.opencode/bin:$PATH"
-  export DOCKER_HOST="unix:///$HOME/Library/Containers/com.docker.docker/Data/docker.raw.sock"
-
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  # Linux-specific
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-fi
 
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
@@ -90,35 +74,6 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 [ -f ~/.config/zsh/scripts/nvm-lazy-load.zsh ] && source ~/.config/zsh/scripts/nvm-lazy-load.zsh
 [ -f ~/.config/zsh/scripts/rbenv-lazy-load.zsh ] && source ~/.config/zsh/scripts/rbenv-lazy-load.zsh
 [ -f ~/.config/zsh/scripts/conda-lazy-load.zsh ] && source ~/.config/zsh/scripts/conda-lazy-load.zsh
-
-# Linux-specific SSH settings to prevent glitching
-if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -n $SSH_CONNECTION ]]; then
-  # Disable auto-correction
-  unsetopt CORRECT
-  unsetopt CORRECT_ALL
-
-  # Disable flow control (fixes Ctrl+S/Ctrl+Q issues) - only if we have a TTY
-  if [ -t 0 ]; then
-    stty -ixon 2>/dev/null
-  fi
-
-  # Ensure UTF-8 locale
-  export LANG=en_US.UTF-8
-  export LC_ALL=en_US.UTF-8
-
-  # Export terminal info for SSH OSC 52 support
-  export TERM_PROGRAM="${TERM_PROGRAM:-tmux}"
-
-  # Auto-attach to tmux main session on real interactive SSH terminals only.
-  # Guarding -t 0/-t 1 prevents "open terminal failed: not a terminal"
-  # during non-interactive ssh/scp/ansible commands.
-  if [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ] && [ -t 0 ] && [ -t 1 ]; then
-      if command -v tmux >/dev/null 2>&1; then
-         exec tmux -u new -A -s main
-      fi
-  fi
-fi
-
 
 # bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"

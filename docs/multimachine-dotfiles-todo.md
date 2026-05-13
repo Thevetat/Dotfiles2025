@@ -11,10 +11,10 @@
 ## Startup Split
 
 - [x] Keep `.zshenv` minimal: environment/path only, no aliases, no `.env`, no interactive shell setup.
-- [ ] Keep `.zprofile` for login-shell setup only.
-- [ ] Keep `.zshrc` / Prezto runcoms for interactive shell behavior.
-- [ ] Add explicit OS loaders for Darwin and Linux.
-- [ ] Add explicit host loaders for Air, Aether, and this machine.
+- [x] Keep `.zprofile` for login-shell setup only.
+- [x] Keep `.zshrc` / Prezto runcoms for interactive shell behavior.
+- [x] Add explicit OS loaders for Darwin and Linux.
+- [x] Add explicit host loaders for Air, Aether, and this machine.
 - [ ] Move private local overrides into ignored `~/.config/zsh/local/*.zsh`.
 
 ## Shared Shell Layer
