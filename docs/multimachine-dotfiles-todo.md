@@ -36,7 +36,7 @@
 ## macOS And GUI Layer
 
 - [x] Split `.config/Brewfile` into shared CLI, macOS GUI, and host services.
-- [ ] Move Deskflow LaunchAgents to local/private host setup.
+- [x] Move Deskflow LaunchAgents to local/private host setup.
 - [x] Keep Karabiner tracked for now; Air rule state is committed.
 - [x] Keep SketchyBar source scripts only where useful; untrack compiled helper binary.
 - [x] Untrack stale backup files such as `.config/skhd/skhdrc.bak`.
@@ -44,7 +44,7 @@
 
 ### Deskflow Decision
 
-Deskflow LaunchAgents should be local/private because they encode machine role and local launchd state: client vs server, GUI session assumptions, app install path, and the local `~/Library/Deskflow/Deskflow.conf` path. The public repo can keep generic functions or templates, but loaded `~/Library/LaunchAgents/com.thevetat.deskflow-*.plist` files should live per machine or in private `~/ai-tools`.
+Deskflow LaunchAgents live per machine because they encode machine role and local launchd state: client vs server, GUI session assumptions, app install path, and the local `~/Library/Deskflow/Deskflow.conf` path. The public repo can keep generic functions or templates, but loaded `~/Library/LaunchAgents/com.thevetat.deskflow-*.plist` files are ignored local files.
 
 ## Agent Skill
 

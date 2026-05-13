@@ -13,4 +13,5 @@
 .config/zsh/local/
 .config/sketchybar/helper/helper
 .config/skhd/skhdrc.bak
+Library/LaunchAgents/com.thevetat.deskflow-*.plist
 repos
