@@ -44,7 +44,7 @@
 
 ## Agent Skill
 
-- [ ] Create a private dotfiles skill in `~/ai-tools`.
-- [ ] Symlink/install that skill into Codex's skill path.
-- [ ] Include hard rules: inspect status first, pull fast-forward-only, never stage private files, commit/push dotfiles changes immediately.
-- [ ] Document machine roles and which files are public, host-specific, local-only, or private.
+- [x] Create a private dotfiles skill in `~/ai-tools`.
+- [x] Symlink/install that skill into Codex's skill path.
+- [x] Include hard rules: inspect status first, pull fast-forward-only, never stage private files, commit/push dotfiles changes immediately.
+- [x] Document machine roles and which files are public, host-specific, local-only, or private.
