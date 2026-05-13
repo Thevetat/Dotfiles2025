@@ -11,4 +11,6 @@
 !.ssh/
 .ssh/*
 .config/zsh/local/
+.config/sketchybar/helper/helper
+.config/skhd/skhdrc.bak
 repos

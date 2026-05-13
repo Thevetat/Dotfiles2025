@@ -38,8 +38,8 @@
 - [ ] Split `.config/Brewfile` into shared CLI, macOS GUI, and host services.
 - [ ] Move Deskflow LaunchAgents to local/private host setup.
 - [ ] Move Karabiner device-specific config to host-specific or local/private setup.
-- [ ] Keep SketchyBar source scripts only where useful; untrack compiled helper binary.
-- [ ] Untrack stale backup files such as `.config/skhd/skhdrc.bak`.
+- [x] Keep SketchyBar source scripts only where useful; untrack compiled helper binary.
+- [x] Untrack stale backup files such as `.config/skhd/skhdrc.bak`.
 - [ ] Decide whether yabai/skhd are shared macOS config or host-specific workstation config.
 
 ## Agent Skill
