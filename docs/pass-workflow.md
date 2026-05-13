@@ -72,6 +72,8 @@ gpg --full-generate-key
 
 ### 4. Backup Keys (Before Transfer)
 
+This creates a temporary private-key export so the same key can be loaded onto the backup YubiKey. Keep this directory local, encrypted, and short-lived. Delete it after both YubiKeys are provisioned, and make sure it is not captured by dotfiles, cloud sync, shell history, or long-lived backups.
+
 ```bash
 mkdir -p ~/yubikey-gpg-backup
 chmod 700 ~/yubikey-gpg-backup
@@ -460,13 +462,14 @@ echo "max-cache-ttl 64800" >> ~/.gnupg/gpg-agent.conf
 
 ## Security Notes
 
-- **Private keys NEVER leave YubiKey** - they're locked in hardware
+- **After setup, private keys stay on YubiKey** - the initial backup-transfer step temporarily exports them and must be cleaned up immediately
 - **PIN required** once per 18-hour session
 - **Both YubiKeys identical** - either works, one is backup
 - **3 wrong PIN attempts** = locked (requires Admin PIN to reset)
 - **8 wrong Admin PIN attempts** = YubiKey permanently locked
 - **Password store encrypted** with GPG key on YubiKey
 - **No secrets in .envrc** - they're pulled from pass at runtime
+- **No temporary private-key backups in dotfiles or cloud sync** - keep `~/yubikey-gpg-backup` short-lived and local only
 
 ---
 

@@ -23,15 +23,15 @@
 - [x] Split `.aliases` into shared, OS-specific, host-specific, and local/private pieces.
 - [ ] Split NVM/rbenv/conda startup by OS and interaction mode.
 - [x] Remove duplicate Codex wrapper definitions and keep one source of truth.
-- [ ] Decide whether `pass.zsh` and `project-env.zsh` stay public as generic tooling or move private/local.
+- [x] Decide whether `pass.zsh` and `project-env.zsh` stay public as generic tooling or move private/local.
 
 ## Public/Private Boundary
 
-- [ ] Keep real `.env`, `repos`, `.ssh`, `.password-store`, `.gnupg`, and pass caches local-only.
-- [ ] Keep `.env.example` and `repos.example` public placeholders only.
+- [x] Keep real `.env`, `repos`, `.ssh`, `.password-store`, `.gnupg`, and pass caches local-only.
+- [x] Keep `.env.example` and `repos.example` public placeholders only.
 - [x] Move sensitive project paths, client targets, and private repo shortcuts out of public tracked files.
-- [ ] Review `docs/pass-workflow.md` for public-safe wording around temporary private key backups.
-- [ ] Move agent operating rules and private workflow docs to private `~/ai-tools`.
+- [x] Review `docs/pass-workflow.md` for public-safe wording around temporary private key backups.
+- [x] Move agent operating rules and private workflow docs to private `~/ai-tools`.
 
 ## macOS And GUI Layer
 
