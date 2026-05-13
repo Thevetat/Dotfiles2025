@@ -10,4 +10,5 @@
 .ssh/
 !.ssh/
 .ssh/*
+.config/zsh/local/
 repos

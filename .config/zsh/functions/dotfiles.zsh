@@ -27,7 +27,7 @@ dfca() {
   fi
 
   if [ "$behind" -gt 0 ]; then
-    dotfiles pull --ff-only || return 1
+    dotfiles pull --ff-only origin "$branch" || return 1
   fi
 
   dotfiles add -u && dotfiles commit -m "$*" && dotfiles push
@@ -35,7 +35,9 @@ dfca() {
 
 dfup() {
   dotfiles fetch origin || return 1
-  dotfiles pull --ff-only
+  local branch
+  branch="$(dotfiles rev-parse --abbrev-ref HEAD 2>/dev/null)" || return 1
+  dotfiles pull --ff-only origin "$branch"
 }
 
 dfpub() {

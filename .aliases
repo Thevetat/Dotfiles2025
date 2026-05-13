@@ -1,45 +1,19 @@
-## Dotfiles Bare Git alias
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-## Pop OS
-alias nvid='sudo system76-power graphics nvidia'
-alias hybrid='sudo system76-power graphics hybrid'
-alias integrated='sudo system76-power graphics integrated'
-
-## Edit Files
-alias i3conf='nvim ~/.config/regolith2/i3/config'
-alias i3Xres='nvim ~/.config/regolith2/Xresources'
 alias aliasconf='nvim ~/.aliases'
-alias aconf='cd ~/.dotlinks && nvim'
 alias vconf='cd ~/.config/nvim/lua && nvim'
 
-## Refresh BG
-alias wpr='feh --no-fehbg --bg-fill "'~/Pictures/wallpapers/laser.jpg'"'
-
-## Development
-alias qde='quasar dev -m electron' alias qd='quasar dev'
+alias qde='quasar dev -m electron'
+alias qd='quasar dev'
 alias ylf='yarn lint --fix'
 alias yd='yarn dev'
-alias ys="yarn start"
+alias ys='yarn start'
 
-## Node Modules
 alias lnm='find . -name "node_modules" -type d -prune | xargs dust -cHp -d 1 -z 15m'
 alias dnm='find . -name "node_modules" -type d -prune -exec rm -rf "{}" +'
 alias dpnpm='find . -name "pnpm-lock.yaml" -type f -exec rm -f {} \;'
 
-## Dust
 alias du='dust'
-
-## Quick Dir
-alias ts='cd ~/Git/Typescript/ && l'
-
-## Movement
-alias q='cd ~/Git/Quasar'
-alias gi='cd ~/Git'
-alias dotex="cd ~/Git/External/dotfile_reference/ && nvim"
-## Util alias class='xprop | grep "CLASS"'
-
-## Lazy
 alias lg='lazygit'
 alias lzd='lazydocker'
 alias top='bpytop'
@@ -47,162 +21,66 @@ alias sz='source ~/.zshrc'
 alias n='nvim'
 alias lazyn='export XDG_CONFIG_HOME=~/.config/nvimA; export XDG_DATA_HOME=~/.local/share/nvimA; nvim'
 
-## Tmux
-# ta function moved to .zsh_functions
 alias tl='tmux ls'
 alias tn='TERM=screen-256color tmux -u new -s'
-alias td='tmux detach-client -E "exit"'  # Detach and exit shell in one command
+alias td='tmux detach-client -E "exit"'
 
-
-## Open Local
-alias n.='nautilus .'
 alias c.='cursor .'
-alias f.='open .'
 
-## Git
-# aigc is now a function in nvm-lazy-load.zsh for lazy NVM loading
-# alias aigc='git add . && oco --yes --no-verify'
-
-## Pass
 alias psup='pass git pull && pass git push'
 
-## Proton Mail Bridge (headless CLI, isolated Bridge-only pass/GPG store)
 alias proton-bridge-cli='$HOME/.local/bin/proton-bridge-cli'
 alias pbridge='proton-bridge-cli'
 
-## Zellij
 alias zj='zellij'
 alias shoplift='zellij --layout shoplift'
 alias firefly='zellij --layout firefly'
-alias zjv="zellij --layout vite"
-alias zjd="zellij --layout docs"
-alias zjb="zellij --layout blank"
-alias zjn="zellij --layout netlify"
+alias zjv='zellij --layout vite'
+alias zjd='zellij --layout docs'
+alias zjb='zellij --layout blank'
+alias zjn='zellij --layout netlify'
 
 alias tree='exa -a -T --icons --group-directories-first'
 
 for a in :q :q!; do alias "$a"='exit'; done
 
-alias devenv='sudo virsh start Current_Config && sudo virt-viewer --class Current_Config Current_Config && sudo remote-viewer spice://127.0.0.1:5900 --class Current_Config_2'
+alias sail='./vendor/bin/sail'
+alias art='sail art'
 
-# Sail
-alias sail="./vendor/bin/sail"
-alias art="sail art"
+alias d2i='gcd git@github.com:terrastruct/d2.git'
+alias d2c='./ci/release/build.sh --install'
+alias d2u='curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall'
 
-## D2
-alias d2i="gcd git@github.com:terrastruct/d2.git"
-alias d2c="./ci/release/build.sh --install"
-alias d2d="rm -r -f /home/dean/.local/bin/d2 && rm -r -f /home/dean/.local/lib/d2 && rm -r -f /home/dean/Git/External/d2/"
-alias d2u="curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall"
-
-alias obsidian='~/Software/Obsidian-1.1.9.AppImage'
-alias beekeeper='~/Software/Beekeeper-Studio-Ultimate-3.8.9.AppImage'
-
-alias nocam='sudo modprobe -r uvcvideo'
 alias nnode='nvm use 19.5.0'
 alias onode='nvm use 16.19.0'
-alias kserv="npx kill-port 42069"
-alias stable="~/Git/AI/stable-diffusion/automatic/webui.sh"
+alias kserv='npx kill-port 42069'
 
 alias wo="pomodoro 'work'"
 alias br="pomodoro 'break'"
 
-alias envup="netlify env:import .env"
+alias envup='netlify env:import .env'
+alias nssh='ssh-keygen -t ed25519'
 
-alias nssh="ssh-keygen -t ed25519"
+alias gr='go run .'
+alias gb='go build'
+alias gmt='go mod tidy'
+alias cr='cargo run'
 
-alias gr="go run ."
-alias gb="go build"
-alias gmt="go mod tidy"
-alias cr="cargo run"
+alias prd='pnpm run dev'
+alias pl='pnpm lint'
+alias pt='pnpm typecheck'
+alias dmig='pnpm drizzle-kit generate'
 
-## PNPM
-alias prd="pnpm run dev"
-alias pl="pnpm lint"
-alias pt="pnpm typecheck"
-
-alias summarize-repo="~/Git/Go/RepoSummarize/repo_summarize"
-alias dmig="pnpm drizzle-kit generate"
-alias rspace="$HOME/.config/yabai/create_spaces.sh"
-
-alias mybuilder='~/git/Webdev/Nuxt/Client_Builder/Builder/builder'
-alias netlify-up='~/git/Go/netlify/netlify_script'
-alias reset-crossover='bash -c "$(curl -fsSL https://raw.githubusercontent.com/Nygosaki/crossover-trial-renew/refs/heads/main/resetCrossoverTrial.sh)"'
-
-alias aws-console='open https://d-9067c86647.awsapps.com/start'
-
-## System Stats
 alias stats='neofetch'
-
-## Git Auto-Pull
 alias gsync='~/scripts/git-auto-pull/git-auto-pull.sh'
-
-## Cross-platform clipboard aliases
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    alias clipboard-copy='pbcopy'
-    alias clipboard-paste='pbpaste'
-else
-    # Linux - use xclip
-    alias clipboard-copy='xclip -selection clipboard'
-    alias clipboard-paste='xclip -selection clipboard -o'
-    # pbcopy/pbpaste compatibility for Linux
-    alias pbcopy='xclip -selection clipboard'
-    alias pbpaste='xclip -selection clipboard -o'
-fi
-
-alias tmux="TERM=tmux-256color tmux"
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias tmux='TERM=tmux-256color tmux'
 alias killghosttys='pkill -f ghostty'
 
-## Claude Code
 alias cl='claude'
 alias resume='claude -c'
-
-## OpenCode
 alias oc='opencode'
 
-## Codex
-_codex_profile() {
-    local host
-    host="$(hostname -s 2>/dev/null || hostname 2>/dev/null)"
-
-    case "$host" in
-        aether)
-            printf '%s\n' aether
-            ;;
-        *)
-            if [[ "$OSTYPE" == darwin* ]]; then
-                printf '%s\n' thevetat
-            else
-                printf '%s\n' default
-            fi
-            ;;
-    esac
-}
-
-codex() {
-    local profile
-    profile="$(_codex_profile)"
-
-    if [[ -n "$profile" && "$profile" != default ]]; then
-        command codex --profile "$profile" "$@"
-    else
-        command codex "$@"
-    fi
-}
-
-co() {
-    codex "$@"
-}
-
 alias rrails='rbenv exec bundle exec rails'
-
 alias rrake='rbenv exec bundle exec rake'
 
-## Wave orchestration
-alias wv="$HOME/.local/bin/wv"
-
-## Keychain
-alias unlock='security unlock-keychain ~/Library/Keychains/login.keychain-db'
-alias bones='/usr/bin/git --git-dir=$HOME/Git/bones-ai --work-tree=$HOME/Git/RollingBones'
+alias wv='$HOME/.local/bin/wv'

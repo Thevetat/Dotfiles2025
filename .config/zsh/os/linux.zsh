@@ -26,3 +26,16 @@ if [[ -n $SSH_CONNECTION ]]; then
     fi
   fi
 fi
+
+alias nvid='sudo system76-power graphics nvidia'
+alias hybrid='sudo system76-power graphics hybrid'
+alias integrated='sudo system76-power graphics integrated'
+alias i3conf='nvim ~/.config/regolith2/i3/config'
+alias i3Xres='nvim ~/.config/regolith2/Xresources'
+alias wpr='feh --no-fehbg --bg-fill "$HOME/Pictures/wallpapers/laser.jpg"'
+alias n.='nautilus .'
+alias nocam='sudo modprobe -r uvcvideo'
+alias clipboard-copy='xclip -selection clipboard'
+alias clipboard-paste='xclip -selection clipboard -o'
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'

@@ -9,3 +9,8 @@ fi
 export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 export PATH="$HOME/.opencode/bin:$PATH"
 export DOCKER_HOST="unix:///$HOME/Library/Containers/com.docker.docker/Data/docker.raw.sock"
+
+alias clipboard-copy='pbcopy'
+alias clipboard-paste='pbpaste'
+alias f.='open .'
+alias unlock='security unlock-keychain ~/Library/Keychains/login.keychain-db'
