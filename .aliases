@@ -66,6 +66,10 @@ alias f.='open .'
 ## Pass
 alias psup='pass git pull && pass git push'
 
+## Proton Mail Bridge (headless CLI, isolated Bridge-only pass/GPG store)
+alias proton-bridge-cli='$HOME/.local/bin/proton-bridge-cli'
+alias pbridge='proton-bridge-cli'
+
 ## Zellij
 alias zj='zellij'
 alias shoplift='zellij --layout shoplift'
