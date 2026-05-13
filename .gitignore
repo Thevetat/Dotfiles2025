@@ -1,4 +1,13 @@
 .claude/settings.json
 .config/nvim/lazy-lock.json
 .zshrc
-.ssh/config
+.env
+.env.*
+!.env.example
+.gnupg/
+.password-store/
+.cache/pass-secrets/
+.ssh/
+!.ssh/
+.ssh/*
+repos

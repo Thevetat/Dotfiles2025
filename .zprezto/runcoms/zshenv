@@ -5,10 +5,6 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
-# Ensure that a non-login, non-interactive shell has a defined environment.
-if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprofile"
-fi
 # NVM is now lazy-loaded in .zshrc - see ~/.config/zsh/scripts/nvm-lazy-load.zsh
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR/alias/default" ]; then
@@ -31,13 +27,8 @@ fi
 # Load Go
 export PATH="/usr/local/go/bin:$PATH"
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # rbenv shims must be on PATH ahead of system Ruby so non-interactive shells
 # and subprocesses resolve the project Ruby before /usr/bin/ruby.
 export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
-
-
-# Load aliases for non-interactive sessions
-[ -f ~/.aliases ] && source ~/.aliases
-
-# Load environment variables
-[ -f ~/.env ] && source ~/.env

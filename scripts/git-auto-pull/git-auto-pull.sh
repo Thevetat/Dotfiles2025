@@ -32,7 +32,6 @@ pull_regular_repo() {
         return 2
     fi
     
-    # Check if repo has unpushed commits
     local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [ -z "$branch" ]; then
         log_message "⚠️  $repo_name: cannot determine current branch - skipping"
@@ -44,21 +43,24 @@ pull_regular_repo() {
         log_message "ℹ️  $repo_name: no upstream configured for $branch - skipping"
         return 0
     fi
-    
-    local unpushed=$(git log "$upstream".."$branch" --oneline 2>/dev/null | wc -l)
-    
-    if [ "$unpushed" -gt 0 ]; then
-        log_message "⚠️  $repo_name has $unpushed unpushed commits on $branch - skipping"
+
+    git fetch --quiet 2>/dev/null
+    local ahead=$(git rev-list "$upstream"..HEAD --count 2>/dev/null)
+    local behind=$(git rev-list HEAD.."$upstream" --count 2>/dev/null)
+
+    if [ "$ahead" -gt 0 ] && [ "$behind" -gt 0 ]; then
+        log_message "⚠️  $repo_name diverged from $upstream - skipping"
         return 3
     fi
-    
-    # Fetch and check for updates
-    git fetch --quiet 2>/dev/null
-    local behind=$(git rev-list HEAD.."$upstream" --count 2>/dev/null)
-    
+
+    if [ "$ahead" -gt 0 ]; then
+        log_message "⚠️  $repo_name has $ahead unpushed commits on $branch - skipping"
+        return 3
+    fi
+
     if [ "$behind" -gt 0 ]; then
         log_message "📥 Pulling $repo_name ($behind commits behind)"
-        if git pull --quiet 2>/dev/null; then
+        if git pull --ff-only --quiet 2>/dev/null; then
             log_message "✅ Successfully updated $repo_name"
             return 0
         else
@@ -90,20 +92,23 @@ pull_dotfiles() {
         return 3
     fi
     
-    # Check for unpushed commits
-    local unpushed=$($dotfiles_cmd log origin/"$branch".."$branch" --oneline 2>/dev/null | wc -l)
-    if [ "$unpushed" -gt 0 ]; then
-        log_message "⚠️  Dotfiles have $unpushed unpushed commits - skipping"
+    $dotfiles_cmd fetch --quiet 2>/dev/null
+    local ahead=$($dotfiles_cmd rev-list origin/"$branch"..HEAD --count 2>/dev/null)
+    local behind=$($dotfiles_cmd rev-list HEAD..origin/"$branch" --count 2>/dev/null)
+
+    if [ "$ahead" -gt 0 ] && [ "$behind" -gt 0 ]; then
+        log_message "⚠️  Dotfiles diverged from origin/$branch - skipping"
         return 3
     fi
-    
-    # Fetch and check for updates
-    $dotfiles_cmd fetch --quiet 2>/dev/null
-    local behind=$($dotfiles_cmd rev-list HEAD..origin/"$branch" --count 2>/dev/null)
-    
+
+    if [ "$ahead" -gt 0 ]; then
+        log_message "⚠️  Dotfiles have $ahead unpushed commits - skipping"
+        return 3
+    fi
+
     if [ "$behind" -gt 0 ]; then
         log_message "📥 Pulling dotfiles ($behind commits behind)"
-        if $dotfiles_cmd pull --quiet 2>/dev/null; then
+        if $dotfiles_cmd pull --ff-only --quiet 2>/dev/null; then
             log_message "✅ Successfully updated dotfiles"
             return 0
         else

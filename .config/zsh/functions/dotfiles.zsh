@@ -1,5 +1,46 @@
 dfca() {
-    dotfiles add -u && dotfiles commit -m "$*" && dotfiles push 
+  if [ $# -lt 1 ]; then
+    echo "Usage: dfca \"Your commit message\""
+    return 1
+  fi
+
+  dotfiles fetch origin || return 1
+
+  local branch
+  branch="$(dotfiles rev-parse --abbrev-ref HEAD 2>/dev/null)" || return 1
+
+  local upstream
+  upstream="$(dotfiles rev-parse --abbrev-ref "${branch}@{upstream}" 2>/dev/null)"
+  if [ -z "$upstream" ]; then
+    echo "No upstream configured for dotfiles branch: $branch"
+    return 1
+  fi
+
+  local ahead
+  local behind
+  ahead="$(dotfiles rev-list "${upstream}..HEAD" --count 2>/dev/null)" || return 1
+  behind="$(dotfiles rev-list "HEAD..${upstream}" --count 2>/dev/null)" || return 1
+
+  if [ "$ahead" -gt 0 ] && [ "$behind" -gt 0 ]; then
+    echo "Dotfiles branch has diverged from $upstream. Resolve manually."
+    return 1
+  fi
+
+  if [ "$behind" -gt 0 ]; then
+    dotfiles pull --ff-only || return 1
+  fi
+
+  dotfiles add -u && dotfiles commit -m "$*" && dotfiles push
+}
+
+dfup() {
+  dotfiles fetch origin || return 1
+  dotfiles pull --ff-only
+}
+
+dfpub() {
+  dotfiles status --short --branch
+  dotfiles push
 }
 
 dfmod() {
