@@ -5,6 +5,7 @@
                 "rules": [
                     {
                         "description": "Shift+1-5 to Ctrl+6-0 in Zen Browser",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
