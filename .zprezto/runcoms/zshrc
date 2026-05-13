@@ -1,5 +1,5 @@
 # Powerlevel10k instant prompt (must be first)
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+if [[ -t 1 && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
@@ -81,7 +81,7 @@ export WV_LOG_CONTENT=1
 
 
 # Powerlevel10k config
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.p10k.zsh || ! -t 1 ]] || source ~/.p10k.zsh
 
 # Zoxide (must be after compinit)
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"

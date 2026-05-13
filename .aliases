@@ -188,7 +188,9 @@ codex() {
     fi
 }
 
-alias co='codex'
+co() {
+    codex "$@"
+}
 
 alias rrails='rbenv exec bundle exec rails'
 
