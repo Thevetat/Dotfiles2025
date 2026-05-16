@@ -44,8 +44,8 @@ codex-auth() {
     return 1
   fi
 
-  cp -p "$selected_auth" "$active" || return 1
-  chmod 600 "$active" || return 1
+  command cp -p "$selected_auth" "$active" || return 1
+  command chmod 600 "$active" || return 1
   echo "Codex auth switched to $target"
 }
 
