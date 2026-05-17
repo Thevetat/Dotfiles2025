@@ -4,7 +4,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   export NVM_DIR="$HOME/.nvm"
 
   lazy_load_nvm() {
-    unset -f node npm npx pnpm nvm netlify aigc
+    local cmd
+
+    for cmd in node npm npx pnpm nvm netlify aigc; do
+      (( $+functions[$cmd] )) && unset -f "$cmd"
+    done
 
     if [ -f /opt/homebrew/opt/nvm/nvm.sh ]; then
       source /opt/homebrew/opt/nvm/nvm.sh
