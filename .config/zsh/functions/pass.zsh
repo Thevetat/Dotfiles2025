@@ -7,7 +7,9 @@ PASS_CACHE_TTL=$((8 * 60))  # 8 hours in minutes
 
 if (( ! $+functions[_copy_clipboard] )); then
   function _copy_clipboard() {
-    if command -v pbcopy >/dev/null 2>&1; then
+    if [[ -n "$SSH_CONNECTION" ]] && command -v osc52-copy >/dev/null 2>&1; then
+      osc52-copy
+    elif command -v pbcopy >/dev/null 2>&1; then
       pbcopy
     elif command -v xclip >/dev/null 2>&1; then
       xclip -selection clipboard

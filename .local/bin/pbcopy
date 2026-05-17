@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+emulate -L zsh
+
+if [[ -n "$SSH_CONNECTION$SSH_TTY" ]]; then
+  exec osc52-copy
+fi
+
+case "$OSTYPE" in
+  darwin*) exec /usr/bin/pbcopy "$@" ;;
+esac
+
+if [[ -x /usr/bin/xclip ]]; then
+  exec /usr/bin/xclip -selection clipboard "$@"
+fi
+
+if [[ -x /usr/bin/wl-copy ]]; then
+  exec /usr/bin/wl-copy "$@"
+fi
+
+echo "pbcopy: no clipboard command found" >&2
+exit 1

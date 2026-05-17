@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+emulate -L zsh
+
+payload="$(cat | base64 | tr -d '\r\n')"
+target="${TTY:-/dev/tty}"
+
+if [[ -n "$TMUX" ]]; then
+  printf '\033Ptmux;\033\033]52;c;%s\a\033\\' "$payload" > "$target"
+else
+  printf '\033]52;c;%s\a' "$payload" > "$target"
+fi

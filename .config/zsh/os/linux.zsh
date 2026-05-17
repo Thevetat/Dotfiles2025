@@ -35,7 +35,13 @@ alias i3Xres='nvim ~/.config/regolith2/Xresources'
 alias wpr='feh --no-fehbg --bg-fill "$HOME/Pictures/wallpapers/laser.jpg"'
 alias n.='nautilus .'
 alias nocam='sudo modprobe -r uvcvideo'
-alias clipboard-copy='xclip -selection clipboard'
+if [[ -n "$SSH_CONNECTION" ]] && command -v osc52-copy >/dev/null 2>&1; then
+  alias clipboard-copy='osc52-copy'
+  alias pbcopy='osc52-copy'
+else
+  alias clipboard-copy='xclip -selection clipboard'
+  alias pbcopy='xclip -selection clipboard'
+fi
+
 alias clipboard-paste='xclip -selection clipboard -o'
-alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'

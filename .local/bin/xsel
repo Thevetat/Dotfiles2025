@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+emulate -L zsh
+
+for arg in "$@"; do
+  case "$arg" in
+    -o|--output|-h|--help|--version)
+      if [[ -x /usr/bin/xsel ]]; then
+        exec /usr/bin/xsel "$@"
+      fi
+
+      case "$OSTYPE" in
+        darwin*) exec /usr/bin/pbpaste ;;
+      esac
+
+      echo "xsel: no clipboard output command found" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -n "$SSH_CONNECTION$SSH_TTY" ]]; then
+  exec osc52-copy
+fi
+
+if [[ -x /usr/bin/xsel ]]; then
+  exec /usr/bin/xsel "$@"
+fi
+
+case "$OSTYPE" in
+  darwin*) exec /usr/bin/pbcopy ;;
+esac
+
+if [[ -x /usr/bin/xclip ]]; then
+  exec /usr/bin/xclip -selection clipboard
+fi
+
+echo "xsel: no clipboard input command found" >&2
+exit 1
