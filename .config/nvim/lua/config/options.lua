@@ -66,4 +66,4 @@ vim.opt.redrawtime = 50000      -- Much more time for syntax highlighting (50 se
 vim.opt.maxmempattern = 2000000 -- Massive increase for pattern matching (2MB)
 
 -- LSP settings for better handling of large files
-vim.lsp.set_log_level("ERROR")  -- Reduce LSP logging overhead
+vim.lsp.log.set_level("ERROR") -- Reduce LSP logging overhead
