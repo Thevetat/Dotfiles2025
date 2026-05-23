@@ -8,25 +8,30 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
-      -- Override LSP keymaps to use <leader>C instead of <leader>c
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
+      opts.servers = opts.servers or {}
+      opts.servers["*"] = opts.servers["*"] or {}
+
+      local keys = opts.servers["*"].keys or {}
+      opts.servers["*"].keys = keys
 
       -- Disable default <leader>c mappings
-      keys[#keys + 1] = { "<leader>ca", false }
+      keys[#keys + 1] = { "<leader>ca", false, mode = { "n", "x" } }
       keys[#keys + 1] = { "<leader>cr", false }
       keys[#keys + 1] = { "<leader>cR", false }
       keys[#keys + 1] = { "<leader>cl", false }
       keys[#keys + 1] = { "<leader>cA", false }
-      keys[#keys + 1] = { "<leader>cc", false }
+      keys[#keys + 1] = { "<leader>cc", false, mode = { "n", "x" } }
       keys[#keys + 1] = { "<leader>cC", false }
 
       -- Add new <leader>C mappings
       keys[#keys + 1] =
-        { "<leader>Ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" }
+        { "<leader>Ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "x" }, has = "codeAction" }
       keys[#keys + 1] = { "<leader>Cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" }
       keys[#keys + 1] = {
         "<leader>CR",
-        LazyVim.lsp.rename_file,
+        function()
+          Snacks.rename.rename_file()
+        end,
         desc = "Rename File",
         mode = "n",
         has = { "workspace/didRenameFiles", "workspace/willRenameFiles" },
@@ -41,12 +46,12 @@ return {
         has = "codeAction",
       }
       keys[#keys + 1] =
-        { "<leader>Cc", vim.lsp.codelens.run, desc = "Run Codelens", mode = { "n", "v" }, has = "codeLens" }
+        { "<leader>Cc", vim.lsp.codelens.run, desc = "Run Codelens", mode = { "n", "x" }, has = "codeLens" }
       keys[#keys + 1] =
         { "<leader>CC", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = "n", has = "codeLens" }
 
       -- Configure servers
-      opts.servers = {
+      opts.servers = vim.tbl_deep_extend("force", opts.servers, {
         jsonls = {
           settings = {
             json = {
@@ -85,7 +90,7 @@ return {
             },
           },
         },
-        tsserver = {
+        ts_ls = {
           init_options = {
             preferences = {
               -- Enable all completions
@@ -135,12 +140,12 @@ return {
             } },
           },
         },
-      }
+      })
 
-      opts.setup = {
+      opts.setup = vim.tbl_deep_extend("force", opts.setup or {}, {
         eslint = function()
           local function get_client(buf)
-            return LazyVim.lsp.get_clients({ name = "eslint", bufnr = buf })[1]
+            return vim.lsp.get_clients({ name = "eslint", bufnr = buf })[1]
           end
 
           local formatter = LazyVim.lsp.formatter({
@@ -169,10 +174,9 @@ return {
 
           LazyVim.format.register(formatter)
         end,
-      }
+      })
 
       return opts
     end,
   },
 }
-

@@ -20,7 +20,7 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
 
 -- Run EslintFixAll on save for JavaScript/TypeScript files
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.vue" },
+  pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
   callback = function()
     -- Check if eslint LSP client is attached
     local clients = vim.lsp.get_active_clients({ name = "eslint", bufnr = 0 })
@@ -85,5 +85,4 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
   desc = "Minimal indentation for JSON files",
 })
-
 
