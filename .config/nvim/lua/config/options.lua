@@ -54,9 +54,7 @@ vim.opt.clipboard = "unnamedplus"
 
 -- For SSH sessions, ensure OSC 52 works if available
 if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
-  -- Let Neovim handle OSC 52 automatically with clipboard=unnamedplus
-  -- This works better with tmux's set-clipboard feature
-  vim.g.clipboard = nil  -- Use Neovim's built-in clipboard handling
+  vim.g.clipboard = "osc52"
 end
 
 -- Performance settings for large files (no throttling, just higher limits)
