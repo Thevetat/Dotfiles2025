@@ -1,3 +1,5 @@
+(( $+aliases[oc] )) && unalias oc
+
 oc() {
   if ! command -v opencode >/dev/null 2>&1; then
     print -u2 "oc: opencode not found"
@@ -20,6 +22,7 @@ oc() {
   local ensured_session_id
   local repo_root
   local agent_handle
+  local model
   local -a attach_args
 
   attach_args=()
@@ -31,6 +34,14 @@ oc() {
         ;;
       --session=*)
         session_id="${1#--session=}"
+        shift
+        ;;
+      -s)
+        session_id="$2"
+        shift 2
+        ;;
+      -s=*)
+        session_id="${1#-s=}"
         shift
         ;;
       *)
@@ -47,10 +58,11 @@ oc() {
 
   if [[ -n "$base_url" ]] && command -v jq >/dev/null 2>&1; then
     agent_handle="${AETHERNET_AGENT_HANDLE:-primary-${USER:-operator}-${PWD:t}}"
+    model="${AETHERNET_OPENCODE_MODEL-openai/gpt-5.5}"
     if [[ -n "$session_id" ]]; then
-      body="$(command jq -n --arg repo "$PWD" --arg agent "$agent_handle" --arg session "$session_id" '{mode:"bind", repo_root:$repo, agent:$agent, runtime_session_id:$session}')"
+      body="$(command jq -n --arg repo "$PWD" --arg agent "$agent_handle" --arg session "$session_id" --arg model "$model" '{mode:"bind", repo_root:$repo, agent:$agent, runtime_session_id:$session, model:$model}')"
     else
-      body="$(command jq -n --arg repo "$PWD" --arg agent "$agent_handle" '{mode:"create", repo_root:$repo, agent:$agent}')"
+      body="$(command jq -n --arg repo "$PWD" --arg agent "$agent_handle" --arg model "$model" '{mode:"create", repo_root:$repo, agent:$agent, model:$model}')"
     fi
     ensure="$(command curl -fsS -X POST "$aed_url/v1/runtime/opencode/ensure-session" -H 'content-type: application/json' --data "$body" 2>/dev/null)"
     if [[ -n "$ensure" ]]; then
