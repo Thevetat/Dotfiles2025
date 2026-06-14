@@ -1,3 +1,6 @@
+gui:
+  sidePanelWidth: 0.2
 git:
-  paging:
-    pager: "ydiff -s -c always --pager cat"
+  pagers:
+    - colorArg: never
+      pager: "ydiff -p cat -s --wrap --width={{columnWidth}}"
