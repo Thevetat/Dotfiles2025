@@ -5,7 +5,7 @@
 PASS_CACHE_DIR="${HOME}/.cache/pass-secrets"
 PASS_CACHE_TTL=$((8 * 60))  # 8 hours in minutes
 
-if (( ! $+functions[_copy_clipboard] )); then
+if { [[ -n "$ZSH_VERSION" ]] && (( ! $+functions[_copy_clipboard] )); } || { [[ -z "$ZSH_VERSION" ]] && ! declare -F _copy_clipboard >/dev/null; }; then
   function _copy_clipboard() {
     if [[ -n "$SSH_CONNECTION" ]] && command -v osc52-copy >/dev/null 2>&1; then
       osc52-copy
