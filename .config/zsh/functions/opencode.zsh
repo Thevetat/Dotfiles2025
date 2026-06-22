@@ -23,9 +23,12 @@ oc() {
   local repo_root
   local agent_handle
   local model
+  local variant
   local -a attach_args
 
   attach_args=()
+  model="${AETHERNET_OPENCODE_MODEL-openai/gpt-5.5}"
+  variant="${AETHERNET_OPENCODE_VARIANT-xhigh}"
   while (( $# > 0 )); do
     case "$1" in
       --session)
@@ -58,11 +61,10 @@ oc() {
 
   if [[ -n "$base_url" ]] && command -v jq >/dev/null 2>&1; then
     agent_handle="${AETHERNET_AGENT_HANDLE:-primary-${USER:-operator}-${PWD:t}}"
-    model="${AETHERNET_OPENCODE_MODEL-openai/gpt-5.5}"
     if [[ -n "$session_id" ]]; then
-      body="$(command jq -n --arg repo "$PWD" --arg agent "$agent_handle" --arg session "$session_id" --arg model "$model" '{mode:"bind", repo_root:$repo, agent:$agent, runtime_session_id:$session, model:$model}')"
+      body="$(command jq -n --arg repo "$PWD" --arg agent "$agent_handle" --arg session "$session_id" --arg model "$model" --arg variant "$variant" '{mode:"bind", repo_root:$repo, agent:$agent, runtime_session_id:$session, model:$model, variant:$variant}')"
     else
-      body="$(command jq -n --arg repo "$PWD" --arg agent "$agent_handle" --arg model "$model" '{mode:"create", repo_root:$repo, agent:$agent, model:$model}')"
+      body="$(command jq -n --arg repo "$PWD" --arg agent "$agent_handle" --arg model "$model" --arg variant "$variant" '{mode:"create", repo_root:$repo, agent:$agent, model:$model, variant:$variant}')"
     fi
     ensure="$(command curl -fsS -X POST "$aed_url/v1/runtime/opencode/ensure-session" -H 'content-type: application/json' --data "$body" 2>/dev/null)"
     if [[ -n "$ensure" ]]; then
