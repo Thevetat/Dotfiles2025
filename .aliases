@@ -78,6 +78,44 @@ alias killghosttys='pkill -f ghostty'
 
 alias cl='claude'
 alias resume='claude -c'
+mm-browser() {
+    local url="${1:-http://127.0.0.1:3333/hyperliquid}"
+    local devtools_url="http://127.0.0.1:9222/json/version"
+    local forward="127.0.0.1:9222:127.0.0.1:9222"
+    local control_path="$HOME/.ssh/cm/mm-browser-aether-%C"
+    local identity="$HOME/.ssh/okeanos_ed25519"
+    local i
+
+    open -na "Google Chrome" --args --user-data-dir="$HOME/.chrome-mm-mcp" --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 --no-first-run --no-default-browser-check "$url"
+
+    for i in {1..30}; do
+        curl -fsS "$devtools_url" >/dev/null 2>&1 && break
+        sleep 0.5
+    done
+
+    if ! curl -fsS "$devtools_url" >/dev/null 2>&1; then
+        echo "Chrome DevTools is not listening on 127.0.0.1:9222"
+        return 1
+    fi
+
+    if ssh -F /dev/null -i "$identity" -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=5 -o User=thevetat aether "curl -fsS '$devtools_url' >/dev/null" 2>/dev/null; then
+        echo "mm-browser ready: aether can reach Chrome DevTools on 127.0.0.1:9222"
+        return 0
+    fi
+
+    ssh -O cancel -R "$forward" aether >/dev/null 2>&1
+
+    ssh -F /dev/null -i "$identity" -o IdentitiesOnly=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o ControlMaster=auto -o ControlPersist=10m -o ControlPath="$control_path" -fN -R "$forward" thevetat@aether
+
+    if ssh -F /dev/null -i "$identity" -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=5 -o User=thevetat aether "curl -fsS '$devtools_url' >/dev/null" 2>/dev/null; then
+        echo "mm-browser ready: aether can reach Chrome DevTools on 127.0.0.1:9222"
+        return 0
+    fi
+
+    echo "Chrome started locally, but aether cannot reach 127.0.0.1:9222"
+    echo "Check aether with: ss -ltnp 'sport = :9222'"
+    return 1
+}
 
 alias rrails='rbenv exec bundle exec rails'
 alias rrake='rbenv exec bundle exec rake'
