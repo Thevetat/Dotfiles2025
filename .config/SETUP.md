@@ -4,8 +4,8 @@ Agent-readable runbook for bootstrapping a fresh machine. Linear, phase-ordered,
 idempotent where possible. Stop markers (🛑) flag steps only a human can do.
 
 > **For the agent reading this:** detect OS once, then run phases 0 → 11 in
-> order. If a phase fails, stop and ask the user. If a `[mac]` / `[ubuntu]` /
-> `[arch]` block does not match the host, skip it.
+> order. If a phase fails, stop and ask the user. If a `[mac]` / `[windows]` /
+> `[ubuntu]` / `[arch]` block does not match the host, skip it.
 
 ---
 
@@ -21,6 +21,12 @@ case "$(uname -s)" in
     fi ;;
 esac
 echo "Detected OS: $OS"
+```
+
+`[windows]` PowerShell:
+```powershell
+$env:OS = "windows"
+Write-Output "Detected OS: $env:OS"
 ```
 
 ---
@@ -211,6 +217,30 @@ for Hyprland. Skip this phase on Ubuntu.
 🛑 **STOP** — Hyprland configs are not yet authored. User must flesh out
 before relying on this phase.
 
+## Phase 8a — Windows window manager: komorebi + whkd
+
+`[windows]` Run in PowerShell:
+
+```powershell
+winget install --id LGUG2Z.komorebi --exact
+winget install --id LGUG2Z.whkd --exact
+
+$configHome = "$HOME\.config\komorebi"
+[Environment]::SetEnvironmentVariable("KOMOREBI_CONFIG_HOME", $configHome, "User")
+[Environment]::SetEnvironmentVariable("WHKD_CONFIG_HOME", $configHome, "User")
+$env:KOMOREBI_CONFIG_HOME = $configHome
+$env:WHKD_CONFIG_HOME = $configHome
+
+komorebic fetch-asc
+komorebic check
+komorebic start --whkd --config "$configHome\komorebi.json"
+komorebic enable-autostart --whkd --config "$configHome\komorebi.json"
+```
+
+The generated `applications.json` and `komorebi.bar.json` files are local and
+ignored. Disable overlapping Raycast Window Management hotkeys before using
+the global bindings in `whkdrc`.
+
 ---
 
 ## Phase 9 — App-specific first-launch
@@ -223,6 +253,7 @@ before relying on this phase.
 | ghostty    | Auto-loads `~/.config/ghostty/config`. Open once.                     |
 | raycast    | Open, grant permissions, sign in.                                     |
 | karabiner  | Open once after permissions granted (see Phase 7).                    |
+| komorebi   | Windows only. Verify `komorebic check` and `Get-Process komorebi,whkd`. |
 | 1Password  | Install via DMG (not in Brewfile — get from 1password.com), sign in. |
 
 ---
@@ -263,6 +294,14 @@ if [ "$OS" = "mac" ]; then
     pgrep -x "$proc" >/dev/null && echo "✓ $proc running" || echo "✗ $proc not running"
   done
 fi
+```
+
+`[windows]` PowerShell:
+
+```powershell
+komorebic check
+Get-Process komorebi, whkd
+komorebic query focused-workspace-name
 ```
 
 ---

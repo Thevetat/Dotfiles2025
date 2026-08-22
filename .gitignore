@@ -13,5 +13,7 @@
 .config/zsh/local/
 .config/sketchybar/helper/helper
 .config/skhd/skhdrc.bak
+.config/komorebi/applications.json
+.config/komorebi/komorebi.bar.json
 Library/LaunchAgents/com.thevetat.deskflow-*.plist
 repos

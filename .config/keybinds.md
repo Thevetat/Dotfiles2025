@@ -105,6 +105,47 @@
 - `Shift+Alt+T` - Run create spaces/organize desktop script
 - `Shift+Alt+R` - Restart/reload sketchybar
 
+### komorebi + whkd (Windows)
+
+**Workspace Navigation:**
+
+- `Alt+1-5` - Focus workspaces 1-5
+- `Shift+Alt+1-5` - Move the focused window to workspace 1-5 and follow
+- `Shift+Alt+P/N` - Move the focused window to the previous/next workspace
+
+**Window Navigation and Movement:**
+
+- `Alt+H/J/K/L` - Focus window left/down/up/right
+- `Shift+Alt+H/J/K/L` - Move or swap window left/down/up/right
+- `Ctrl+Alt+H/J/K/L` - Resize toward left/down/up/right
+- `Ctrl+Alt+E` - Retile and equalize windows
+
+**Window State:**
+
+- `Ctrl+Shift+F` - Toggle floating
+- `Shift+Alt+F` - Toggle monocle
+- `Alt+F` - Promote the focused window
+- `Ctrl+Alt+G` - Toggle workspace and container gaps
+- `Ctrl+Alt+B` - Disable borders
+- `Shift+Ctrl+Alt+B` - Enable borders
+
+**Layout and Insertion:**
+
+- `Shift+Alt+S` - Toggle Ultrawide Vertical Stack/Columns layout
+- `Shift+Alt+X/Y` - Flip the workspace horizontally/vertically
+- `Shift+Ctrl+Alt+H/J/K/L` - Set the next window insertion direction
+- `Shift+Ctrl+Alt+S` - Toggle create/append container behavior
+- `Alt+S/V` - Open a new application window inserted right/down
+
+**Management:**
+
+- `Alt+T` - Open WezTerm
+- `Shift+Alt+T` - Retile all windows
+- `Shift+Alt+R` - Reload komorebi configuration
+- `Alt+I` - Toggle the shortcut overlay
+- `Alt+O` - Reload whkd
+- `Shift+Alt+O` - Reload komorebi configuration
+
 ### tmux (Terminal Multiplexer)
 
 **Prefix Key: `Ctrl+Space`**
