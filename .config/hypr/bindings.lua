@@ -37,14 +37,19 @@ o.bind("SUPER + SHIFT + S", "Screenshot", "omarchy-capture-screenshot")
 
 o.bind("SUPER + E", "Equalize columns", "hyprland-equalize-columns")
 
--- Focus the existing Zen window instead of opening another one.
+-- Keep browser actions in the SUPER + SHIFT + RETURN family.
 hl.unbind("SUPER + SHIFT + RETURN")
+hl.unbind("SUPER + SHIFT + B")
+hl.unbind("SUPER + SHIFT + ALT + B")
 o.bind("SUPER + SHIFT + RETURN", "(Spawn/Focus) Browser", {
   focus = "^zen$",
   launch = "omarchy-launch-browser",
 })
 o.bind("SUPER + SHIFT + CTRL + RETURN", "New browser window", {
   omarchy = "browser --new-window",
+})
+o.bind("SUPER + SHIFT + ALT + RETURN", "Private browser window", {
+  omarchy = "browser --private",
 })
 
 hl.unbind("SUPER + SHIFT + E")
