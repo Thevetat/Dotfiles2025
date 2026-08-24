@@ -39,7 +39,7 @@ o.bind("SUPER + E", "Equalize columns", "hyprland-equalize-columns")
 
 -- Focus the existing Zen window instead of opening another one.
 hl.unbind("SUPER + SHIFT + RETURN")
-o.bind("SUPER + SHIFT + RETURN", "Browser", {
+o.bind("SUPER + SHIFT + RETURN", "(Spawn/Focus) Browser", {
   focus = "^zen$",
   launch = "omarchy-launch-browser",
 })
