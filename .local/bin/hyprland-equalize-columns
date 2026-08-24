@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+workspace_id=$(hyprctl activeworkspace -j | jq -r '.id')
+focused_address=$(hyprctl activewindow -j | jq -r '.address')
+
+restore_focus() {
+  hyprctl --quiet dispatch "hl.dsp.focus({ window = \"address:$focused_address\" })" || true
+}
+trap restore_focus EXIT
+
+mapfile -t columns < <(
+  hyprctl clients -j | jq -r --argjson workspace_id "$workspace_id" '
+    [
+      .[]
+      | select(.workspace.id == $workspace_id and .mapped and (.floating | not))
+    ]
+    | group_by(.at[0])
+    | map({
+        x: .[0].at[0],
+        right: (map(.at[0] + .size[0]) | max),
+        address: .[0].address
+      })
+    | sort_by(.x)
+    | .[]
+    | [.x, .right, .address]
+    | @tsv
+  '
+)
+
+((${#columns[@]} >= 2)) || exit 0
+
+declare -a xs rights addresses
+for column in "${columns[@]}"; do
+  IFS=$'\t' read -r x right address <<<"$column"
+  xs+=("$x")
+  rights+=("$right")
+  addresses+=("$address")
+done
+
+column_count=${#columns[@]}
+left=${xs[0]}
+right=${rights[0]}
+gap_total=0
+gap_count=0
+
+for ((i = 1; i < column_count; i++)); do
+  ((rights[i] > right)) && right=${rights[i]}
+  candidate_gap=$((xs[i] - rights[i - 1]))
+  if ((candidate_gap >= 0)); then
+    gap_total=$((gap_total + candidate_gap))
+    gap_count=$((gap_count + 1))
+  fi
+done
+
+gap=$((gap_count > 0 ? (gap_total + gap_count / 2) / gap_count : 0))
+available_width=$((right - left - gap * (column_count - 1)))
+
+# Resize from right to left so completed column boundaries remain stable.
+for ((i = column_count - 1; i >= 1; i--)); do
+  desired_left=$((left + (i * available_width + column_count / 2) / column_count + i * gap))
+  current_left=$(
+    hyprctl clients -j | jq -r --arg address "${addresses[i]}" '
+      .[] | select(.address == $address) | .at[0]
+    '
+  )
+  delta=$((desired_left - current_left))
+
+  if ((delta != 0)); then
+    hyprctl --quiet dispatch "hl.dsp.focus({ window = \"address:${addresses[i]}\" })"
+    hyprctl --quiet dispatch "hl.dsp.window.resize({ x = $delta, y = 0, relative = true })"
+  fi
+done
+
+restore_focus
+trap - EXIT

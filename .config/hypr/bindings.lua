@@ -31,6 +31,12 @@
 hl.unbind("SUPER + SHIFT + SPACE")
 o.bind("SUPER + SHIFT + SPACE", "Toggle dictation", "voxtype record toggle")
 
+-- Override the default Google Maps binding.
+hl.unbind("SUPER + SHIFT + S")
+o.bind("SUPER + SHIFT + S", "Screenshot", "omarchy-capture-screenshot")
+
+o.bind("SUPER + E", "Equalize columns", "hyprland-equalize-columns")
+
 hl.unbind("SUPER + SHIFT + E")
 o.bind("SUPER + SHIFT + E", "Proton Mail", { launch = "proton-mail" })
 
