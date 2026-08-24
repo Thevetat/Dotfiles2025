@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+case "$(uname -s)" in
+  Darwin) platform=macos ;;
+  Linux) platform=omarchy ;;
+  *)
+    printf 'Unsupported Ghostty platform: %s\n' "$(uname -s)" >&2
+    exit 1
+    ;;
+esac
+
+mkdir -p "$HOME/.config/ghostty"
+printf 'config-file = ~/.config/ghostty/platforms/%s.conf\n' "$platform" >"$HOME/.config/ghostty/local.conf"

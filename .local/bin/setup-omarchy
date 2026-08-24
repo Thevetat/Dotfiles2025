@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v omarchy >/dev/null 2>&1; then
+  printf 'Omarchy is required before running this setup.\n' >&2
+  exit 1
+fi
+
+install_missing() {
+  local source=$1
+  shift
+  local package missing=()
+
+  for package in "$@"; do
+    pacman -Q "$package" >/dev/null 2>&1 || missing+=("$package")
+  done
+
+  ((${#missing[@]} == 0)) && return
+  if [[ $source == aur ]]; then
+    omarchy pkg aur add "${missing[@]}"
+  else
+    omarchy pkg add "${missing[@]}"
+  fi
+}
+
+link_path() {
+  local source=$1 target=$2
+
+  if [[ -L $target && $(readlink -f "$target") == $(readlink -f "$source") ]]; then
+    return
+  fi
+  if [[ -L $target ]]; then
+    ln -sfn "$source" "$target"
+    return
+  fi
+  if [[ -e $target ]]; then
+    printf 'Refusing to replace existing path: %s\n' "$target" >&2
+    return 1
+  fi
+
+  mkdir -p "$(dirname "$target")"
+  ln -s "$source" "$target"
+}
+
+clone_repo() {
+  local url=$1 target=$2
+
+  if [[ -d $target/.git ]]; then
+    return
+  fi
+  if [[ -e $target ]]; then
+    printf 'Refusing to replace existing path: %s\n' "$target" >&2
+    return 1
+  fi
+
+  git clone --recursive "$url" "$target"
+}
+
+install_missing repo ghostty tailscale tmux voxtype-bin zsh
+install_missing aur proton-mail
+
+clone_repo https://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
+clone_repo https://github.com/tmux-plugins/tpm.git "$HOME/.tmux/plugins/tpm"
+
+if [[ -x $HOME/.tmux/plugins/tpm/bin/install_plugins ]]; then
+  "$HOME/.tmux/plugins/tpm/bin/install_plugins"
+fi
+
+if [[ ! -d $HOME/ai-tools/.git ]]; then
+  clone_repo git@github.com:Thevetat/ai-tools.git "$HOME/ai-tools"
+fi
+
+link_path "$HOME/ai-tools/opencode/opencode.json" "$HOME/.config/opencode/opencode.json"
+link_path "$HOME/ai-tools/opencode/plugins" "$HOME/.config/opencode/plugin"
+link_path "$HOME/ai-tools/opencode/commands" "$HOME/.config/opencode/command"
+
+for skill in "$HOME/ai-tools/.agents/skills"/*; do
+  [[ -d $skill ]] && link_path "$skill" "$HOME/.agents/skills/${skill##*/}"
+done
+
+"$HOME/.local/bin/setup-ghostty"
+
+[[ $(omarchy theme current) == 'Tokyo Night' ]] || omarchy theme set tokyo-night
+[[ $(omarchy font current) == 'JetBrainsMono Nerd Font' ]] || omarchy font set 'JetBrainsMono Nerd Font'
+
+background="$(omarchy theme dir tokyo-night)/backgrounds/3-sunset-lake.png"
+[[ ! -f $background ]] || omarchy theme bg set "$background"
+
+if [[ $(getent passwd "$USER" | cut -d: -f7) != /usr/bin/zsh ]]; then
+  chsh -s /usr/bin/zsh
+fi
+
+sudo systemctl enable --now tailscaled.service
+systemctl --user enable --now voxtype.service omarchy-tailscale-receive.service
+
+printf 'Omarchy workstation setup is applied. Log out and back in after a shell change.\n'

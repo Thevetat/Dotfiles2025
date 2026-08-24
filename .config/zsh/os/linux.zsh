@@ -1,5 +1,15 @@
 export NVM_DIR="$HOME/.nvm"
 
+if [[ -r /usr/share/omarchy/default/bash/env-bootstrap ]]; then
+  source /usr/share/omarchy/default/bash/env-bootstrap
+  export BROWSER="${BROWSER:-omarchy-launch-browser}"
+  export SUDO_EDITOR="${SUDO_EDITOR:-${EDITOR:-nvim}}"
+  export BAT_THEME="${BAT_THEME:-ansi}"
+  export OPENCODE_CONFIG_CONTENT='{"autoupdate":false}'
+
+  command -v mise >/dev/null 2>&1 && eval "$(mise activate zsh)"
+fi
+
 if [ -s "$NVM_DIR/nvm.sh" ]; then
   . "$NVM_DIR/nvm.sh"
 fi

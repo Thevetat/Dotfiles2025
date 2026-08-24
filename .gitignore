@@ -11,6 +11,9 @@
 !.ssh/
 .ssh/*
 .config/zsh/local/
+.config/ghostty/local.conf
+.config/voxtype/*.bak
+.config/systemd/user/voxtype.service
 .config/sketchybar/helper/helper
 .config/skhd/skhdrc.bak
 .config/komorebi/applications.json
