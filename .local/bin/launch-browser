@@ -136,7 +136,7 @@ if [[ $mode == focus && -z $target && -n ${HYPRLAND_INSTANCE_SIGNATURE-} ]]; the
   ')
 
   if [[ -n $address ]]; then
-    exec hyprctl --quiet dispatch focuswindow "address:$address"
+    exec hyprctl --quiet dispatch "hl.dsp.focus({ window = \"address:$address\" })"
   fi
 fi
 
