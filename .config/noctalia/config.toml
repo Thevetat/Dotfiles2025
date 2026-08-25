@@ -2,9 +2,9 @@
 ui_scale = 1.20
 
 [bar.default]
-center = [ "media" ]
+center = [ "group:g1", "media" ]
 concave_edge_corners = true
-end = [ "tray", "notifications", "bluetooth", "brightness", "network", "volume", "session", "spacer_1", "group:g1", "spacer_1", "clock" ]
+end = [ "tray", "notifications", "bluetooth", "brightness", "network", "volume", "clock" ]
 margin_edge = 0
 margin_ends = 0
 radius_bottom_left = 12
@@ -91,7 +91,7 @@ wallpaper_scheme = "m3-tonal-spot"
 
 [widget.clock]
 color = "secondary"
-format = "{:%-I:%M %p %A %m/%d/%y}"
+format = "{:%-I:%M%p %-m/%-d}"
 
 [widget.launcher]
 color = "secondary"
@@ -102,6 +102,7 @@ title_scroll = "on_hover"
 
 [widget.network]
 color = "secondary"
+show_label = false
 
 [widget.notifications]
 color = "secondary"
