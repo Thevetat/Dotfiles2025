@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Noctalia Settings
+Comment=Configure the Noctalia desktop shell
+Exec=sh -c "noctalia msg settings-open || { noctalia --daemon && sleep 1 && noctalia msg settings-open; }"
+Icon=noctalia
+Terminal=false
+Categories=Settings;DesktopSettings;
+StartupNotify=true
+Actions=ControlCenter;
+Keywords=desktop;shell;wayland;settings;appearance;
+
+[Desktop Action ControlCenter]
+Name=Open Control Center
+Exec=noctalia msg panel-toggle control-center
