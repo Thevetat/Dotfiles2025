@@ -116,6 +116,11 @@ wallpaper_scheme = "m3-fruit-salad"
         input_path = "$XDG_CONFIG_HOME/noctalia/templates/ghostty"
         output_path = "$XDG_CONFIG_HOME/ghostty/themes/noctalia"
 
+        [theme.templates.user.hyprland]
+        input_path = "$XDG_CONFIG_HOME/noctalia/templates/hyprland-colors.lua"
+        output_path = "$XDG_STATE_HOME/noctalia/generated/hyprland-colors.lua"
+        post_hook = "hyprctl reload"
+
 [widget.clock]
 color = "on_surface_variant"
 format = "{:%H:%M %-m/%-d}"
