@@ -91,7 +91,7 @@ wallpaper_scheme = "m3-tonal-spot"
 
 [widget.clock]
 color = "secondary"
-format = "{:%-I:%M%p %-m/%-d}"
+format = "{:%H:%M %-m/%-d}"
 
 [widget.launcher]
 color = "secondary"
@@ -133,6 +133,7 @@ capsule_fill = "on_secondary"
 
 [widget.volume]
 color = "secondary"
+show_label = false
 
 [widget.workspaces]
 active_pill_size = 2.5
