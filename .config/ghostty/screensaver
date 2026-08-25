@@ -1,0 +1,8 @@
+config-file = ?~/.config/ghostty/themes/noctalia
+background = 24283b
+foreground = c0caf5
+background-opacity = 1
+window-decoration = false
+window-padding-x = 0
+window-padding-y = 0
+window-padding-color = extend-always

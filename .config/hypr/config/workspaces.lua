@@ -9,3 +9,18 @@ for workspace = 1, 5 do
     persistent = true,
   })
 end
+
+hl.window_rule({
+  match = { initial_title = "^CachyOS Scratch Terminal$" },
+  tag = "+scratch-terminal",
+  workspace = "special:scratch silent",
+  float = true,
+  center = true,
+  size = { "min(monitor_w*0.72, 1800)", "min(monitor_h*0.72, 1000)" },
+})
+
+hl.window_rule({
+  match = { initial_title = "^CachyOS Screensaver$" },
+  tag = "+screensaver",
+  fullscreen = true,
+})

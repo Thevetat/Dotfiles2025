@@ -1,0 +1,183 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+title="CachyOS Screensaver"
+runtime_dir=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+lock_dir="$runtime_dir/cachyos-screensaver.lock"
+runs_dir="$runtime_dir/cachyos-screensaver-runs"
+terminal_launcher="$HOME/.local/state/cachyos-setup/launch-ghostty"
+ttfx_binary="$HOME/.local/bin/ttfx"
+
+screensaver_addresses() {
+  hyprctl clients -j | jq -r --arg title "$title" \
+    '.[] | select(.initialTitle == $title) | .address'
+}
+
+restore_cursor() {
+  hyprctl eval 'hl.config({ cursor = { invisible = false } })' >/dev/null 2>&1 || \
+    hyprctl keyword cursor:invisible false >/dev/null 2>&1 || true
+}
+
+terminate_script_pid() {
+  local pid=$1
+  local mode=$2
+  local -a process_args=()
+
+  [[ $pid =~ ^[0-9]+$ && -r /proc/$pid/cmdline ]] || return 0
+  mapfile -d '' -t process_args <"/proc/$pid/cmdline"
+  [[ " ${process_args[*]} " == *"/hyprland-screensaver $mode"* ]] || return 0
+  kill "$pid" 2>/dev/null || true
+}
+
+stop_screensaver() {
+  local pid
+
+  if [[ -r $lock_dir/start.pid ]]; then
+    read -r pid <"$lock_dir/start.pid" || true
+    terminate_script_pid "${pid:-}" start
+  fi
+
+  while IFS= read -r address; do
+    [[ -n $address ]] || continue
+    hyprctl dispatch "hl.dsp.window.close({ window = \"address:$address\" })" >/dev/null 2>&1 || \
+      hyprctl dispatch closewindow "address:$address" >/dev/null 2>&1 || true
+  done < <(screensaver_addresses 2>/dev/null || true)
+
+  for pid_file in "$runs_dir"/*; do
+    [[ -r $pid_file ]] || continue
+    read -r pid <"$pid_file" || true
+    terminate_script_pid "${pid:-}" run
+    rm -f "$pid_file"
+  done
+
+  for _ in {1..20}; do
+    [[ -z $(screensaver_addresses 2>/dev/null || true) ]] && break
+    sleep 0.1
+  done
+
+  rm -f "$lock_dir/start.pid"
+  rmdir "$lock_dir" 2>/dev/null || true
+  rmdir "$runs_dir" 2>/dev/null || true
+  restore_cursor
+}
+
+screensaver_in_focus() {
+  hyprctl activewindow -j | jq -e --arg title "$title" \
+    '.initialTitle == $title' >/dev/null 2>&1
+}
+
+focus_monitor() {
+  local monitor=$1
+  hyprctl dispatch "hl.dsp.focus({ monitor = \"$monitor\" })" >/dev/null 2>&1 || \
+    hyprctl dispatch focusmonitor "$monitor" >/dev/null
+}
+
+run_effects() {
+  local child=
+  local pid_file="$runs_dir/$$"
+
+  mkdir -p "$runs_dir"
+  printf '%s\n' "$$" >"$pid_file"
+
+  cleanup() {
+    [[ -z $child ]] || kill "$child" 2>/dev/null || true
+    rm -f "$pid_file"
+    printf '\033[?25h'
+  }
+  trap cleanup EXIT
+  trap 'exit 0' SIGINT SIGTERM SIGHUP SIGQUIT
+
+  printf '\033]11;rgb:24/28/3b\007\033[?25l'
+
+  local deadline=$((SECONDS + 2))
+  while ((SECONDS < deadline)) && [[ $(stty size 2>/dev/null) == "24 80" ]]; do
+    sleep 0.02
+  done
+
+  while true; do
+    "$ttfx_binary" -i "$HOME/.config/cachyos/screensaver.txt" \
+      --frame-rate "${TTFX_FRAME_RATE:-60}" \
+      --canvas-width 0 --canvas-height 0 --reuse-canvas \
+      --anchor-canvas c --anchor-text c --random-effect \
+      --no-eol --no-restore-cursor &
+    child=$!
+
+    while kill -0 "$child" 2>/dev/null; do
+      if read -r -n1 -t 1 || ! screensaver_in_focus; then
+        "$0" stop >/dev/null 2>&1 &
+        exit 0
+      fi
+    done
+
+    wait "$child" || true
+    child=
+  done
+}
+
+launch_screensaver() {
+  for command in ghostty hyprctl jq; do
+    command -v "$command" >/dev/null || {
+      printf 'Required screensaver command is unavailable: %s\n' "$command" >&2
+      exit 1
+    }
+  done
+
+  [[ -x $ttfx_binary ]] || {
+    printf 'Required screensaver command is unavailable: %s\n' "$ttfx_binary" >&2
+    exit 1
+  }
+
+  if [[ -n $(screensaver_addresses) ]] || ! mkdir "$lock_dir" 2>/dev/null; then
+    exit 0
+  fi
+  printf '%s\n' "$$" >"$lock_dir/start.pid"
+  trap 'rm -f "$lock_dir/start.pid"; rmdir "$lock_dir" 2>/dev/null || true' EXIT
+
+  if [[ ! -x $terminal_launcher ]]; then
+    terminal_launcher=$(command -v ghostty)
+  fi
+
+  local focused expected before command
+  focused=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
+
+  while IFS= read -r monitor; do
+    focus_monitor "$monitor"
+    before=$(screensaver_addresses | wc -l)
+    expected=$((before + 1))
+
+    printf -v command '%q ' \
+      "$terminal_launcher" \
+      "--class=org.cachyos.screensaver" \
+      "--title=$title" \
+      --title-report=false \
+      "--config-file=$HOME/.config/ghostty/screensaver" \
+      --font-size=18 \
+      -e "$0" run
+    hyprctl dispatch "hl.dsp.exec_cmd([[$command]])" >/dev/null 2>&1 || \
+      hyprctl dispatch exec -- bash -lc "$command" >/dev/null
+
+    for _ in {1..50}; do
+      [[ $(screensaver_addresses | wc -l) -ge $expected ]] && break
+      sleep 0.1
+    done
+    if [[ $(screensaver_addresses | wc -l) -lt $expected ]]; then
+      printf 'Screensaver window did not open on monitor %s.\n' "$monitor" >&2
+      exit 1
+    fi
+  done < <(hyprctl monitors -j | jq -r '.[].name')
+
+  [[ -z $focused ]] || focus_monitor "$focused"
+  hyprctl eval 'hl.config({ cursor = { invisible = true } })' >/dev/null 2>&1 || \
+    hyprctl keyword cursor:invisible true >/dev/null 2>&1 || true
+}
+
+case ${1:-start} in
+  start) launch_screensaver ;;
+  stop) stop_screensaver ;;
+  run) run_effects ;;
+  *)
+    printf 'Usage: hyprland-screensaver [start|stop|run]\n' >&2
+    exit 2
+    ;;
+esac

@@ -84,6 +84,21 @@ settings_show_advanced = true
 [system.monitor]
 gpu_poll_seconds = 2
 
+[idle]
+pre_action_fade_seconds = 1.5
+
+    [idle.behavior.screensaver]
+    action = "command"
+    command = "$HOME/.local/bin/hyprland-screensaver start"
+    enabled = true
+    resume_command = "$HOME/.local/bin/hyprland-screensaver stop"
+    timeout = 300
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = true
+    timeout = 900
+
 [theme]
 custom_palette = "Tokyo Night Storm Soft"
 mode = "dark"

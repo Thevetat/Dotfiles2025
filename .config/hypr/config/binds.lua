@@ -9,7 +9,9 @@ hl.bind(mainMod .. " + J",       hl.dsp.layout("togglesplit"), { description = "
 hl.bind(mainMod .. " + T",       hl.dsp.window.float({ action = "toggle" }), { description = "Toggle window floating or tiling" })
 hl.bind("CONTROL + SHIFT + F",   hl.dsp.window.float({ action = "toggle" }), { description = "Toggle window floating or tiling" })
 hl.bind(mainMod .. " + F",       hl.dsp.window.fullscreen({ mode = "fullscreen" }), { description = "Full screen" })
+hl.bind(mainMod .. " + CONTROL + F", hl.dsp.exec_cmd(userBin .. "hyprland-window-tiled-fullscreen-toggle"), { description = "Tiled full screen" })
 hl.bind(mainMod .. " + ALT + F", hl.dsp.window.fullscreen({ mode = "maximized" }), { description = "Full width" })
+hl.bind(mainMod .. " + O",       hl.dsp.exec_cmd(userBin .. "hyprland-window-pop"), { description = "Pop window out (float and pin)" })
 hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(userBin .. "hyprland-equalize-columns"), { description = "Equalize columns" })
 hl.bind("CONTROL + ALT + E",     hl.dsp.exec_cmd(userBin .. "hyprland-equalize-columns"), { description = "Equalize columns" })
 
@@ -50,7 +52,35 @@ hl.bind(mainMod .. " + SHIFT + ALT + RIGHT", hl.dsp.workspace.move({ monitor = "
 hl.bind(mainMod .. " + SHIFT + ALT + UP",    hl.dsp.workspace.move({ monitor = "u" }), { description = "Move workspace to upper monitor" })
 hl.bind(mainMod .. " + SHIFT + ALT + DOWN",  hl.dsp.workspace.move({ monitor = "d" }), { description = "Move workspace to lower monitor" })
 
--- 4. Window Resize
+-- 4. Window Groups
+hl.bind(mainMod .. " + G", hl.dsp.group.toggle(), { description = "Toggle window grouping" })
+hl.bind(mainMod .. " + ALT + G", hl.dsp.window.move({ out_of_group = true }), { description = "Move active window out of group" })
+
+for _, direction in ipairs({
+    { "LEFT", "l", "left" },
+    { "RIGHT", "r", "right" },
+    { "UP", "u", "top" },
+    { "DOWN", "d", "bottom" },
+}) do
+    hl.bind(mainMod .. " + ALT + " .. direction[1], hl.dsp.window.move({ into_group = direction[2] }), {
+        description = "Move window to group on " .. direction[3],
+    })
+end
+
+hl.bind(mainMod .. " + ALT + TAB", hl.dsp.group.next(), { description = "Next window in group" })
+hl.bind(mainMod .. " + SHIFT + ALT + TAB", hl.dsp.group.prev(), { description = "Previous window in group" })
+hl.bind(mainMod .. " + CONTROL + LEFT", hl.dsp.group.prev(), { description = "Move grouped window focus left" })
+hl.bind(mainMod .. " + CONTROL + RIGHT", hl.dsp.group.next(), { description = "Move grouped window focus right" })
+hl.bind(mainMod .. " + ALT + mouse_down", hl.dsp.group.next(), { description = "Next window in group" })
+hl.bind(mainMod .. " + ALT + mouse_up", hl.dsp.group.prev(), { description = "Previous window in group" })
+
+for index = 1, 5 do
+    hl.bind(mainMod .. " + ALT + " .. index, hl.dsp.group.active({ index = index }), {
+        description = "Switch to group window " .. index,
+    })
+end
+
+-- 5. Window Resize
 local resizeBinds = {
     { mainMod .. " + Minus",                    -100,    0, "Expand window left" },
     { mainMod .. " + Equal",                     100,    0, "Shrink window left" },
@@ -77,13 +107,13 @@ for _, bind in ipairs(resizeBinds) do
     })
 end
 
--- 5. Mouse and Monitors
+-- 6. Mouse and Monitors
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Move window with mouse" })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "Resize window with mouse" })
 hl.bind("CONTROL + ALT + TAB",         hl.dsp.focus({ monitor = "+1" }), { description = "Focus next monitor" })
 hl.bind("CONTROL + ALT + SHIFT + TAB", hl.dsp.focus({ monitor = "-1" }), { description = "Focus previous monitor" })
 
--- 6. Accessibility
+-- 7. Accessibility
 local function zoom_cursor(value)
     local current = hl.get_config("cursor:zoom_factor")
     hl.config({ cursor = { zoom_factor = math.min(3.0, math.max(1.0, current + value)) } })
@@ -93,8 +123,9 @@ hl.bind(mainMod .. " + CONTROL + Z", function() zoom_cursor(0.5) end, { repeatin
 hl.bind(mainMod .. " + CONTROL + ALT + Z", function()
     hl.config({ cursor = { zoom_factor = 1.0 } })
 end, { description = "Reset cursor zoom" })
+hl.bind(mainMod .. " + BACKSPACE", hl.dsp.exec_cmd(userBin .. "hyprland-window-transparency-toggle"), { description = "Toggle window transparency" })
 
--- 7. Applications
+-- 8. Applications
 hl.bind(mainMod .. " + RETURN",               hl.dsp.exec_cmd(launchPrefix .. TERMINAL), { description = "Terminal" })
 hl.bind(mainMod .. " + SHIFT + F",            hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER), { description = "File manager" })
 hl.bind(mainMod .. " + SHIFT + N",            hl.dsp.exec_cmd(launchPrefix .. EDITOR), { description = "Editor" })
@@ -104,15 +135,18 @@ hl.bind(mainMod .. " + SHIFT + ALT + RETURN", hl.dsp.exec_cmd(userBin .. "launch
 hl.bind(mainMod .. " + CONTROL + Q",          hl.dsp.exec_cmd(launchPrefix .. CALCULATOR), { description = "Calculator" })
 hl.bind("XF86Calculator",                     hl.dsp.exec_cmd(launchPrefix .. CALCULATOR), { description = "Calculator" })
 hl.bind(mainMod .. " + CONTROL + T",          hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"), { description = "System monitor" })
+hl.bind(mainMod .. " + S",                    hl.dsp.exec_cmd(userBin .. "hyprland-scratch-terminal " .. TERMINAL), { description = "Scratch terminal" })
 
--- 8. Noctalia Shell
+-- 9. Noctalia Shell
 hl.bind(mainMod .. " + SPACE",     hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"), { description = "Application launcher" })
+hl.bind(mainMod .. " + CONTROL + SPACE", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"), { description = "Background switcher" })
+hl.bind(mainMod .. " + SHIFT + CONTROL + SPACE", hl.dsp.exec_cmd(noctCall .. "settings-open appearance"), { description = "Theme switcher" })
 hl.bind(mainMod .. " + K",         hl.dsp.exec_cmd(noctCall .. "panel-toggle kenn/keybind-cheatsheet:cheatsheet"), { description = "Keybindings" })
 hl.bind(mainMod .. " + Z",         hl.dsp.exec_cmd(noctCall .. "settings-toggle"), { description = "Noctalia settings" })
 hl.bind(mainMod .. " + ESCAPE",    hl.dsp.exec_cmd(noctCall .. "panel-toggle session"), { description = "Session menu" })
 hl.bind(mainMod .. " + CONTROL + L", hl.dsp.exec_cmd(noctCall .. "session lock"), { description = "Lock screen" })
 
--- 9. Universal Clipboard
+-- 10. Universal Clipboard
 local terminalClasses = {
     ["alacritty"] = true,
     ["com.mitchellh.ghostty"] = true,
@@ -162,7 +196,7 @@ hl.bind(mainMod .. " + X", send_shortcut_once("CTRL", "X"), { description = "Uni
 hl.bind(mainMod .. " + CONTROL + V", hl.dsp.exec_cmd(noctCall .. "panel-toggle clipboard"), { description = "Clipboard history" })
 hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center notifications"), { description = "Notification history" })
 
--- 10. Hardware Controls
+-- 11. Hardware Controls
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(noctCall .. "volume-up"), { locked = true, repeating = true, description = "Volume up" })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(noctCall .. "volume-down"), { locked = true, repeating = true, description = "Volume down" })
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd(noctCall .. "volume-mute"), { locked = true, description = "Toggle audio mute" })
@@ -174,14 +208,14 @@ hl.bind("XF86AudioPrev",        hl.dsp.exec_cmd(noctCall .. "media previous"), {
 hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd(noctCall .. "brightness-up"), { locked = true, repeating = true, description = "Brightness up" })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctCall .. "brightness-down"), { locked = true, repeating = true, description = "Brightness down" })
 
--- 11. Capture and Appearance
+-- 12. Capture and Appearance
 hl.bind("PRINT",                    hl.dsp.exec_cmd(noctCall .. "screenshot-region"), { description = "Capture screen region" })
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(noctCall .. "screenshot-region"), { description = "Screenshot" })
 hl.bind(mainMod .. " + PRINT",     hl.dsp.exec_cmd(noctCall .. "screenshot-fullscreen"), { description = "Capture full screen" })
 hl.bind(mainMod .. " + P",         hl.dsp.exec_cmd("hyprpicker -a -n"), { description = "Color picker" })
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"), { description = "Wallpaper picker" })
 
--- 12. Workspaces
+-- 13. Workspaces
 for workspace = 1, 10 do
     local key = tostring(workspace % 10)
     local target = tostring(workspace)
