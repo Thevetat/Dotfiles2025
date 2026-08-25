@@ -115,6 +115,7 @@ wallpaper_scheme = "m3-fruit-salad"
         [theme.templates.user.ghostty]
         input_path = "$XDG_CONFIG_HOME/noctalia/templates/ghostty"
         output_path = "$XDG_CONFIG_HOME/ghostty/themes/noctalia"
+        post_hook = "if command -v herdr >/dev/null 2>&1 && herdr status server 2>/dev/null | grep -q '^status: running$'; then herdr server reload-config >/dev/null; fi"
 
         [theme.templates.user.hyprland]
         input_path = "$XDG_CONFIG_HOME/noctalia/templates/hyprland-colors.lua"
