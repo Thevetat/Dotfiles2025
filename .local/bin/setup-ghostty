@@ -4,7 +4,19 @@ set -euo pipefail
 
 case "$(uname -s)" in
   Darwin) platform=macos ;;
-  Linux) platform=omarchy ;;
+  Linux)
+    if [[ -r /etc/os-release ]]; then
+      . /etc/os-release
+    fi
+    if [[ ${ID:-} == cachyos ]]; then
+      platform=cachyos
+    elif command -v omarchy >/dev/null 2>&1; then
+      platform=omarchy
+    else
+      printf 'Unsupported Ghostty Linux platform: %s\n' "${ID:-unknown}" >&2
+      exit 1
+    fi
+    ;;
   *)
     printf 'Unsupported Ghostty platform: %s\n' "$(uname -s)" >&2
     exit 1

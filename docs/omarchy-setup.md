@@ -11,7 +11,7 @@ remain untracked.
 - `~/.config/hypr/monitors.lua`: the workstation's DP-3 ultrawide mode.
 - `~/.config/omarchy/shell.json`: bar layout, media/Tailscale widgets, and idle timers.
 - `~/.config/omarchy/defaults/agent`: OpenCode as the default agent.
-- `~/.config/ghostty/`: portable settings plus macOS and Omarchy overlays.
+- `~/.config/ghostty/`: portable settings plus macOS, Omarchy, and CachyOS overlays.
 - `~/.config/environment.d/90-opencode.conf`: disable package-managed OpenCode self-updates.
 - `~/.config/voxtype/config.toml`: Parakeet, OSD, and compositor-controlled dictation settings.
 - The Omarchy environment block in `~/.config/zsh/os/linux.zsh`.
