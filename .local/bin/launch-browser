@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: launch-browser [--browser zen|firefox|chromium] [--new-window|--private] [URL]
+
+Without a mode or URL, focus the most recently used browser window or launch it.
+EOF
+}
+
+mode=focus
+browser_request=
+target=
+
+while (($#)); do
+  case $1 in
+    --browser)
+      (($# >= 2)) || { printf '%s\n' 'launch-browser: --browser requires a value' >&2; exit 2; }
+      browser_request=$2
+      shift 2
+      ;;
+    --new-window)
+      [[ $mode == focus ]] || { printf '%s\n' 'launch-browser: select only one window mode' >&2; exit 2; }
+      mode=new
+      shift
+      ;;
+    --private)
+      [[ $mode == focus ]] || { printf '%s\n' 'launch-browser: select only one window mode' >&2; exit 2; }
+      mode=private
+      shift
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      if (($# > 1)); then
+        printf '%s\n' 'launch-browser: only one URL is supported' >&2
+        exit 2
+      fi
+      target=${1-}
+      break
+      ;;
+    -*)
+      printf 'launch-browser: unknown option: %s\n' "$1" >&2
+      exit 2
+      ;;
+    *)
+      [[ -z $target ]] || { printf '%s\n' 'launch-browser: only one URL is supported' >&2; exit 2; }
+      target=$1
+      shift
+      ;;
+  esac
+done
+
+if [[ -z $browser_request ]]; then
+  browser_request=$(env -u BROWSER xdg-settings get default-web-browser 2>/dev/null || true)
+fi
+if [[ -z $browser_request ]]; then
+  browser_request=$(env -u BROWSER xdg-mime query default x-scheme-handler/https 2>/dev/null || true)
+fi
+
+resolve_executable() {
+  local candidate
+  for candidate; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      command -v "$candidate"
+      return
+    fi
+  done
+  return 1
+}
+
+browser_request=${browser_request,,}
+case $browser_request in
+  *zen*)
+    browser_class=zen
+    browser_family=gecko
+    browser_exec=$(resolve_executable zen-browser zen) || {
+      printf '%s\n' 'launch-browser: Zen is selected but not installed' >&2
+      exit 1
+    }
+    ;;
+  *firefox*)
+    browser_class=firefox
+    browser_family=gecko
+    browser_exec=$(resolve_executable firefox) || {
+      printf '%s\n' 'launch-browser: Firefox is selected but not installed' >&2
+      exit 1
+    }
+    ;;
+  *chromium*)
+    browser_class=chromium
+    browser_family=chromium
+    browser_exec=$(resolve_executable chromium) || {
+      printf '%s\n' 'launch-browser: Chromium is selected but not installed' >&2
+      exit 1
+    }
+    ;;
+  '')
+    if browser_exec=$(resolve_executable zen-browser zen); then
+      browser_class=zen
+      browser_family=gecko
+    elif browser_exec=$(resolve_executable firefox); then
+      browser_class=firefox
+      browser_family=gecko
+    elif browser_exec=$(resolve_executable chromium); then
+      browser_class=chromium
+      browser_family=chromium
+    else
+      printf '%s\n' 'launch-browser: no supported browser is installed' >&2
+      exit 1
+    fi
+    ;;
+  *)
+    printf 'launch-browser: unsupported default browser: %s\n' "$browser_request" >&2
+    exit 1
+    ;;
+esac
+
+if [[ $mode == focus && -z $target && -n ${HYPRLAND_INSTANCE_SIGNATURE-} ]]; then
+  address=$(hyprctl clients -j | jq -r --arg class "$browser_class" '
+    [
+      .[]
+      | select(.mapped == true)
+      | select(
+          ((.class // "") | ascii_downcase) == $class
+          or ((.initialClass // "") | ascii_downcase) == $class
+        )
+    ]
+    | min_by(.focusHistoryID)
+    | .address // empty
+  ')
+
+  if [[ -n $address ]]; then
+    exec hyprctl --quiet dispatch focuswindow "address:$address"
+  fi
+fi
+
+browser_args=()
+case $mode in
+  focus)
+    [[ -z $target ]] || browser_args+=("$target")
+    ;;
+  new)
+    browser_args+=(--new-window "${target:-about:blank}")
+    ;;
+  private)
+    if [[ $browser_family == gecko ]]; then
+      browser_args+=(--private-window "${target:-about:blank}")
+    else
+      browser_args+=(--incognito --new-window "${target:-about:blank}")
+    fi
+    ;;
+esac
+
+exec uwsm app -- "$browser_exec" "${browser_args[@]}"
