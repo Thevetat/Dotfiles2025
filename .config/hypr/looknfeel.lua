@@ -63,3 +63,5 @@ hl.config({
     vrr = 1,
   },
 })
+
+o.window({ title = "^espanso$" }, { float = true, center = true })
