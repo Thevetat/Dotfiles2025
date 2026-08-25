@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Wallpaper Picker
+Comment=Choose the Noctalia desktop wallpaper
+Exec=sh -c "noctalia msg panel-open wallpaper || { noctalia --daemon && sleep 1 && noctalia msg panel-open wallpaper; }"
+Icon=preferences-desktop-wallpaper
+Terminal=false
+Categories=Settings;DesktopSettings;
+StartupNotify=true
+Keywords=wallpaper;background;desktop;appearance;

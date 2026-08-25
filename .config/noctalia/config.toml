@@ -33,7 +33,7 @@ polkit_agent = true
 settings_show_advanced = true
 
     [shell.greeter_sync]
-    auto_sync = true
+    auto_sync = false
 
     [shell.panel]
     open_near_click_control_center = true
@@ -85,9 +85,9 @@ settings_show_advanced = true
 gpu_poll_seconds = 2
 
 [theme]
-community_palette = "Tokyo Night Storm"
+custom_palette = "Tokyo Night Storm Soft"
 mode = "dark"
-source = "community"
+source = "custom"
 
     [theme.templates]
     builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "qt" ]
