@@ -99,6 +99,9 @@ pre_action_fade_seconds = 1.5
     enabled = true
     timeout = 900
 
+[wallpaper]
+directory = "/home/thevetat/Pictures/Wallpapers"
+
 [theme]
 custom_palette = "Tokyo Night Storm Soft"
 mode = "dark"
