@@ -121,6 +121,11 @@ wallpaper_scheme = "m3-fruit-salad"
         output_path = "$XDG_STATE_HOME/noctalia/generated/hyprland-colors.lua"
         post_hook = "hyprctl reload"
 
+        [theme.templates.user.tmux]
+        input_path = "$XDG_CONFIG_HOME/noctalia/templates/tmux-theme.conf"
+        output_path = "$XDG_STATE_HOME/noctalia/generated/tmux-theme.conf"
+        post_hook = "if tmux has-session 2>/dev/null; then tmux source-file ~/.tmux.conf; fi"
+
 [widget.clock]
 color = "on_surface_variant"
 format = "{:%H:%M %-m/%-d}"
