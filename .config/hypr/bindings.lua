@@ -63,3 +63,10 @@ hl.unbind("SUPER + SHIFT + ALT + E")
 o.bind("SUPER + SHIFT + ALT + E", "New Proton email", {
   launch = "proton-mail 'mailto:?subject='",
 })
+
+-- Omarchy's stock matcher does not match Obsidian's current Wayland class.
+hl.unbind("SUPER + SHIFT + O")
+o.bind("SUPER + SHIFT + O", "Obsidian", {
+  launch = "obsidian",
+  focus = "^md\\.obsidian\\.Obsidian$",
+})
