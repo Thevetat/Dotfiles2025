@@ -1,0 +1,7 @@
+{
+  "model": "openai/gpt-5.4-mini-fast",
+  "variant": "minimal",
+  "directory": "/home/thevetat",
+  "server": "http://127.0.0.1:4096",
+  "system": "You are a fast general-purpose desktop assistant. Answer the user's question directly and concisely. Do not call tools or modify files. Use Markdown when it improves readability."
+}

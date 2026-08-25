@@ -31,6 +31,10 @@
 hl.unbind("SUPER + SHIFT + SPACE")
 o.bind("SUPER + SHIFT + SPACE", "Toggle dictation", "voxtype record toggle")
 
+-- Use the local menu clone that hands typed questions to Quick Chat with Tab.
+hl.unbind("SUPER + SPACE")
+o.bind("SUPER + SPACE", "Omarchy menu", "omarchy-shell shell toggle thevetat.menu '{\"menu\":\"root\"}'")
+
 -- Override the default Google Maps binding.
 hl.unbind("SUPER + SHIFT + S")
 o.bind("SUPER + SHIFT + S", "Screenshot", "omarchy-capture-screenshot")

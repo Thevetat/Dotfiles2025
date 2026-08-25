@@ -1,0 +1,6 @@
+{
+  "key": "Tab",
+  "keyLabel": "Tab",
+  "label": "ASK AI",
+  "command": "quickchat open --new {query}"
+}

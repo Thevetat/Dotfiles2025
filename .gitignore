@@ -12,6 +12,9 @@
 .ssh/*
 .config/zsh/local/
 .config/ghostty/local.conf
+.config/omarchy/plugins/thevetat.menu/
+.config/quickshell/quickchat/
+.local/bin/quickchat
 .config/voxtype/*.bak
 .config/systemd/user/voxtype.service
 .config/sketchybar/helper/helper

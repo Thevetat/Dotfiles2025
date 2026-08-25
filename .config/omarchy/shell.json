@@ -27,7 +27,7 @@
       ],
       "left": [
         {
-          "id": "omarchy.menu"
+          "id": "thevetat.menu"
         },
         {
           "id": "omarchy.workspaces"
@@ -68,5 +68,11 @@
     "screensaver": 150
   },
   "plugins": [],
-  "version": 1
+  "version": 1,
+  "disabledPlugins": [
+    "omarchy.menu"
+  ],
+  "cloneSourceRestores": [
+    "thevetat.menu"
+  ]
 }
