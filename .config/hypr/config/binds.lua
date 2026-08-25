@@ -52,18 +52,18 @@ hl.bind(mainMod .. " + SHIFT + ALT + DOWN",  hl.dsp.workspace.move({ monitor = "
 
 -- 4. Window Resize
 local resizeBinds = {
-    { mainMod .. " + code:20",                 -100,    0, "Expand window left" },
-    { mainMod .. " + code:21",                  100,    0, "Shrink window left" },
-    { mainMod .. " + SHIFT + code:20",            0, -100, "Shrink window up" },
-    { mainMod .. " + SHIFT + code:21",            0,  100, "Expand window down" },
-    { mainMod .. " + ALT + code:20",            -25,    0, "Expand window left a little" },
-    { mainMod .. " + ALT + code:21",             25,    0, "Shrink window left a little" },
-    { mainMod .. " + SHIFT + ALT + code:20",       0,  -25, "Shrink window up a little" },
-    { mainMod .. " + SHIFT + ALT + code:21",       0,   25, "Expand window down a little" },
-    { mainMod .. " + CONTROL + code:20",        -300,    0, "Expand window left a lot" },
-    { mainMod .. " + CONTROL + code:21",         300,    0, "Shrink window left a lot" },
-    { mainMod .. " + CONTROL + SHIFT + code:20",   0, -300, "Shrink window up a lot" },
-    { mainMod .. " + CONTROL + SHIFT + code:21",   0,  300, "Expand window down a lot" },
+    { mainMod .. " + Minus",                    -100,    0, "Expand window left" },
+    { mainMod .. " + Equal",                     100,    0, "Shrink window left" },
+    { mainMod .. " + SHIFT + Minus",               0, -100, "Shrink window up" },
+    { mainMod .. " + SHIFT + Equal",               0,  100, "Expand window down" },
+    { mainMod .. " + ALT + Minus",               -25,    0, "Expand window left a little" },
+    { mainMod .. " + ALT + Equal",                25,    0, "Shrink window left a little" },
+    { mainMod .. " + SHIFT + ALT + Minus",          0,  -25, "Shrink window up a little" },
+    { mainMod .. " + SHIFT + ALT + Equal",          0,   25, "Expand window down a little" },
+    { mainMod .. " + CONTROL + Minus",           -300,    0, "Expand window left a lot" },
+    { mainMod .. " + CONTROL + Equal",            300,    0, "Shrink window left a lot" },
+    { mainMod .. " + CONTROL + SHIFT + Minus",      0, -300, "Shrink window up a lot" },
+    { mainMod .. " + CONTROL + SHIFT + Equal",      0,  300, "Expand window down a lot" },
     { "CONTROL + ALT + H",                      -100,    0, "Resize window left" },
     { "CONTROL + ALT + J",                         0,  100, "Resize window down" },
     { "CONTROL + ALT + K",                         0, -100, "Resize window up" },
@@ -183,7 +183,7 @@ hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctCall .. "panel-toggle wal
 
 -- 12. Workspaces
 for workspace = 1, 10 do
-    local key = "code:" .. tostring(workspace + 9)
+    local key = tostring(workspace % 10)
     local target = tostring(workspace)
 
     hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = target }), {
