@@ -6,8 +6,13 @@ if [[ -r /usr/share/omarchy/default/bash/env-bootstrap ]]; then
   export SUDO_EDITOR="${SUDO_EDITOR:-${EDITOR:-nvim}}"
   export BAT_THEME="${BAT_THEME:-ansi}"
   export OPENCODE_CONFIG_CONTENT='{"autoupdate":false}'
+fi
 
-  command -v mise >/dev/null 2>&1 && eval "$(mise activate zsh)"
+command -v mise >/dev/null 2>&1 && eval "$(mise activate zsh)"
+
+if [[ -o interactive && -t 1 ]] && command -v fastfetch >/dev/null 2>&1 \
+    && grep -qx 'ID=cachyos' /etc/os-release 2>/dev/null; then
+  fastfetch
 fi
 
 if [ -s "$NVM_DIR/nvm.sh" ]; then
@@ -48,10 +53,18 @@ alias nocam='sudo modprobe -r uvcvideo'
 if [[ -n "$SSH_CONNECTION" ]] && command -v osc52-copy >/dev/null 2>&1; then
   alias clipboard-copy='osc52-copy'
   alias pbcopy='osc52-copy'
+elif [[ -n "$WAYLAND_DISPLAY" ]] && command -v wl-copy >/dev/null 2>&1; then
+  alias clipboard-copy='wl-copy'
+  alias pbcopy='wl-copy'
 else
   alias clipboard-copy='xclip -selection clipboard'
   alias pbcopy='xclip -selection clipboard'
 fi
 
-alias clipboard-paste='xclip -selection clipboard -o'
-alias pbpaste='xclip -selection clipboard -o'
+if [[ -n "$WAYLAND_DISPLAY" ]] && command -v wl-paste >/dev/null 2>&1; then
+  alias clipboard-paste='wl-paste'
+  alias pbpaste='wl-paste'
+else
+  alias clipboard-paste='xclip -selection clipboard -o'
+  alias pbpaste='xclip -selection clipboard -o'
+fi
