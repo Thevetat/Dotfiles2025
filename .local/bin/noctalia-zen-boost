@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+cache_home="${XDG_CACHE_HOME:-$HOME/.cache}"
+config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+palette_file="$cache_home/noctalia/zen-boost-palette.json"
+output_dir="$config_home/zen-boosts"
+output_file="$output_dir/noctalia.json"
+
+mkdir -p "$output_dir"
+temporary_file=$(mktemp "$output_dir/.noctalia.json.XXXXXX")
+trap 'rm -f "$temporary_file"' EXIT
+
+jq -e '
+  def clamp:
+    if . < 0 then 0 elif . > 1 then 1 else . end;
+
+  .primary as $primary
+  | .secondaryHue as $secondary_hue
+  | {
+      boostName,
+      dotAngleDeg: $primary.hue,
+      secondaryDotAngleDegDelta: (($secondary_hue - $primary.hue + 360) % 360),
+      saturation: ((1 - ($primary.saturation / 100)) | clamp),
+      brightness: (((($primary.lightness / 100) - 0.1) / 0.9) | clamp),
+      enableColorBoost: true,
+      autoTheme: false,
+      changeWasMade: true
+    }
+' "$palette_file" >"$temporary_file"
+
+chmod 0644 "$temporary_file"
+mv "$temporary_file" "$output_file"
+trap - EXIT

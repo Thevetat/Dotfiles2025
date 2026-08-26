@@ -134,6 +134,11 @@ wallpaper_scheme = "m3-fruit-salad"
         output_path = "$XDG_STATE_HOME/noctalia/generated/tmux-theme.conf"
         post_hook = "if tmux has-session 2>/dev/null; then tmux source-file ~/.tmux.conf; fi"
 
+        [theme.templates.user.zen_boost]
+        input_path = "$XDG_CONFIG_HOME/noctalia/templates/zen-boost-palette.json"
+        output_path = "$XDG_CACHE_HOME/noctalia/zen-boost-palette.json"
+        post_hook = "$HOME/.local/bin/noctalia-zen-boost"
+
 [widget.clock]
 color = "on_surface_variant"
 format = "{:%H:%M %-m/%-d}"

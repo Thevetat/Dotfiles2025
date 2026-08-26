@@ -1,0 +1,9 @@
+{
+  "boostName": "My Boost",
+  "primary": {
+    "hue": {{ colors.primary.default.hue }},
+    "saturation": {{ colors.primary.default.saturation }},
+    "lightness": {{ colors.primary.default.lightness }}
+  },
+  "secondaryHue": {{ colors.secondary.default.hue }}
+}
