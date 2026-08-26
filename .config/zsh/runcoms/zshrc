@@ -37,7 +37,6 @@ if [ -f ~/.env ]; then
   set +o allexport
 fi
 
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
