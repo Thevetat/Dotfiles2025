@@ -3,6 +3,10 @@ matches:
     label: Git
     replace: "~/Git/"
 
+  - trigger: "!ca"
+    label: CachyOS Setup
+    replace: "~/Git/CachyOS-Setup"
+
   - trigger: "!fst"
     label: Examples/Template
     replace: "~/Git/example-repos/fullstack-start-template"
