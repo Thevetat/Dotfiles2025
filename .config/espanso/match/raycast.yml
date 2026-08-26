@@ -1,0 +1,44 @@
+matches:
+  - trigger: "!fst"
+    label: Examples/Template
+    replace: "~/Git/example-repos/fullstack-start-template"
+
+  - trigger: "!lc"
+    label: lightweight-charts
+    replace: "~/Git/packages/lightweight-charts"
+
+  - trigger: "!le"
+    label: Learning
+    replace: "~/Git/Learning/"
+
+  - trigger: "!hl"
+    label: Hyperliquid
+    replace: "Use Context7 to look at the hyperliquid gitbook (official docs). Also clone https://github.com/nktkas/hyperliquid to /tmp and investigate the actual sdk we are using."
+
+  - trigger: "!mm"
+    label: Market Mafia
+    replace: "~/Git/market-mafia"
+
+  - trigger: "!ait"
+    label: AI Tools
+    replace: "~/ai-tools"
+
+  - trigger: "!hg"
+    label: Garden
+    replace: "~/Git/hermetica-garden/"
+
+  - trigger: "!ok"
+    label: okeanos
+    replace: "~/Git/okeanos"
+
+  - trigger: "!ae"
+    label: aether
+    replace: "~/Git/aethernet"
+
+  - trigger: "!wa"
+    label: waves
+    replace: "~/Git/waves/"
+
+  - trigger: "!ht"
+    label: hermetica-tooling
+    replace: "~/Git/hermetica-tooling"

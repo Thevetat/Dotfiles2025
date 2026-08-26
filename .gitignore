@@ -19,7 +19,9 @@
 .config/voxtype/*.bak
 .config/systemd/user/voxtype.service
 .config/systemd/user/espanso.service
-.config/espanso/match/
+.config/espanso/match/*
+!.config/espanso/match/base.yml
+!.config/espanso/match/raycast.yml
 .config/sketchybar/helper/helper
 .config/skhd/skhdrc.bak
 .config/komorebi/applications.json
