@@ -109,7 +109,7 @@ source = "wallpaper"
 wallpaper_scheme = "m3-fruit-salad"
 
     [theme.templates]
-    builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "qt" ]
+    builtin_ids = [ "btop", "gtk3", "gtk4", "hyprland", "kcolorscheme", "qt" ]
     community_ids = [ "bat", "discord", "lazygit", "obsidian", "pi-agent", "spicetify", "steam", "telegram", "zen-browser" ]
     enable_builtin_templates = true
     enable_community_templates = true
