@@ -2,7 +2,7 @@
 Type=Application
 Name=Keymap
 Comment=Browse and search Hyprland keybindings
-Exec=noctalia-keymap
+Exec=/usr/bin/bash -lc "sleep 0.2; exec ~/.local/bin/noctalia-keymap"
 Icon=input-keyboard
 Terminal=false
 Categories=Settings;DesktopSettings;
