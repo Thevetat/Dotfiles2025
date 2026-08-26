@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Keymap
+Comment=Browse and search Hyprland keybindings
+Exec=noctalia-keymap
+Icon=input-keyboard
+Terminal=false
+Categories=Settings;DesktopSettings;
+StartupNotify=false
+Keywords=keymap;keybindings;keyboard;shortcuts;hyprland;

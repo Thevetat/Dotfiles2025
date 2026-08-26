@@ -1,4 +1,4 @@
-# Powerlevel10k instant prompt (must be first)
+# Powerlevel10k instant prompt must be first.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -13,83 +13,61 @@ host_name="${host_name:l}"
 [ -n "$host_name" ] && [ -f "$HOME/.config/zsh/hosts/${host_name}.zsh" ] && source "$HOME/.config/zsh/hosts/${host_name}.zsh"
 unset host_name
 
-# Source Prezto
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
-# Source common files
 [ -f ~/.aliases ] && source ~/.aliases
-# Source modular function files
+
 if [ -d ~/.config/zsh/functions ]; then
   for func_file in ~/.config/zsh/functions/*.zsh; do
     [ -f "$func_file" ] && source "$func_file"
   done
 fi
 
-# Source local-only overrides (project-specific, NOT tracked in dotfiles)
+# Local-only overrides are intentionally outside the public dotfiles repo.
 if [ -d ~/.config/zsh/local ]; then
   for func_file in ~/.config/zsh/local/*.zsh; do
     [ -f "$func_file" ] && source "$func_file"
   done
 fi
 
-# Source environment variables (systemd format)
 if [ -f ~/.env ]; then
-    set -o allexport
-    source ~/.env
-    set +o allexport
+  set -o allexport
+  source ~/.env
+  set +o allexport
 fi
 
-# Cargo/Rust
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
-
 export D2_DARK_THEME=200
-
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-
 export PATH="$HOME/.opencode/bin:$PATH"
 export EDITOR=nvim
 
-# Wave orchestration defaults
 export WV_MODE=exec
 export WV_LOG=1
 export WV_LOG_LEVEL=debug
 export WV_LOG_CONTENT=1
 
-
-# Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Zoxide (must be after compinit)
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 
-# Source lazy-loading scripts
 [ -f ~/.config/zsh/scripts/nvm-lazy-load.zsh ] && source ~/.config/zsh/scripts/nvm-lazy-load.zsh
 [ -f ~/.config/zsh/scripts/rbenv-lazy-load.zsh ] && source ~/.config/zsh/scripts/rbenv-lazy-load.zsh
 [ -f ~/.config/zsh/scripts/conda-lazy-load.zsh ] && source ~/.config/zsh/scripts/conda-lazy-load.zsh
 [ -f ~/.config/zsh/scripts/codex-profile.zsh ] && source ~/.config/zsh/scripts/codex-profile.zsh
 
-# bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
-
-
-# direnv - auto-load environment variables per directory
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
-# Clean expired pass cache on shell startup (8 hour TTL)
+# Clean expired pass cache on shell startup (8 hour TTL).
 if [[ -d "${HOME}/.cache/pass-secrets" ]]; then
   find "${HOME}/.cache/pass-secrets" -type f -mmin +480 -delete 2>/dev/null
 fi
 
-# Keep rbenv shims ahead of system Ruby after all shell startup scripts mutate PATH.
+# Other startup scripts may mutate PATH; project Ruby still takes precedence.
 export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
-
-# Temp Fix to Pin Claude
-# export DISABLE_AUTOUPDATER=1

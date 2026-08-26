@@ -1,11 +1,5 @@
-#
-# Defines environment variables.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
-# NVM is now lazy-loaded in .zshrc - see ~/.config/zsh/scripts/nvm-lazy-load.zsh
+# NVM is lazy-loaded from .zshrc, but expose the selected Node version to
+# non-interactive shells when it is already installed.
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR/alias/default" ]; then
   nvm_default="$(cat "$NVM_DIR/alias/default")"
@@ -21,14 +15,9 @@ if [ -s "$NVM_DIR/alias/default" ]; then
   fi
 fi
 
-# Load Cargo environment
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
-# Load Go
 export PATH="/usr/local/go/bin:$PATH"
-
 export PATH="$HOME/.local/bin:$PATH"
 
-# rbenv shims must be on PATH ahead of system Ruby so non-interactive shells
-# and subprocesses resolve the project Ruby before /usr/bin/ruby.
+# Keep project Ruby ahead of the system Ruby in non-interactive shells.
 export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"

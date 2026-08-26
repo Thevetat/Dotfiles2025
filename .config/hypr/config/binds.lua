@@ -114,15 +114,6 @@ hl.bind("CONTROL + ALT + TAB",         hl.dsp.focus({ monitor = "+1" }), { descr
 hl.bind("CONTROL + ALT + SHIFT + TAB", hl.dsp.focus({ monitor = "-1" }), { description = "Focus previous monitor" })
 
 -- 7. Accessibility
-local function zoom_cursor(value)
-    local current = hl.get_config("cursor:zoom_factor")
-    hl.config({ cursor = { zoom_factor = math.min(3.0, math.max(1.0, current + value)) } })
-end
-
-hl.bind(mainMod .. " + CONTROL + Z", function() zoom_cursor(0.5) end, { repeating = true, description = "Zoom cursor" })
-hl.bind(mainMod .. " + CONTROL + ALT + Z", function()
-    hl.config({ cursor = { zoom_factor = 1.0 } })
-end, { description = "Reset cursor zoom" })
 hl.bind(mainMod .. " + BACKSPACE", hl.dsp.exec_cmd(userBin .. "hyprland-window-transparency-toggle"), { description = "Toggle window transparency" })
 
 -- 8. Applications
@@ -132,8 +123,6 @@ hl.bind(mainMod .. " + SHIFT + N",            hl.dsp.exec_cmd(launchPrefix .. ED
 hl.bind(mainMod .. " + SHIFT + RETURN",       hl.dsp.exec_cmd(userBin .. "launch-browser"), { description = "Spawn or focus browser" })
 hl.bind(mainMod .. " + SHIFT + CONTROL + RETURN", hl.dsp.exec_cmd(userBin .. "launch-browser --new-window"), { description = "New browser window" })
 hl.bind(mainMod .. " + SHIFT + ALT + RETURN", hl.dsp.exec_cmd(userBin .. "launch-browser --private"), { description = "Private browser window" })
-hl.bind(mainMod .. " + CONTROL + Q",          hl.dsp.exec_cmd(launchPrefix .. CALCULATOR), { description = "Calculator" })
-hl.bind("XF86Calculator",                     hl.dsp.exec_cmd(launchPrefix .. CALCULATOR), { description = "Calculator" })
 hl.bind(mainMod .. " + CONTROL + T",          hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"), { description = "System monitor" })
 hl.bind(mainMod .. " + S",                    hl.dsp.exec_cmd(userBin .. "hyprland-scratch-terminal " .. TERMINAL), { description = "Scratch terminal" })
 
@@ -141,7 +130,7 @@ hl.bind(mainMod .. " + S",                    hl.dsp.exec_cmd(userBin .. "hyprla
 hl.bind(mainMod .. " + SPACE",     hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"), { description = "Application launcher" })
 hl.bind(mainMod .. " + CONTROL + SPACE", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"), { description = "Background switcher" })
 hl.bind(mainMod .. " + SHIFT + CONTROL + SPACE", hl.dsp.exec_cmd(noctCall .. "settings-open appearance"), { description = "Theme switcher" })
-hl.bind(mainMod .. " + K",         hl.dsp.exec_cmd(noctCall .. "panel-toggle kenn/keybind-cheatsheet:cheatsheet"), { description = "Keybindings" })
+hl.bind(mainMod .. " + K",         hl.dsp.exec_cmd(userBin .. "noctalia-keymap"), { description = "Keybindings" })
 hl.bind(mainMod .. " + Z",         hl.dsp.exec_cmd(noctCall .. "settings-toggle"), { description = "Noctalia settings" })
 hl.bind(mainMod .. " + ESCAPE",    hl.dsp.exec_cmd(noctCall .. "panel-toggle session"), { description = "Session menu" })
 hl.bind(mainMod .. " + CONTROL + L", hl.dsp.exec_cmd(noctCall .. "session lock"), { description = "Lock screen" })

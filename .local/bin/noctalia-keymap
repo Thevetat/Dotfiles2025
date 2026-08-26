@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+noctalia msg panel-open kenn/keybind-cheatsheet:cheatsheet
+sleep 0.15
+hyprctl dispatch 'hl.dsp.send_key_state({ mods = "", key = "Tab", state = "down" })' >/dev/null
+sleep 0.05
+hyprctl dispatch 'hl.dsp.send_key_state({ mods = "", key = "Tab", state = "up" })' >/dev/null

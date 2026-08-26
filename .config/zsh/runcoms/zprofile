@@ -1,9 +1,8 @@
 # Universal zprofile
 
-# Mac-specific Homebrew setup  
 if [[ "$OSTYPE" == "darwin"* ]]; then
   [ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# rbenv is now lazy-loaded - see ~/.config/zsh/scripts/rbenv-lazy-load.zsh
+# rbenv is lazy-loaded from ~/.config/zsh/scripts/rbenv-lazy-load.zsh.
 export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
