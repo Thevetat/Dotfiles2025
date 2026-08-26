@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Visualize
+Comment=Open an audio visualizer in Ghostty
+TryExec=cava
+Exec=ghostty --title=Visualize --class=visualize -e cava
+Icon=audio-x-generic
+Terminal=false
+Categories=AudioVideo;Audio;
+StartupNotify=true
+Keywords=audio;music;visualizer;cava;
