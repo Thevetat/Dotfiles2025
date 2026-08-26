@@ -1,3 +1,5 @@
 [tools]
+codex = "latest"
 gh = "latest"
+opencode = "latest"
 pi = "0.84.3"
