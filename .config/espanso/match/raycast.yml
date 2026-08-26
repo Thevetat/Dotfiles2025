@@ -1,4 +1,8 @@
 matches:
+  - trigger: "!gi"
+    label: Git
+    replace: "~/Git/"
+
   - trigger: "!fst"
     label: Examples/Template
     replace: "~/Git/example-repos/fullstack-start-template"
