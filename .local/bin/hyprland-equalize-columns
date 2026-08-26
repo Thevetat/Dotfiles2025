@@ -10,82 +10,245 @@ restore_focus() {
 }
 trap restore_focus EXIT
 
-mapfile -t columns < <(
-  hyprctl clients -j | jq -r --argjson workspace_id "$workspace_id" '
+equalize_relative_group() {
+  local axis=$1 group=$2
+  local -a regions starts ends addresses
+  local region_count first last gap_total gap_count
+  local i region start end address candidate_gap gap available target_start target_end current_end delta
+
+  mapfile -t regions < <(
+    jq -r '.[] | [.start, .end, .address] | @tsv' <<<"$group"
+  )
+  ((${#regions[@]} >= 2)) || return
+
+  for region in "${regions[@]}"; do
+    IFS=$'\t' read -r start end address <<<"$region"
+    starts+=("$start")
+    ends+=("$end")
+    addresses+=("$address")
+  done
+
+  region_count=${#regions[@]}
+  first=${starts[0]}
+  last=${ends[0]}
+  gap_total=0
+  gap_count=0
+
+  for ((i = 1; i < region_count; i++)); do
+    ((ends[i] > last)) && last=${ends[i]}
+    candidate_gap=$((starts[i] - ends[i - 1]))
+    ((candidate_gap >= 0)) || return
+    gap_total=$((gap_total + candidate_gap))
+    gap_count=$((gap_count + 1))
+  done
+
+  gap=$((gap_count > 0 ? (gap_total + gap_count / 2) / gap_count : 0))
+  available=$((last - first - gap * (region_count - 1)))
+
+  for ((i = 1; i < region_count; i++)); do
+    target_start=$((first + (i * available + region_count / 2) / region_count + i * gap))
+    target_end=$((target_start - gap))
+
+    if [[ $axis == x ]]; then
+      current_end=$(hyprctl clients -j | jq -r --arg address "${addresses[i - 1]}" \
+        '.[] | select(.address == $address) | (.at[0] + .size[0])')
+    else
+      current_end=$(hyprctl clients -j | jq -r --arg address "${addresses[i - 1]}" \
+        '.[] | select(.address == $address) | (.at[1] + .size[1])')
+    fi
+    delta=$((target_end - current_end))
+
+    if ((delta != 0)); then
+      hyprctl --quiet dispatch "hl.dsp.focus({ window = \"address:${addresses[i - 1]}\" })"
+      if [[ $axis == x ]]; then
+        hyprctl --quiet dispatch "hl.dsp.window.resize({ x = $delta, y = 0, relative = true })"
+      else
+        hyprctl --quiet dispatch "hl.dsp.window.resize({ x = 0, y = $delta, relative = true })"
+      fi
+    fi
+  done
+}
+
+snapshot_group() {
+  local axis=$1 group=$2
+
+  if [[ $axis == x ]]; then
+    hyprctl clients -j | jq -c --argjson group "$group" '
+      [.[]
+        | select(.address as $address | any($group[]; .address == $address))
+        | {address, start: .at[0], end: (.at[0] + .size[0])}]
+      | sort_by(.start)
+    '
+  else
+    hyprctl clients -j | jq -c --argjson group "$group" '
+      [.[]
+        | select(.address as $address | any($group[]; .address == $address))
+        | {address, start: .at[1], end: (.at[1] + .size[1])}]
+      | sort_by(.start)
+    '
+  fi
+}
+
+equalize_leaf_group() {
+  local axis=$1 group=$2 address before after spread changed key count candidate_start first_start child0_count ratio spec
+  local -a addresses specs
+  declare -A parents=()
+
+  mapfile -t addresses < <(jq -r '.[].address' <<<"$group")
+  ((${#addresses[@]} >= 2)) || return
+
+  before=$(snapshot_group "$axis" "$group")
+  spread=$(jq '[.[] | .end - .start] | max - min' <<<"$before")
+  ((spread > 2)) || return
+
+  if ((${#addresses[@]} == 2)); then
+    hyprctl --quiet dispatch "hl.dsp.focus({ window = \"address:${addresses[0]}\" })"
+    hyprctl --quiet dispatch 'hl.dsp.layout("splitratio 1 exact")'
+    return
+  fi
+
+  for address in "${addresses[@]}"; do
+    before=$(snapshot_group "$axis" "$group")
+    hyprctl --quiet dispatch "hl.dsp.focus({ window = \"address:$address\" })"
+    hyprctl --quiet dispatch 'hl.dsp.layout("splitratio +0.01")'
+    after=$(snapshot_group "$axis" "$group")
+
+    if [[ $after == "$before" ]]; then
+      hyprctl --quiet dispatch 'hl.dsp.layout("splitratio -0.01")'
+      after=$(snapshot_group "$axis" "$group")
+      [[ $after == "$before" ]] || hyprctl --quiet dispatch 'hl.dsp.layout("splitratio +0.01")'
+    else
+      hyprctl --quiet dispatch 'hl.dsp.layout("splitratio -0.01")'
+    fi
+
+    changed=$(jq -cnr --argjson before "$before" --argjson after "$after" '
+      [$after[] as $current
+        | $before[]
+        | select(.address == $current.address)
+        | select(.start != $current.start or .end != $current.end)
+        | .address]
+      | sort
+      | join(",")
+    ')
+    [[ -n $changed ]] || continue
+
+    count=$(jq -cnr --arg changed "$changed" '$changed | split(",") | length')
+    ((count >= 2)) || continue
+    key=$changed
+    [[ -v parents[$key] ]] && continue
+
+    candidate_start=$(jq -r --arg address "$address" '.[] | select(.address == $address) | .start' <<<"$before")
+    first_start=$(jq -cnr --arg changed "$changed" --argjson before "$before" '
+      ($changed | split(",")) as $addresses
+      | [$before[] | select(.address as $address | any($addresses[]; . == $address)) | .start]
+      | min
+    ')
+
+    if ((candidate_start == first_start)); then
+      child0_count=1
+    else
+      child0_count=$((count - 1))
+    fi
+    ratio=$(jq -cnr --argjson child0 "$child0_count" --argjson count "$count" '2 * $child0 / $count')
+    parents[$key]="$count"$'\t'"$address"$'\t'"$ratio"
+  done
+
+  ((${#parents[@]} > 0)) || return
+  mapfile -t specs < <(printf '%s\n' "${parents[@]}" | sort -rn)
+  ((${#specs[@]} > 0)) || return
+  IFS=$'\t' read -r count address ratio <<<"${specs[0]}"
+  ((count == ${#addresses[@]})) || return
+
+  for spec in "${specs[@]}"; do
+    IFS=$'\t' read -r _ address ratio <<<"$spec"
+    hyprctl --quiet dispatch "hl.dsp.focus({ window = \"address:$address\" })"
+    hyprctl --quiet dispatch "hl.dsp.layout(\"splitratio $ratio exact\")"
+  done
+}
+
+get_root_rows() {
+  hyprctl clients -j | jq -c --argjson workspace_id "$workspace_id" '
+    def row_bands:
+      group_by([.at[1], (.at[1] + .size[1])])
+      | map({start: .[0].at[1], end: (.[0].at[1] + .[0].size[1]), address: .[0].address})
+      | sort_by(.start);
+    def valid:
+      . as $bands
+      | ($bands | length) >= 2
+        and all(range(1; $bands | length); $bands[.].start >= $bands[. - 1].end);
+    [.[] | select(.workspace.id == $workspace_id and .mapped and (.floating | not))]
+    | row_bands
+    | select(valid)
+  '
+}
+
+get_horizontal_groups() {
+  hyprctl clients -j | jq -c --argjson workspace_id "$workspace_id" '
     def column_bands:
       group_by([.at[0], (.at[0] + .size[0])])
-      | map({
-          x: .[0].at[0],
-          right: (.[0].at[0] + .[0].size[0]),
-          address: .[0].address
-        })
-      | sort_by(.x);
-
-    [
-      .[]
-      | select(.workspace.id == $workspace_id and .mapped and (.floating | not))
-    ] as $clients
+      | map({start: .[0].at[0], end: (.[0].at[0] + .[0].size[0]), address: .[0].address})
+      | sort_by(.start);
+    def valid:
+      . as $bands
+      | ($bands | length) >= 2
+        and all(range(1; $bands | length); $bands[.].start >= $bands[. - 1].end);
+    [.[] | select(.workspace.id == $workspace_id and .mapped and (.floating | not))] as $clients
     | ($clients | column_bands) as $columns
-    | if ($columns | length) >= 2
-        and all(range(1; $columns | length); $columns[.].x >= $columns[. - 1].right)
-      then $columns
+    | if ($columns | valid)
+      then [{mode: "relative", regions: $columns}]
       else
         $clients
         | group_by([.at[1], (.at[1] + .size[1])])
-        | map(column_bands | select(length >= 2))
-        | sort_by(length)
-        | last // []
+        | map(column_bands | select(valid))
+        | map({mode: "leaf", regions: .})
       end
     | .[]
-    | [.x, .right, .address]
-    | @tsv
   '
-)
+}
 
-((${#columns[@]} >= 2)) || exit 0
+get_vertical_groups() {
+  hyprctl clients -j | jq -c --argjson workspace_id "$workspace_id" '
+    def row_bands:
+      group_by([.at[1], (.at[1] + .size[1])])
+      | map({start: .[0].at[1], end: (.[0].at[1] + .[0].size[1]), address: .[0].address})
+      | sort_by(.start);
+    def valid:
+      . as $bands
+      | ($bands | length) >= 2
+        and all(range(1; $bands | length); $bands[.].start >= $bands[. - 1].end);
+    [.[] | select(.workspace.id == $workspace_id and .mapped and (.floating | not))]
+    | group_by([.at[0], (.at[0] + .size[0])])
+    | map(row_bands | select(valid))
+    | .[]
+  '
+}
 
-declare -a xs rights addresses
-for column in "${columns[@]}"; do
-  IFS=$'\t' read -r x right address <<<"$column"
-  xs+=("$x")
-  rights+=("$right")
-  addresses+=("$address")
+mapfile -t groups < <(get_root_rows)
+root_orientation=columns
+if ((${#groups[@]} > 0)); then
+  root_orientation=rows
+fi
+for group in "${groups[@]}"; do
+  equalize_relative_group y "$group"
 done
 
-column_count=${#columns[@]}
-left=${xs[0]}
-right=${rights[0]}
-gap_total=0
-gap_count=0
-
-for ((i = 1; i < column_count; i++)); do
-  ((rights[i] > right)) && right=${rights[i]}
-  candidate_gap=$((xs[i] - rights[i - 1]))
-  ((candidate_gap >= 0)) || exit 0
-  gap_total=$((gap_total + candidate_gap))
-  gap_count=$((gap_count + 1))
-done
-
-gap=$((gap_count > 0 ? (gap_total + gap_count / 2) / gap_count : 0))
-available_width=$((right - left - gap * (column_count - 1)))
-
-# Move each divider by resizing the column on its left. Hyprland clamps the
-# inverse operation when a right-hand window's left neighbor is near minimum.
-for ((i = 1; i < column_count; i++)); do
-  desired_left=$((left + (i * available_width + column_count / 2) / column_count + i * gap))
-  desired_right=$((desired_left - gap))
-  current_right=$(
-    hyprctl clients -j | jq -r --arg address "${addresses[i - 1]}" '
-      .[] | select(.address == $address) | (.at[0] + .size[0])
-    '
-  )
-  delta=$((desired_right - current_right))
-
-  if ((delta != 0)); then
-    hyprctl --quiet dispatch "hl.dsp.focus({ window = \"address:${addresses[i - 1]}\" })"
-    hyprctl --quiet dispatch "hl.dsp.window.resize({ x = $delta, y = 0, relative = true })"
+mapfile -t groups < <(get_horizontal_groups)
+for group in "${groups[@]}"; do
+  mode=$(jq -r '.mode' <<<"$group")
+  regions=$(jq -c '.regions' <<<"$group")
+  if [[ $mode == relative ]]; then
+    equalize_relative_group x "$regions"
+  else
+    equalize_leaf_group x "$regions"
   fi
 done
+
+if [[ $root_orientation == columns ]]; then
+  mapfile -t groups < <(get_vertical_groups)
+  for group in "${groups[@]}"; do
+    equalize_leaf_group y "$group"
+  done
+fi
 
 restore_focus
 trap - EXIT

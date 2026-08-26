@@ -117,7 +117,7 @@ hl.bind("CONTROL + ALT + SHIFT + TAB", hl.dsp.focus({ monitor = "-1" }), { descr
 hl.bind(mainMod .. " + BACKSPACE", hl.dsp.exec_cmd(userBin .. "hyprland-window-transparency-toggle"), { description = "Toggle window transparency" })
 
 -- 8. Applications
-hl.bind(mainMod .. " + RETURN",               hl.dsp.exec_cmd(launchPrefix .. TERMINAL), { description = "Terminal" })
+hl.bind(mainMod .. " + RETURN",               hl.dsp.exec_cmd(launchPrefix .. "ghostty -e /usr/bin/zsh -c 'fastfetch; exec /usr/bin/zsh'"), { description = "Terminal" })
 hl.bind(mainMod .. " + SHIFT + F",            hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER), { description = "File manager" })
 hl.bind(mainMod .. " + SHIFT + N",            hl.dsp.exec_cmd(launchPrefix .. EDITOR), { description = "Editor" })
 hl.bind(mainMod .. " + SHIFT + RETURN",       hl.dsp.exec_cmd(userBin .. "launch-browser"), { description = "Spawn or focus browser" })
@@ -129,6 +129,7 @@ hl.bind(mainMod .. " + S",                    hl.dsp.exec_cmd(userBin .. "hyprla
 -- 9. Noctalia Shell
 hl.bind(mainMod .. " + SPACE",     hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"), { description = "Application launcher" })
 hl.bind(mainMod .. " + CONTROL + SPACE", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"), { description = "Background switcher" })
+hl.bind(mainMod .. " + R",         hl.dsp.exec_cmd(noctCall .. "wallpaper-random"), { description = "Random wallpaper" })
 hl.bind(mainMod .. " + SHIFT + CONTROL + SPACE", hl.dsp.exec_cmd(noctCall .. "settings-open appearance"), { description = "Theme switcher" })
 hl.bind(mainMod .. " + K",         hl.dsp.exec_cmd(userBin .. "noctalia-keymap"), { description = "Keybindings" })
 hl.bind(mainMod .. " + Z",         hl.dsp.exec_cmd(noctCall .. "settings-toggle"), { description = "Noctalia settings" })
