@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
 Name=Visualize
-Comment=Open an audio visualizer in Ghostty
-TryExec=cava
-Exec=ghostty --title=Visualize --class=visualize -e cava
+Comment=Open a randomized terminal audio visualizer
+TryExec=cava-random
+Exec=ghostty --title=Visualize --class=visualize -e cava-random
 Icon=audio-x-generic
 Terminal=false
 Categories=AudioVideo;Audio;
