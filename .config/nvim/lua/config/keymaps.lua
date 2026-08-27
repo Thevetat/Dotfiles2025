@@ -21,7 +21,7 @@ end, { desc = "Format Injected Langs" })
 vim.keymap.set("n", "<leader>Cm", "<cmd>Mason<cr>", { desc = "Mason" })
 
 -- Essential custom keymaps
--- Select all moved to <leader>a since <leader>c is now for Claude Code
+-- Select all moved to <leader>a to avoid the code mappings
 vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>", { desc = "Select all" })
 vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { desc = "Rename symbol" })
 

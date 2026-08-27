@@ -18,17 +18,17 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
   desc = "Notify when file is reloaded",
 })
 
--- Run EslintFixAll on save for JavaScript/TypeScript files
+-- Run ESLint fix-all on save for JavaScript/TypeScript files
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
   callback = function()
     -- Check if eslint LSP client is attached
     local clients = vim.lsp.get_active_clients({ name = "eslint", bufnr = 0 })
     if #clients > 0 then
-      vim.cmd("EslintFixAll")
+      vim.cmd("LspEslintFixAll")
     end
   end,
-  desc = "Run EslintFixAll on save",
+  desc = "Run ESLint fix-all on save",
 })
 
 -- Enable autoformat for specific file types (excluding ESLint-handled files)
@@ -85,4 +85,3 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
   desc = "Minimal indentation for JSON files",
 })
-

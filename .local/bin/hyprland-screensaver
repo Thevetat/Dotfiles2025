@@ -83,7 +83,8 @@ run_effects() {
   cleanup() {
     [[ -z $child ]] || kill "$child" 2>/dev/null || true
     rm -f "$pid_file"
-    printf '\033[?25h'
+    printf '\033[?1003l\033[?1006l\033[?25h'
+    restore_cursor
   }
   trap cleanup EXIT
   trap 'exit 0' SIGINT SIGTERM SIGHUP SIGQUIT
@@ -94,6 +95,11 @@ run_effects() {
   while ((SECONDS < deadline)) && [[ $(stty size 2>/dev/null) == "24 80" ]]; do
     sleep 0.02
   done
+  sleep 0.5
+  hyprctl eval 'hl.config({ cursor = { invisible = true } })' >/dev/null 2>&1 || \
+    hyprctl keyword cursor:invisible true >/dev/null 2>&1 || true
+  printf '\033[?1003h\033[?1006h'
+  while read -r -n1 -t 0.1; do :; done
 
   while true; do
     "$ttfx_binary" -i "$HOME/.config/cachyos/screensaver.txt" \
@@ -168,8 +174,6 @@ launch_screensaver() {
   done < <(hyprctl monitors -j | jq -r '.[].name')
 
   [[ -z $focused ]] || focus_monitor "$focused"
-  hyprctl eval 'hl.config({ cursor = { invisible = true } })' >/dev/null 2>&1 || \
-    hyprctl keyword cursor:invisible true >/dev/null 2>&1 || true
 }
 
 case ${1:-start} in

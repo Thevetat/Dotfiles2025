@@ -91,7 +91,6 @@ pre_action_fade_seconds = 1.5
     action = "command"
     command = "$HOME/.local/bin/hyprland-screensaver start"
     enabled = true
-    resume_command = "$HOME/.local/bin/hyprland-screensaver stop"
     timeout = 300
 
     [idle.behavior.lock]

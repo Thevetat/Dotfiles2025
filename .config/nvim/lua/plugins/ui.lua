@@ -1,10 +1,10 @@
 return {
-  -- Disable bigfile detection in snacks.nvim
+  -- Keep expensive features disabled for large or minified files
   {
     "folke/snacks.nvim",
     opts = {
       bigfile = {
-        enabled = false, -- Disable bigfile detection completely
+        enabled = true,
       },
     },
   },

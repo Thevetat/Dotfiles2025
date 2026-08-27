@@ -126,6 +126,7 @@ hl.bind(mainMod .. " + SHIFT + ALT + RETURN", hl.dsp.exec_cmd(userBin .. "launch
 hl.bind(mainMod .. " + CONTROL + T",          hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"), { description = "System monitor" })
 hl.bind(mainMod .. " + S",                    hl.dsp.exec_cmd(userBin .. "hyprland-scratch-terminal " .. TERMINAL), { description = "Scratch terminal" })
 hl.bind(mainMod .. " + SHIFT + V",            hl.dsp.exec_cmd(launchPrefix .. userBin .. "visualize"), { description = "Audio visualizer" })
+hl.bind(mainMod .. " + SHIFT + SPACE",        hl.dsp.exec_cmd("voxtype record toggle"), { description = "Toggle voice dictation" })
 
 -- 9. Noctalia Shell
 hl.bind(mainMod .. " + SPACE",     hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"), { description = "Application launcher" })
@@ -208,6 +209,11 @@ hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctCall .. "panel-toggle wal
 
 -- 13. Workspaces
 local showDesktopWorkspace = "show-desktop"
+
+hl.on("workspace.active", function(workspace)
+    local barAction = workspace.name == showDesktopWorkspace and "bar-hide" or "bar-show"
+    hl.exec_cmd(noctCall .. barAction .. " default " .. workspace.monitor.name)
+end)
 
 hl.bind(mainMod .. " + H", function()
     local workspace = hl.get_active_workspace()

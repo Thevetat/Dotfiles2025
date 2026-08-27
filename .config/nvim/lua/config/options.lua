@@ -13,7 +13,7 @@ vim.opt.softtabstop = 2
 vim.opt.colorcolumn = "120"
 vim.opt.hlsearch = false
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldenable = true
 vim.opt.undodir = os.getenv("HOME") .. "/.local/share/undodir"
@@ -57,11 +57,11 @@ if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
   vim.g.clipboard = "osc52"
 end
 
--- Performance settings for large files (no throttling, just higher limits)
-vim.opt.synmaxcol = 0           -- No limit on syntax highlighting columns (0 = unlimited)
-vim.opt.updatetime = 200        -- Faster completion
-vim.opt.redrawtime = 50000      -- Much more time for syntax highlighting (50 seconds)
-vim.opt.maxmempattern = 2000000 -- Massive increase for pattern matching (2MB)
+-- Bound expensive syntax and regex work so large files remain responsive
+vim.opt.synmaxcol = 3000
+vim.opt.updatetime = 200 -- Faster completion
+vim.opt.redrawtime = 2000
+vim.opt.maxmempattern = 1000
 
 -- LSP settings for better handling of large files
 vim.lsp.log.set_level("ERROR") -- Reduce LSP logging overhead

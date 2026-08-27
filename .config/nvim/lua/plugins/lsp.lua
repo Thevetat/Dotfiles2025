@@ -90,16 +90,16 @@ return {
             },
           },
         },
-        ts_ls = {
-          init_options = {
-            preferences = {
-              -- Enable all completions
-              includeCompletionsWithSnippetText = true,
-              includeCompletionsForImportStatements = true,
-              includeCompletionsWithClassMemberSnippets = true,
+        vtsls = {
+          settings = {
+            typescript = {
+              suggest = {
+                classMemberSnippets = { enabled = true },
+                includeCompletionsForImportStatements = true,
+              },
+              -- Increase memory limit for large projects (16GB)
+              tsserver = { maxTsServerMemory = 16384 },
             },
-            -- Increase memory limit for large projects (16GB)
-            maxTsServerMemory = 16384,
           },
         },
         yamlls = {
