@@ -18,6 +18,7 @@
 .config/systemd/user/quickchat-*.service
 .config/voxtype/*.bak
 .config/zen-boosts/
+.config/fontconfig/conf.d/10-cachyos-rgb.conf
 .config/systemd/user/voxtype.service
 .config/systemd/user/espanso.service
 .config/espanso/match/*

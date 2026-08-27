@@ -14,6 +14,16 @@ This repository uses the "Git Bare Repository" method for tracking dotfiles. Unl
 - Terminal and editor settings
 - Various other dotfiles and configurations
 
+## Ownership Boundaries
+
+Portable public user configuration belongs in this repository. Machine-specific
+packages, services, display policy, and deployment order belong in the matching
+setup repository.
+
+On CachyOS, `CachyOS-Setup` owns the RGB font-rendering policy and deploys
+`~/.config/fontconfig/conf.d/10-cachyos-rgb.conf`. That generated host state is
+ignored here rather than duplicated as a portable dotfile.
+
 ## Setup on a New Machine
 
 ### Initial Setup
