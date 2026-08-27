@@ -28,7 +28,7 @@ if ! is_ready; then
       --class=comfyui-server \
       --title="ComfyUI Server" \
       --working-directory="$comfy_dir" \
-      -e "$python" "$comfy_dir/main.py" --enable-manager \
+      -e "$python" "$comfy_dir/main.py" --enable-manager-legacy-ui \
       >/dev/null 2>&1 9>&- &
   fi
 
