@@ -22,13 +22,15 @@ is_ready() {
 exec 9>"$lock_file"
 flock 9
 
+cold_start=false
 if ! is_ready; then
+  cold_start=true
   if ! pgrep -u "$UID" -f "^$python $comfy_dir/main\.py([[:space:]]|$)" >/dev/null; then
     uwsm app -- ghostty \
       --class=comfyui-server \
       --title="ComfyUI Server" \
       --working-directory="$comfy_dir" \
-      -e "$python" "$comfy_dir/main.py" --enable-manager-legacy-ui \
+      -e "$python" "$comfy_dir/main.py" --enable-manager \
       >/dev/null 2>&1 9>&- &
   fi
 
@@ -41,4 +43,9 @@ fi
 is_ready || fail "The server did not become ready within 3 minutes"
 flock -u 9
 exec 9>&-
-exec "$HOME/.local/bin/launch-browser" --browser zen "$url"
+
+browser_url=$url
+if [[ $cold_start == true ]]; then
+  browser_url="${url}?started=$(date +%s)"
+fi
+exec uwsm app -- zen-browser --new-tab "$browser_url"
