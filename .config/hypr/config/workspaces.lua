@@ -8,9 +8,12 @@ for workspace = 1, 5 do
   })
 end
 
-hl.workspace_rule({
-  workspace = "name:show-desktop",
-  animation = "fade",
+hl.animation({
+  leaf = "workspaces",
+  enabled = true,
+  speed = 5,
+  bezier = "quick",
+  style = "fade",
 })
 
 hl.window_rule({
