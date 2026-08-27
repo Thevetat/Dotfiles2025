@@ -5,10 +5,11 @@ set -euo pipefail
 config_home=${XDG_CONFIG_HOME:-$HOME/.config}
 presets=(
   "$config_home/cava/config"
+  "$config_home/cava/presets/ceiling.conf"
+  "$config_home/cava/presets/chunky-vu.conf"
   "$config_home/cava/presets/mirror.conf"
   "$config_home/cava/presets/monstercat.conf"
   "$config_home/cava/presets/vertical.conf"
-  "$config_home/cava/presets/waveform.conf"
 )
 
 exec cava -p "${presets[RANDOM % ${#presets[@]}]}"
