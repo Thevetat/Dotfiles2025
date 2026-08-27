@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=ComfyUI
+GenericName=AI Image Workflow Editor
+Comment=Launch ComfyUI with ComfyUI Manager
+TryExec=launch-comfyui
+Exec=launch-comfyui
+Icon=applications-graphics
+Terminal=false
+Categories=Graphics;
+Keywords=ai;image;diffusion;comfyui;
+StartupNotify=true

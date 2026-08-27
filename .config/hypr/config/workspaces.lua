@@ -18,6 +18,11 @@ hl.window_rule({
 })
 
 hl.window_rule({
+  match = { initial_title = "^ComfyUI Server$" },
+  workspace = "3 silent",
+})
+
+hl.window_rule({
   match = { initial_title = "^CachyOS Screensaver$" },
   tag = "+screensaver",
   fullscreen = true,

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+comfy_dir=$HOME/ComfyUI
+python=$comfy_dir/.venv/bin/python
+url=http://127.0.0.1:8188/
+health_url=${url}system_stats
+lock_file=${XDG_RUNTIME_DIR:-/tmp}/comfyui-launch.lock
+
+fail() {
+  notify-send --urgency=critical "ComfyUI" "$1"
+  exit 1
+}
+
+is_ready() {
+  curl --silent --fail --max-time 2 "$health_url" >/dev/null
+}
+
+[[ -x $python ]] || fail "ComfyUI is not installed at $comfy_dir"
+
+exec 9>"$lock_file"
+flock 9
+
+if ! is_ready; then
+  if ! pgrep -u "$UID" -f "^$python $comfy_dir/main\.py([[:space:]]|$)" >/dev/null; then
+    uwsm app -- ghostty \
+      --class=comfyui-server \
+      --title="ComfyUI Server" \
+      --working-directory="$comfy_dir" \
+      -e "$python" "$comfy_dir/main.py" --enable-manager \
+      >/dev/null 2>&1 9>&- &
+  fi
+
+  for _ in {1..180}; do
+    is_ready && break
+    sleep 1
+  done
+fi
+
+is_ready || fail "The server did not become ready within 3 minutes"
+flock -u 9
+exec 9>&-
+exec "$HOME/.local/bin/launch-browser" --browser zen "$url"
