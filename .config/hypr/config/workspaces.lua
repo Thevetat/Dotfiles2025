@@ -1,37 +1,37 @@
 -- Workspace rules wiki https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 for workspace = 1, 5 do
-  hl.workspace_rule({
-    workspace = tostring(workspace),
-    monitor = MONITOR1,
-    default = true,
-    persistent = true,
-  })
+	hl.workspace_rule({
+		workspace = tostring(workspace),
+		monitor = MONITOR1,
+		default = true,
+		persistent = true,
+	})
 end
 
 hl.animation({
-  leaf = "workspaces",
-  enabled = true,
-  speed = 5,
-  bezier = "quick",
-  style = "fade",
+	leaf = "workspaces",
+	enabled = true,
+	speed = 7,
+	bezier = "easeInOutCubic",
+	style = "fade",
 })
 
 hl.window_rule({
-  match = { initial_title = "^CachyOS Scratch Terminal$" },
-  tag = "+scratch-terminal",
-  workspace = "special:scratch silent",
-  float = true,
-  center = true,
-  size = { "min(monitor_w*0.72, 1800)", "min(monitor_h*0.72, 1000)" },
+	match = { initial_title = "^CachyOS Scratch Terminal$" },
+	tag = "+scratch-terminal",
+	workspace = "special:scratch silent",
+	float = true,
+	center = true,
+	size = { "min(monitor_w*0.72, 1800)", "min(monitor_h*0.72, 1000)" },
 })
 
 hl.window_rule({
-  match = { initial_title = "^ComfyUI Server$" },
-  workspace = "3 silent",
+	match = { initial_title = "^ComfyUI Server$" },
+	workspace = "3 silent",
 })
 
 hl.window_rule({
-  match = { initial_title = "^CachyOS Screensaver$" },
-  tag = "+screensaver",
-  fullscreen = true,
+	match = { initial_title = "^CachyOS Screensaver$" },
+	tag = "+screensaver",
+	fullscreen = true,
 })
