@@ -207,6 +207,17 @@ hl.bind(mainMod .. " + P",         hl.dsp.exec_cmd("hyprpicker -a -n"), { descri
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"), { description = "Wallpaper picker" })
 
 -- 13. Workspaces
+local showDesktopWorkspace = "show-desktop"
+
+hl.bind(mainMod .. " + H", function()
+    local workspace = hl.get_active_workspace()
+    local target = workspace and workspace.name == showDesktopWorkspace
+        and "previous"
+        or "name:" .. showDesktopWorkspace
+
+    hl.dispatch(hl.dsp.focus({ workspace = target }))
+end, { description = "Toggle show desktop" })
+
 for workspace = 1, 10 do
     local key = tostring(workspace % 10)
     local target = tostring(workspace)
