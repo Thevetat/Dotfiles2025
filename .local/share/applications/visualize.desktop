@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Visualize
-Comment=Open a randomized terminal audio visualizer
+Comment=Open the next terminal audio visualizer
 TryExec=visualize
 Exec=visualize
 Icon=audio-x-generic

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+config_home=${XDG_CONFIG_HOME:-$HOME/.config}
+state_home=${XDG_STATE_HOME:-$HOME/.local/state}
+presets=(
+  "$config_home/cava/config"
+  "$config_home/cava/presets/ceiling.conf"
+  "$config_home/cava/presets/chunky-vu.conf"
+  "$config_home/cava/presets/mirror.conf"
+  "$config_home/cava/presets/monstercat.conf"
+  "$config_home/cava/presets/vertical.conf"
+)
+
+state_dir="$state_home/cava"
+state_file="$state_dir/preset-index"
+mkdir -p "$state_dir"
+
+exec 9>"$state_file.lock"
+flock 9
+
+index=
+if [[ -r $state_file ]]; then
+  read -r index < "$state_file" || index=
+fi
+if [[ ! $index =~ ^[0-9]+$ ]] || ((index >= ${#presets[@]})); then
+  index=$((RANDOM % ${#presets[@]}))
+fi
+
+printf '%s\n' "$(((index + 1) % ${#presets[@]}))" > "$state_file"
+flock -u 9
+exec 9>&-
+
+exec cava -p "${presets[index]}"
