@@ -8,6 +8,11 @@ for workspace = 1, 5 do
   })
 end
 
+hl.workspace_rule({
+  workspace = "name:show-desktop",
+  animation = "fade",
+})
+
 hl.window_rule({
   match = { initial_title = "^CachyOS Scratch Terminal$" },
   tag = "+scratch-terminal",
