@@ -125,6 +125,7 @@ hl.bind(mainMod .. " + SHIFT + CONTROL + RETURN", hl.dsp.exec_cmd(userBin .. "la
 hl.bind(mainMod .. " + SHIFT + ALT + RETURN", hl.dsp.exec_cmd(userBin .. "launch-browser --private"), { description = "Private browser window" })
 hl.bind(mainMod .. " + CONTROL + T",          hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"), { description = "System monitor" })
 hl.bind(mainMod .. " + S",                    hl.dsp.exec_cmd(userBin .. "hyprland-scratch-terminal " .. TERMINAL), { description = "Scratch terminal" })
+hl.bind(mainMod .. " + SHIFT + V",            hl.dsp.exec_cmd(launchPrefix .. userBin .. "visualize"), { description = "Audio visualizer" })
 
 -- 9. Noctalia Shell
 hl.bind(mainMod .. " + SPACE",     hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"), { description = "Application launcher" })

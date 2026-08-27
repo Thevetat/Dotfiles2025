@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+exec ghostty --title=Visualize --class=visualize -e "$HOME/.local/bin/cava-random"
