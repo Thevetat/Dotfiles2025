@@ -84,6 +84,9 @@ settings_show_advanced = true
 [system.monitor]
 gpu_poll_seconds = 2
 
+[notification]
+position = "top_center"
+
 [idle]
 pre_action_fade_seconds = 1.5
 

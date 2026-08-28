@@ -10,7 +10,8 @@ fi
 
 command -v mise >/dev/null 2>&1 && eval "$(mise activate zsh)"
 
-if [[ -o interactive && -t 1 ]] && command -v fastfetch >/dev/null 2>&1 \
+if [[ -o interactive && -t 1 ]] && (( COLUMNS >= 140 )) \
+    && command -v fastfetch >/dev/null 2>&1 \
     && grep -qx 'ID=cachyos' /etc/os-release 2>/dev/null; then
   fastfetch
 fi

@@ -16,6 +16,22 @@ hl.animation({
 	style = "fade",
 })
 
+hl.animation({
+	leaf = "specialWorkspaceIn",
+	enabled = true,
+	speed = 2,
+	bezier = "quick",
+	style = "fade",
+})
+
+hl.animation({
+	leaf = "specialWorkspaceOut",
+	enabled = true,
+	speed = 2,
+	bezier = "quick",
+	style = "fade",
+})
+
 hl.window_rule({
 	match = { initial_title = "^CachyOS Scratch Terminal$" },
 	tag = "+scratch-terminal",

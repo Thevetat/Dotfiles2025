@@ -117,7 +117,7 @@ hl.bind("CONTROL + ALT + SHIFT + TAB", hl.dsp.focus({ monitor = "-1" }), { descr
 hl.bind(mainMod .. " + BACKSPACE", hl.dsp.exec_cmd(userBin .. "hyprland-window-transparency-toggle"), { description = "Toggle window transparency" })
 
 -- 8. Applications
-hl.bind(mainMod .. " + RETURN",               hl.dsp.exec_cmd(launchPrefix .. "ghostty -e /usr/bin/zsh -c 'fastfetch; exec /usr/bin/zsh'"), { description = "Terminal" })
+hl.bind(mainMod .. " + RETURN",               hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e " .. userBin .. "launch-main-terminal"), { description = "New main terminal window" })
 hl.bind(mainMod .. " + SHIFT + F",            hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER), { description = "File manager" })
 hl.bind(mainMod .. " + SHIFT + N",            hl.dsp.exec_cmd(launchPrefix .. EDITOR), { description = "Editor" })
 hl.bind(mainMod .. " + SHIFT + RETURN",       hl.dsp.exec_cmd(userBin .. "launch-browser"), { description = "Spawn or focus browser" })
@@ -203,7 +203,8 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctCall .. "brightness-down"),
 
 -- 12. Capture and Appearance
 hl.bind("PRINT",                    hl.dsp.exec_cmd(noctCall .. "screenshot-region"), { description = "Capture screen region" })
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(noctCall .. "screenshot-region"), { description = "Screenshot" })
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("sh -c 'geometry=$(slurp) && grim -g \"$geometry\" - | wl-copy'"), { description = "Copy screen region" })
+hl.bind(mainMod .. " + SHIFT + CONTROL + S", hl.dsp.exec_cmd(noctCall .. "screenshot-region"), { description = "Capture and edit screen region" })
 hl.bind(mainMod .. " + PRINT",     hl.dsp.exec_cmd(noctCall .. "screenshot-fullscreen"), { description = "Capture full screen" })
 hl.bind(mainMod .. " + P",         hl.dsp.exec_cmd("hyprpicker -a -n"), { description = "Color picker" })
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"), { description = "Wallpaper picker" })
