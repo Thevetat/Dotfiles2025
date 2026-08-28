@@ -15,7 +15,7 @@ source = auto
 method = noncurses
 orientation = bottom
 channels = stereo
-synchronized_sync = 1
+synchronized_sync = 0
 
 [color]
 theme = "noctalia"

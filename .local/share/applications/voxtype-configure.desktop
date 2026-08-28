@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Voxtype Configuration
+GenericName=Voice-to-Text Settings
+Comment=Configure Voxtype dictation settings
+Exec=ghostty --class=voxtype -e voxtype configure
+Icon=audio-input-microphone
+Categories=Settings;
+Keywords=voxtype;voice;dictation;transcription;settings;configuration;
+Terminal=false
+NoDisplay=false
+StartupWMClass=voxtype

@@ -124,6 +124,7 @@ hl.bind(mainMod .. " + SHIFT + RETURN",       hl.dsp.exec_cmd(userBin .. "launch
 hl.bind(mainMod .. " + SHIFT + CONTROL + RETURN", hl.dsp.exec_cmd(userBin .. "launch-browser --new-window"), { description = "New browser window" })
 hl.bind(mainMod .. " + SHIFT + ALT + RETURN", hl.dsp.exec_cmd(userBin .. "launch-browser --private"), { description = "Private browser window" })
 hl.bind(mainMod .. " + CONTROL + T",          hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"), { description = "System monitor" })
+hl.bind(mainMod .. " + N",                    hl.dsp.exec_cmd(userBin .. "hyprland-scratch-notes"), { description = "Notes scratchpad" })
 hl.bind(mainMod .. " + S",                    hl.dsp.exec_cmd(userBin .. "hyprland-scratch-terminal " .. TERMINAL), { description = "Scratch terminal" })
 hl.bind(mainMod .. " + SHIFT + V",            hl.dsp.exec_cmd(launchPrefix .. userBin .. "visualize"), { description = "Audio visualizer" })
 hl.bind(mainMod .. " + SHIFT + SPACE",        hl.dsp.exec_cmd("voxtype record toggle"), { description = "Toggle voice dictation" })

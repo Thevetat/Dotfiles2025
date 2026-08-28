@@ -26,6 +26,15 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	match = { initial_title = "^Scratch$" },
+	tag = "+scratch-notes",
+	workspace = "special:notes silent",
+	float = true,
+	center = true,
+	size = { "min(monitor_w*0.72, 1800)", "min(monitor_h*0.72, 1000)" },
+})
+
+hl.window_rule({
 	match = { initial_title = "^ComfyUI Server$" },
 	workspace = "3 silent",
 })

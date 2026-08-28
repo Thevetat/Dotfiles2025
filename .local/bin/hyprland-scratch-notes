@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+app="$HOME/.local/lib/scratch/Scratch.AppImage"
+initial_title="Scratch"
+workspace="special:notes"
+
+client_address() {
+  hyprctl clients -j | jq -r --arg title "$initial_title" \
+    '[.[] | select(.initialTitle == $title)] | last | .address // empty'
+}
+
+toggle_scratch() {
+  hyprctl dispatch 'hl.dsp.workspace.toggle_special("notes")' >/dev/null 2>&1 || \
+    hyprctl dispatch togglespecialworkspace notes >/dev/null
+}
+
+address=$(client_address)
+if [[ -n $address ]]; then
+  client_workspace=$(hyprctl clients -j | jq -r --arg address "$address" \
+    '.[] | select(.address == $address) | .workspace.name')
+  if [[ $client_workspace != "$workspace" ]]; then
+    window="address:$address"
+    hyprctl dispatch "hl.dsp.window.move({ window = \"$window\", workspace = \"$workspace\", follow = false })" >/dev/null 2>&1 || \
+      hyprctl dispatch movetoworkspacesilent "$workspace,$window" >/dev/null
+  fi
+  toggle_scratch
+  exit 0
+fi
+
+[[ -x $app ]] || {
+  printf 'Scratch is not installed at %s.\n' "$app" >&2
+  exit 1
+}
+
+printf -v command '%q ' uwsm app -- "$app"
+hyprctl dispatch "hl.dsp.exec_cmd([[$command]])" >/dev/null 2>&1 || \
+  hyprctl dispatch exec -- bash -lc "$command" >/dev/null
+
+for _ in {1..100}; do
+  address=$(client_address)
+  [[ -n $address ]] && break
+  sleep 0.1
+done
+
+[[ -n $address ]] || {
+  printf 'Scratch did not open.\n' >&2
+  exit 1
+}
+
+toggle_scratch

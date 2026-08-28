@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Notes
+GenericName=Markdown Notes
+Comment=Open the Scratch notes scratchpad
+Exec=/usr/bin/bash -lc "~/.local/bin/hyprland-scratch-notes"
+Icon=scratch-notes
+Terminal=false
+Categories=Utility;TextEditor;
+Keywords=notes;markdown;scratchpad;
+StartupNotify=false

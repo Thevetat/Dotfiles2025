@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Connect AirPods
+Comment=Reconnect paired AirPods to this computer
+Exec=/usr/bin/bash -lc "exec ~/.local/bin/connect-airpods"
+Icon=audio-headphones
+Terminal=false
+Categories=AudioVideo;Audio;
+StartupNotify=false
+Keywords=air;airpods;bluetooth;headphones;connect;reconnect;

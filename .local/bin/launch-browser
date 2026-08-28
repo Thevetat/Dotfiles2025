@@ -79,7 +79,7 @@ case $browser_request in
   *zen*)
     browser_class=zen
     browser_family=gecko
-    browser_exec=$(resolve_executable zen-browser zen) || {
+    browser_exec=$(resolve_executable zen-browser-nvidia zen-browser zen) || {
       printf '%s\n' 'launch-browser: Zen is selected but not installed' >&2
       exit 1
     }
@@ -101,7 +101,7 @@ case $browser_request in
     }
     ;;
   '')
-    if browser_exec=$(resolve_executable zen-browser zen); then
+    if browser_exec=$(resolve_executable zen-browser-nvidia zen-browser zen); then
       browser_class=zen
       browser_family=gecko
     elif browser_exec=$(resolve_executable firefox); then

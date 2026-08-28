@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -uo pipefail
+
+notify() {
+  noctalia msg notification-show "AirPods" "$1" >/dev/null 2>&1 || true
+}
+
+address=""
+name=""
+while IFS= read -r device; do
+  device=${device#Device }
+  candidate_address=${device%% *}
+  candidate_name=${device#* }
+
+  if [[ ${candidate_name,,} == *airpods* ]]; then
+    address=$candidate_address
+    name=$candidate_name
+    break
+  fi
+done < <(bluetoothctl devices Paired 2>/dev/null)
+
+if [[ -z $address ]]; then
+  notify "No paired AirPods found"
+  exit 1
+fi
+
+device_suffix="dev_${address//:/_}"
+device_path=""
+while IFS= read -r path; do
+  if [[ $path == */$device_suffix ]]; then
+    device_path=$path
+    break
+  fi
+done < <(busctl tree --system org.bluez --list 2>/dev/null)
+
+if [[ -z $device_path ]]; then
+  notify "Could not find $name in BlueZ"
+  exit 1
+fi
+
+if busctl call --system org.bluez "$device_path" org.bluez.Device1 Connect >/dev/null 2>&1; then
+  notify "Connected to $name"
+  exit 0
+fi
+
+while IFS= read -r property; do
+  if [[ $property == *"Connected: yes"* ]]; then
+    notify "$name is already connected"
+    exit 0
+  fi
+done < <(bluetoothctl info "$address" 2>/dev/null)
+
+notify "Could not connect to $name"
+exit 1
