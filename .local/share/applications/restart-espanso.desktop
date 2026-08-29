@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Restart Espanso
+Comment=Restart the Espanso text expansion service
+TryExec=/usr/bin/systemctl
+Exec=/usr/bin/systemctl --user restart espanso.service
+Icon=espanso
+Terminal=false
+Categories=Utility;
+Keywords=espanso;text;expander;restart;
+StartupNotify=false
