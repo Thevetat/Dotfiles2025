@@ -123,6 +123,7 @@ hl.bind(mainMod .. " + SHIFT + N",            hl.dsp.exec_cmd(launchPrefix .. ED
 hl.bind(mainMod .. " + SHIFT + RETURN",       hl.dsp.exec_cmd(userBin .. "launch-browser"), { description = "Spawn or focus browser" })
 hl.bind(mainMod .. " + SHIFT + CONTROL + RETURN", hl.dsp.exec_cmd(userBin .. "launch-browser --new-window"), { description = "New browser window" })
 hl.bind(mainMod .. " + SHIFT + ALT + RETURN", hl.dsp.exec_cmd(userBin .. "launch-browser --private"), { description = "Private browser window" })
+hl.bind(mainMod .. " + SHIFT + O",            hl.dsp.exec_cmd(userBin .. "launch-obsidian"), { description = "Spawn or focus Obsidian" })
 hl.bind(mainMod .. " + CONTROL + T",          hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"), { description = "System monitor" })
 hl.bind(mainMod .. " + N",                    hl.dsp.exec_cmd(userBin .. "hyprland-scratch-notes"), { description = "Notes scratchpad" })
 hl.bind(mainMod .. " + S",                    hl.dsp.exec_cmd(userBin .. "hyprland-scratch-terminal " .. TERMINAL), { description = "Scratch terminal" })

@@ -6,9 +6,7 @@ yad() {
     yarn add "$*" --dev
 }
 
-ya() {
-    yarn add "$*"
-}
+alias ya='yazi'
 
 ndc() {
     rm -r -f ./docs/$1
