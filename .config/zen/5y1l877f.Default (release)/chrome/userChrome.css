@@ -1,0 +1,65 @@
+@import "/home/thevetat/.cache/noctalia/zen-browser/zen-userChrome.css";
+
+:root {
+  --zen-main-browser-background: transparent !important;
+  --zen-main-browser-background-old: transparent !important;
+  --zen-main-browser-background-toolbar: transparent !important;
+  --zen-main-browser-background-toolbar-old: transparent !important;
+  --zen-themed-toolbar-bg: transparent !important;
+  --toolbar-bgcolor: transparent !important;
+  --toolbox-bgcolor-inactive: transparent !important;
+}
+
+#zen-browser-background {
+  --zen-main-browser-background: transparent !important;
+  --zen-main-browser-background-old: transparent !important;
+}
+
+:root[zen-has-empty-tab="true"],
+:root[zen-has-empty-tab="true"] #zen-browser-background {
+  --zen-main-browser-background: color-mix(in srgb, var(--base) 65%, transparent) !important;
+  --zen-main-browser-background-old: color-mix(in srgb, var(--base) 65%, transparent) !important;
+}
+
+#navigator-toolbox {
+  background-color: transparent !important;
+}
+
+:root:not([zen-compact-mode="true"]) #navigator-toolbox {
+  background-color: color-mix(in srgb, var(--base) 85%, transparent) !important;
+}
+
+.zen-toolbar-background {
+  --zen-main-browser-background-toolbar: transparent !important;
+  --zen-main-browser-background-toolbar-old: transparent !important;
+  background: color-mix(in srgb, var(--base) 95%, transparent) !important;
+}
+
+#zen-main-app-wrapper,
+#zen-sidebar-splitter,
+#zen-appcontent-navbar-container,
+#TabsToolbar,
+hbox#titlebar {
+  background-color: transparent !important;
+}
+
+.sidebar-panel {
+  background-color: color-mix(in srgb, var(--base) 75%, transparent) !important;
+}
+
+#zen-tabbox-wrapper,
+#tabbrowser-tabpanels,
+.browserSidebarContainer {
+  background-color: transparent !important;
+}
+
+#tabbrowser-tabpanels .browserSidebarContainer browser[type="content"] {
+  opacity: 0.88 !important;
+}
+
+/* Avoid WebRender picture-cache aliasing on ultrawide displays. */
+#tabbrowser-tabbox #tabbrowser-tabpanels .browserSidebarContainer {
+  overflow: visible !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
