@@ -7,6 +7,7 @@ yad() {
 }
 
 alias ya='yazi'
+alias arbo='(source "${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR is not set}/pi-browser-auth.zsh" && export PI_BROWSER_AUTO_ENABLE=1 && exec pi --skill "$HOME/ai-tools/agents/rolling-bones-page-discovery" "/skill:rolling-bones-page-discovery")'
 
 ndc() {
     rm -r -f ./docs/$1
