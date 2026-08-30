@@ -5,7 +5,7 @@ local userBin = os.getenv("HOME") .. "/.local/bin/"
 
 -- 1. Window Management
 hl.bind(mainMod .. " + W",       hl.dsp.window.close(), { description = "Close window" })
-hl.bind(mainMod .. " + J",       hl.dsp.layout("togglesplit"), { description = "Toggle window split" })
+hl.bind(mainMod .. " + SHIFT + ALT + S", hl.dsp.layout("togglesplit"), { description = "Toggle window split" })
 hl.bind(mainMod .. " + T",       hl.dsp.window.float({ action = "toggle" }), { description = "Toggle window floating or tiling" })
 hl.bind("CONTROL + SHIFT + F",   hl.dsp.window.float({ action = "toggle" }), { description = "Toggle window floating or tiling" })
 hl.bind(mainMod .. " + F",       hl.dsp.window.fullscreen({ mode = "fullscreen" }), { description = "Full screen" })
@@ -16,15 +16,10 @@ hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(userBin .. "hyprland-equalize-c
 hl.bind("CONTROL + ALT + E",     hl.dsp.exec_cmd(userBin .. "hyprland-equalize-columns"), { description = "Equalize columns" })
 
 -- 2. Window Focus
-hl.bind(mainMod .. " + LEFT",  hl.dsp.focus({ direction = "l" }), { description = "Focus window left" })
-hl.bind(mainMod .. " + RIGHT", hl.dsp.focus({ direction = "r" }), { description = "Focus window right" })
-hl.bind(mainMod .. " + UP",    hl.dsp.focus({ direction = "u" }), { description = "Focus window above" })
-hl.bind(mainMod .. " + DOWN",  hl.dsp.focus({ direction = "d" }), { description = "Focus window below" })
-
-hl.bind("ALT + H", hl.dsp.focus({ direction = "l" }), { description = "Focus window left" })
-hl.bind("ALT + J", hl.dsp.focus({ direction = "d" }), { description = "Focus window below" })
-hl.bind("ALT + K", hl.dsp.focus({ direction = "u" }), { description = "Focus window above" })
-hl.bind("ALT + L", hl.dsp.focus({ direction = "r" }), { description = "Focus window right" })
+hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "l" }), { description = "Focus window left" })
+hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "d" }), { description = "Focus window below" })
+hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "u" }), { description = "Focus window above" })
+hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "r" }), { description = "Focus window right" })
 
 local function cycle_window(next)
     return function()
@@ -37,15 +32,10 @@ hl.bind("ALT + TAB",         cycle_window(true), { description = "Focus next win
 hl.bind("ALT + SHIFT + TAB", cycle_window(false), { description = "Focus previous window" })
 
 -- 3. Moving Windows
-hl.bind(mainMod .. " + SHIFT + LEFT",  hl.dsp.window.swap({ direction = "l" }), { description = "Swap window left" })
-hl.bind(mainMod .. " + SHIFT + RIGHT", hl.dsp.window.swap({ direction = "r" }), { description = "Swap window right" })
-hl.bind(mainMod .. " + SHIFT + UP",    hl.dsp.window.swap({ direction = "u" }), { description = "Swap window up" })
-hl.bind(mainMod .. " + SHIFT + DOWN",  hl.dsp.window.swap({ direction = "d" }), { description = "Swap window down" })
-
-hl.bind("ALT + SHIFT + H", hl.dsp.window.swap({ direction = "l" }), { description = "Swap window left" })
-hl.bind("ALT + SHIFT + J", hl.dsp.window.swap({ direction = "d" }), { description = "Swap window down" })
-hl.bind("ALT + SHIFT + K", hl.dsp.window.swap({ direction = "u" }), { description = "Swap window up" })
-hl.bind("ALT + SHIFT + L", hl.dsp.window.swap({ direction = "r" }), { description = "Swap window right" })
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.swap({ direction = "l" }), { description = "Swap window left" })
+hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.swap({ direction = "d" }), { description = "Swap window down" })
+hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.swap({ direction = "u" }), { description = "Swap window up" })
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.swap({ direction = "r" }), { description = "Swap window right" })
 
 hl.bind(mainMod .. " + SHIFT + ALT + LEFT",  hl.dsp.workspace.move({ monitor = "l" }), { description = "Move workspace to left monitor" })
 hl.bind(mainMod .. " + SHIFT + ALT + RIGHT", hl.dsp.workspace.move({ monitor = "r" }), { description = "Move workspace to right monitor" })
@@ -135,7 +125,7 @@ hl.bind(mainMod .. " + SPACE",     hl.dsp.exec_cmd(noctCall .. "panel-toggle lau
 hl.bind(mainMod .. " + CONTROL + SPACE", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"), { description = "Background switcher" })
 hl.bind(mainMod .. " + R",         hl.dsp.exec_cmd(noctCall .. "wallpaper-random"), { description = "Random wallpaper" })
 hl.bind(mainMod .. " + SHIFT + CONTROL + SPACE", hl.dsp.exec_cmd(noctCall .. "settings-open appearance"), { description = "Theme switcher" })
-hl.bind(mainMod .. " + K",         hl.dsp.exec_cmd(userBin .. "noctalia-keymap"), { description = "Keybindings" })
+hl.bind(mainMod .. " + slash",     hl.dsp.exec_cmd(userBin .. "noctalia-keymap"), { description = "Keybindings" })
 hl.bind(mainMod .. " + Z",         hl.dsp.exec_cmd(noctCall .. "settings-toggle"), { description = "Noctalia settings" })
 hl.bind(mainMod .. " + ESCAPE",    hl.dsp.exec_cmd(noctCall .. "panel-toggle session"), { description = "Session menu" })
 hl.bind(mainMod .. " + CONTROL + L", hl.dsp.exec_cmd(noctCall .. "session lock"), { description = "Lock screen" })
@@ -218,7 +208,7 @@ hl.on("workspace.active", function(workspace)
     hl.exec_cmd(noctCall .. barAction .. " default " .. workspace.monitor.name)
 end)
 
-hl.bind(mainMod .. " + H", function()
+hl.bind(mainMod .. " + D", function()
     local workspace = hl.get_active_workspace()
     local target = workspace and workspace.name == showDesktopWorkspace
         and "previous"
@@ -241,6 +231,11 @@ for workspace = 1, 10 do
         description = "Move window silently to workspace " .. workspace,
     })
 end
+
+hl.bind(mainMod .. " + ALT + H", hl.dsp.focus({ workspace = "e-1" }), { description = "Previous workspace" })
+hl.bind(mainMod .. " + ALT + L", hl.dsp.focus({ workspace = "e+1" }), { description = "Next workspace" })
+hl.bind(mainMod .. " + SHIFT + ALT + H", hl.dsp.window.move({ workspace = "e-1", follow = true }), { description = "Move window to previous workspace" })
+hl.bind(mainMod .. " + SHIFT + ALT + L", hl.dsp.window.move({ workspace = "e+1", follow = true }), { description = "Move window to next workspace" })
 
 hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }), { description = "Next workspace" })
 hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }), { description = "Previous workspace" })

@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-width=${1:-1300}
-height=${2:-900}
+width=${1:-2000}
+height=${2:-1200}
 x=${3:-}
 y=${4:-}
 
