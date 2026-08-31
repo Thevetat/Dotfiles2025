@@ -50,6 +50,15 @@ hl.window_rule({ match = { class = "^(org\\.kde\\.keditfiletype)$" }, float = tr
 hl.window_rule({ match = { class = "^(org\\.kde\\.ark)$" }, size = { "max(monitor_w, monitor_h)*0.40", "min(monitor_w, monitor_h)*0.40" } })
 hl.window_rule({ match = { class = "^(.*satty.*)$", title = "^(Satty)$" }, min_size = { "max(monitor_w, monitor_h)*0.35", "min(monitor_w, monitor_h)*0.35" }, float = true })
 hl.window_rule({ match = { class = "^(dev\\.)?(noctalia\\.Noctalia(\\.Settings)?)$" }, float = true, size = { "monitor_w*0.70", "monitor_h*0.70" } })
+hl.window_rule({
+    name            = "cachy-reminders-planner",
+    match           = { class = "^(io\\.github\\.thevetat\\.CachyReminders\\.Planner)$" },
+    float           = true,
+    center          = true,
+    size            = { "min(monitor_w*0.72, 1100)", "min(monitor_h*0.82, 820)" },
+    min_size        = { 620, 520 },
+    persistent_size = true,
+})
 
 -- Opacity Overrides
 local terminals = "^(kitty|ghostty|[Kk]onsole|Alacritty|gnome-terminal|xfce[0-9]?-terminal)$"
