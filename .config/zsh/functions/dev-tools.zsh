@@ -7,7 +7,33 @@ yad() {
 }
 
 alias ya='yazi'
-alias arbo='(source "${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR is not set}/pi-browser-auth.zsh" && export PI_BROWSER_AUTO_ENABLE=1 && exec pi --skill "$HOME/ai-tools/agents/rolling-bones-page-discovery" "/skill:rolling-bones-page-discovery")'
+
+_arbo_load_browser_auth() {
+  local runtime_auth="${XDG_RUNTIME_DIR:-}/pi-browser-auth.zsh"
+  local required
+
+  if [[ -n "${XDG_RUNTIME_DIR:-}" && -r "$runtime_auth" ]]; then
+    source "$runtime_auth"
+  elif [[ -r "$HOME/.env" ]]; then
+    source "$HOME/.env"
+  fi
+
+  for required in PI_BROWSER_HTTP_ORIGIN PI_BROWSER_HTTP_USERNAME PI_BROWSER_HTTP_PASSWORD; do
+    if [[ -z "${(P)required}" ]]; then
+      print -u2 -- "arbo: missing $required; add the browser credentials to ~/.env"
+      return 1
+    fi
+    export "$required"
+  done
+}
+
+arbo() {
+  (
+    _arbo_load_browser_auth || return
+    export PI_BROWSER_AUTO_ENABLE=1
+    exec pi --skill "$HOME/ai-tools/agents/rolling-bones-page-discovery" "/skill:rolling-bones-page-discovery"
+  )
+}
 
 ndc() {
     rm -r -f ./docs/$1
