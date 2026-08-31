@@ -1,31 +1,31 @@
 gui:
   theme:
     activeBorderColor:
-      - "#8aceff"
+      - "#4cd9e1"
       - bold
     inactiveBorderColor:
-      - "#95cdf7"
+      - "#80d4d9"
     searchingActiveBorderColor:
-      - "#c7bfff"
+      - "#9ecafc"
       - bold
     optionsTextColor:
-      - "#c8c3dc"
+      - "#bac8db"
     selectedLineBgColor:
-      - "#c8c3dc"
+      - "#bac8db"
     inactiveViewSelectedLineBgColor:
       - bold
     cherryPickedCommitFgColor:
-      - "#c8c3dc"
+      - "#bac8db"
     cherryPickedCommitBgColor:
-      - "#c7bfff"
+      - "#9ecafc"
     markedBaseCommitFgColor:
-      - "#c7bfff"
+      - "#9ecafc"
     markedBaseCommitBgColor:
       - "#ffb4ab"
     unstagedChangesColor:
       - "#ffb4ab"
     defaultFgColor:
-      - "#e5e0ef"
+      - "#dde3ee"
   sidePanelWidth: 0.2
 git:
   pagers:
