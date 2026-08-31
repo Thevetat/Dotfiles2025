@@ -27,8 +27,8 @@ oc() {
   local -a attach_args
 
   attach_args=()
-  model="${AETHERNET_OPENCODE_MODEL-openai/gpt-5.5}"
-  variant="${AETHERNET_OPENCODE_VARIANT-xhigh}"
+  model="${AETHERNET_OPENCODE_MODEL-openai/gpt-5.6-sol}"
+  variant="${AETHERNET_OPENCODE_VARIANT-high}"
   while (( $# > 0 )); do
     case "$1" in
       --session)

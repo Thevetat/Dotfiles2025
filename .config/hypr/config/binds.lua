@@ -108,6 +108,7 @@ hl.bind(mainMod .. " + BACKSPACE", hl.dsp.exec_cmd(userBin .. "hyprland-window-t
 
 -- 8. Applications
 hl.bind(mainMod .. " + RETURN",               hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e " .. userBin .. "launch-main-terminal"), { description = "New main terminal window" })
+hl.bind(mainMod .. " + CONTROL + RETURN",     hl.dsp.exec_cmd(launchPrefix .. TERMINAL), { description = "New terminal window without local tmux" })
 hl.bind(mainMod .. " + SHIFT + F",            hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER), { description = "File manager" })
 hl.bind(mainMod .. " + SHIFT + N",            hl.dsp.exec_cmd(launchPrefix .. EDITOR), { description = "Editor" })
 hl.bind(mainMod .. " + SHIFT + RETURN",       hl.dsp.exec_cmd(userBin .. "launch-browser"), { description = "Spawn or focus browser" })
