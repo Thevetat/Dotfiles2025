@@ -105,26 +105,28 @@
 - `Shift+Alt+T` - Run create spaces/organize desktop script
 - `Shift+Alt+R` - Restart/reload sketchybar
 
-### komorebi + whkd (Windows)
+### komorebi + AutoHotkey (Windows)
 
 **Workspace Navigation:**
 
-- `Alt+1-5` - Focus workspaces 1-5
-- `Shift+Alt+1-5` - Move the focused window to workspace 1-5 and follow
-- `Shift+Alt+P/N` - Move the focused window to the previous/next workspace
+- `Win+1-8` - Focus workspaces 1-8
+- `Win+Shift+1-8` - Move the focused window to workspace 1-8 and follow
+- `Win+Tab` / `Win+Shift+Tab` - Focus the next/previous workspace
+- `Win+Alt+H/L` - Focus the previous/next workspace
 
 **Window Navigation and Movement:**
 
-- `Alt+H/J/K/L` - Focus window left/down/up/right
-- `Shift+Alt+H/J/K/L` - Move or swap window left/down/up/right
+- `Win+H/J/K/L` - Focus window left/down/up/right
+- `Win+Shift+H/J/K/L` - Move or swap window left/down/up/right
 - `Ctrl+Alt+H/J/K/L` - Resize toward left/down/up/right
 - `Ctrl+Alt+E` - Retile and equalize windows
 
 **Window State:**
 
-- `Ctrl+Shift+F` - Toggle floating
-- `Shift+Alt+F` - Toggle monocle
-- `Alt+F` - Promote the focused window
+- `Win+T` - Toggle floating
+- `Win+F` - Toggle monocle
+- `Win+Alt+F` - Toggle maximize
+- `Win+E` - Retile and equalize windows
 - `Ctrl+Alt+G` - Toggle workspace and container gaps
 - `Ctrl+Alt+B` - Disable borders
 - `Shift+Ctrl+Alt+B` - Enable borders
@@ -139,11 +141,17 @@
 
 **Management:**
 
-- `Alt+T` - Open WezTerm
+- `Win+Enter` - Open Windows Terminal with Ubuntu and the main tmux session
+- `Win+Ctrl+Enter` - Open a plain Ubuntu terminal without tmux
+- `Win+S` - Toggle the Windows Terminal quake window
+- `Win+Space` - Open Raycast; AutoHotkey intentionally leaves this unbound
+- `Win+C/X/V` - Universal copy/cut/paste
+- `Win+L` - Focus right; workstation locking is disabled by Windows policy
+- `Alt+T` - Open a plain Ubuntu terminal
 - `Shift+Alt+T` - Retile all windows
 - `Shift+Alt+R` - Reload komorebi configuration
-- `Alt+I` - Toggle the shortcut overlay
-- `Alt+O` - Reload whkd
+- `Alt+I` - Toggle komorebi shortcuts
+- `Alt+O` - Reload AutoHotkey
 - `Shift+Alt+O` - Reload komorebi configuration
 
 ### tmux (Terminal Multiplexer)

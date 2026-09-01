@@ -217,29 +217,24 @@ for Hyprland. Skip this phase on Ubuntu.
 🛑 **STOP** — Hyprland configs are not yet authored. User must flesh out
 before relying on this phase.
 
-## Phase 8a — Windows window manager: komorebi + whkd
+## Phase 8a — Windows window manager: komorebi + AutoHotkey
 
 `[windows]` Run in PowerShell:
 
 ```powershell
-winget install --id LGUG2Z.komorebi --exact
-winget install --id LGUG2Z.whkd --exact
-
-$configHome = "$HOME\.config\komorebi"
-[Environment]::SetEnvironmentVariable("KOMOREBI_CONFIG_HOME", $configHome, "User")
-[Environment]::SetEnvironmentVariable("WHKD_CONFIG_HOME", $configHome, "User")
-$env:KOMOREBI_CONFIG_HOME = $configHome
-$env:WHKD_CONFIG_HOME = $configHome
-
-komorebic fetch-asc
-komorebic check
-komorebic start --whkd --config "$configHome\komorebi.json"
-komorebic enable-autostart --whkd --config "$configHome\komorebi.json"
+$dotfilesRoot = (Resolve-Path "$HOME\Dotfiles2025").Path
+& "$dotfilesRoot\windows\setup.ps1"
 ```
 
 The generated `applications.json` and `komorebi.bar.json` files are local and
-ignored. Disable overlapping Raycast Window Management hotkeys before using
-the global bindings in `whkdrc`.
+ignored. AutoHotkey maps the Windows key to the same Super-key window and
+workspace controls used by the CachyOS Hyprland configuration.
+`komorebic check` may warn that `whkdrc` is absent; this is expected when
+AutoHotkey owns the bindings.
+
+The `DisableLockWorkstation` policy disables all workstation locking, not just
+the `Win+L` shortcut. To restore locking, set the same registry value to `0`
+from an elevated process and sign out or restart Windows.
 
 ---
 
@@ -253,7 +248,7 @@ the global bindings in `whkdrc`.
 | ghostty    | Auto-loads `~/.config/ghostty/config`. Open once.                     |
 | raycast    | Open, grant permissions, sign in.                                     |
 | karabiner  | Open once after permissions granted (see Phase 7).                    |
-| komorebi   | Windows only. Verify `komorebic check` and `Get-Process komorebi,whkd`. |
+| komorebi   | Windows only. Verify `komorebic check` and `Get-Process komorebi,AutoHotkey64`. |
 | 1Password  | Install via DMG (not in Brewfile — get from 1password.com), sign in. |
 
 ---
@@ -300,7 +295,7 @@ fi
 
 ```powershell
 komorebic check
-Get-Process komorebi, whkd
+Get-Process komorebi, AutoHotkey64
 komorebic query focused-workspace-name
 ```
 
